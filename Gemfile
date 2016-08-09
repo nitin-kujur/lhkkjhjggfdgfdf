@@ -34,7 +34,7 @@ gem 'bootstrap-sass', '~> 3.3.1'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
+gem 'shopify_api'
 gem 'shopify_app'
 gem "figaro"
 
