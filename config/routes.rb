@@ -7,10 +7,11 @@ Rails.application.routes.draw do
     # simple routes without a specified controller will go to AppProxyController
     
     # more complex routes will go to controllers in the AppProxy namespace
-    # 	resources :reviews
+    #   resources :reviews
     # GET /app_proxy/reviews will now be routed to
     # AppProxy::ReviewsController#index, for example
   end
+  resources :distributors
   resources :orders
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
