@@ -4,6 +4,7 @@
     %tr
       %th ID
   %tbody
-    %tr
-      %td 
-        {{products.count}}
+    {% for product in collections.all.products %}
+      %tr
+        %td 
+          {{product.id}}
