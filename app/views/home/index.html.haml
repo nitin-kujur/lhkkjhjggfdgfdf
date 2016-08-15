@@ -1,0 +1,23 @@
+- content_for :javascript do
+  :javascript
+    ShopifyApp.ready(function(){
+      ShopifyApp.Bar.initialize({
+        title: "Home",
+        icon: "#{asset_path('favicon.ico')}"
+      });
+    });
+%h1 Products
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Image
+      %th Name
+      %th Created at
+  %tbody
+    - @products.each do |product|
+      %tr
+        %td= product.id
+        %td= image_tag product.image.src, class: 'product-image'
+        %td= link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top"
+        %td= product.created_at
