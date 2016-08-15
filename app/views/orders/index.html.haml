@@ -3,13 +3,8 @@
   %thead
     %tr
       %th ID
-      %th Image
-      %th Name
-      %th Created at
   %tbody
     {% for product in products %}
       %tr
-        %td {{product.id}}
-        %td= image_tag {{product.image.src}}, class: 'product-image'
-        %td= link_to {{product.title}}, {{product.url}}, target: "_top"
-        %td {{product.created_at}}
+        %td 
+          {{product.id}}
