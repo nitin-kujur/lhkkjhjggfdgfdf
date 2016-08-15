@@ -12,9 +12,14 @@
     {% for product in collections.all.products %}
       <tr>
         <td>{{product.id}}</td>
-        <td><%= image_tag {{product.image.src}}, class: 'product-image' %></td>
-        <td><%= link_to {{product.title}}, {{product.url}}, target: "_top" %></td>
-         <td>{{product.created_at}}</td>
+        <td>
+          <img src="{% if product.images.size > 0 %}{{ product.images.first | product_img_url: 'master' }}{% else %}{{ 'image__empty.png' | asset_url }}{% endif %}" alt="{{ product.title | escape }}" class="slide__image">
+        </td>
+        <td>
+          <a href="{{ product.url | within: collection }}" class="product__link">
+            {{product.title}}
+          </a>
+          <td>{{product.created_at}}</td>
       </tr>
     {% endfor%}
   </tbody>
