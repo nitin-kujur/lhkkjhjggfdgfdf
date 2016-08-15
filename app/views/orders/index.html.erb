@@ -13,7 +13,7 @@
       <tr>
         <td>{{product.id}}</td>
         <td>
-          <img src="{% if product.images.size > 0 %}{{ product.images.first | product_img_url: 'master' }}{% else %}{{ 'image__empty.png' | asset_url }}{% endif %}" alt="{{ product.title | escape }}">
+          <img src="{% if product.images.size > 0 %}{{ product.images.first | product_img_url: 'master' }}{% else %}{{ 'image__empty.png' | asset_url }}{% endif %}" alt="{{ product.title | escape }}" class="product-image">
         </td>
         <td>
           <a href="{{ product.url | within: collection }}">
@@ -24,3 +24,12 @@
     {% endfor%}
   </tbody>
 </table>
+<style type = "text/css" scoped>
+  body{
+    overflow: auto;
+  }
+  header{
+    position: relative;
+  }
+  img.product-image { width: 100px; } 
+</style>
