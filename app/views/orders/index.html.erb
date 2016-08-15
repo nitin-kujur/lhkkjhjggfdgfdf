@@ -1,0 +1,15 @@
+<h1>Products</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in collections.all.products %}
+      <tr>
+        <td>{{product.id}}</td>
+      </tr>
+    {% endfor%}
+  </tbody>
+</table>
