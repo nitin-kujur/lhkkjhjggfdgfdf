@@ -13,10 +13,10 @@
       <tr>
         <td>{{product.id}}</td>
         <td>
-          <img src="{% if product.images.size > 0 %}{{ product.images.first | product_img_url: 'master' }}{% else %}{{ 'image__empty.png' | asset_url }}{% endif %}" alt="{{ product.title | escape }}" class="slide__image">
+          <img src="{% if product.images.size > 0 %}{{ product.images.first | product_img_url: 'master' }}{% else %}{{ 'image__empty.png' | asset_url }}{% endif %}" alt="{{ product.title | escape }}">
         </td>
         <td>
-          <a href="{{ product.url | within: collection }}" class="product__link">
+          <a href="{{ product.url | within: collection }}">
             {{product.title}}
           </a>
           <td>{{product.created_at}}</td>
