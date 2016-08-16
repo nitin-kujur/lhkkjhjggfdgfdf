@@ -11,10 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160605170914) do
+ActiveRecord::Schema.define(version: 20160816030918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.integer  "distributor_id"
+    t.string   "address1"
+    t.string   "city"
+    t.string   "province"
+    t.string   "phone"
+    t.string   "zip"
+    t.string   "last_name"
+    t.string   "first_name"
+    t.string   "country"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "addresses", ["distributor_id"], name: "index_addresses_on_distributor_id", using: :btree
+
+  create_table "distributors", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.boolean  "verified_email"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "shops", force: :cascade do |t|
     t.string   "shopify_domain", null: false
@@ -25,4 +50,5 @@ ActiveRecord::Schema.define(version: 20160605170914) do
 
   add_index "shops", ["shopify_domain"], name: "index_shops_on_shopify_domain", unique: true, using: :btree
 
+  add_foreign_key "addresses", "distributors"
 end

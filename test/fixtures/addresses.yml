@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  distributor_id: 
+  address1: MyString
+  city: MyString
+  province: MyString
+  phone: MyString
+  zip: MyString
+  last_name: MyString
+  first_name: MyString
+  country: MyString
+
+two:
+  distributor_id: 
+  address1: MyString
+  city: MyString
+  province: MyString
+  phone: MyString
+  zip: MyString
+  last_name: MyString
+  first_name: MyString
+  country: MyString

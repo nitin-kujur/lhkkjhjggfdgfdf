@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b First name:
+  = @distributor.first_name
+%p
+  %b Last name:
+  = @distributor.last_name
+%p
+  %b Email:
+  = @distributor.email
+%p
+  %b Verified email:
+  = @distributor.verified_email
+
+= link_to 'Edit', edit_distributor_path(@distributor)
+\|
+= link_to 'Back', distributors_path

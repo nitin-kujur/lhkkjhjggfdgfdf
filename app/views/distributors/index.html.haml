@@ -1,2 +1,27 @@
-%h1 Distributors#index
-%p Find me in app/views/distributors/index.html.erb
+%h1 Listing distributors
+
+%table
+  %thead
+    %tr
+      %th First name
+      %th Last name
+      %th Email
+      %th Verified email
+      %th
+      %th
+      %th
+
+  %tbody
+    - @distributors.each do |distributor|
+      %tr
+        %td= distributor.first_name
+        %td= distributor.last_name
+        %td= distributor.email
+        %td= distributor.verified_email
+        %td= link_to 'Show', distributor
+        %td= link_to 'Edit', edit_distributor_path(distributor)
+        %td= link_to 'Destroy', distributor, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Distributor', new_distributor_path

@@ -1,0 +1,26 @@
+= form_for @distributor do |f|
+  - if @distributor.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@distributor.errors.count, "error")} prohibited this distributor from being saved:"
+      %ul
+        - @distributor.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :first_name
+    = f.text_field :first_name
+  .field
+    = f.label :last_name
+    = f.text_field :last_name
+  .field
+    = f.label :email
+    = f.text_field :email
+  .field
+    = f.label :verified_email
+    = f.check_box :verified_email
+  = f.fields_for :addresses, @address do |a| 
+    .field
+    = a.label :address1
+    = a.text_field :address1
+  .actions
+    = f.submit 'Save'
