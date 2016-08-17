@@ -1,10 +1,11 @@
-class DistributorsController < ApplicationController
+class DistributorsController <  ShopifyApp::AuthenticatedController
   before_action :set_distributor, only: [:show, :edit, :update, :destroy]
 
   # GET /distributors
   # GET /distributors.json
   def index
-    @distributors = Distributor.all
+    # @distributors = Distributor.all
+    @distributors = ShopifyAPI::Customer.find(:all)
   end
 
   # GET /distributors/1
@@ -25,44 +26,31 @@ class DistributorsController < ApplicationController
   # POST /distributors
   # POST /distributors.json
   def create
-  	customer_hash= {
-					  "customer": {
-					    "first_name": "Steve",
-					    "last_name": "Lastnameson",
-					    "email": "arpitvaishnav@gmail.com",
-					    "verified_email": true,
-					    "addresses": [
-					      {
-					        "address1": "123 Oak St",
-					        "city": "Ottawa",
-					        "province": "ON",
-					        "phone": "555-1212",
-					        "zip": "123 ABC",
-					        "last_name": "Lastnameson",
-					        "first_name": "Mother",
-					        "country": "CA"
-					      }
-					  #   , {
-							# "address1": "12 Oak St",
-					  #       "city": "Ottawa",
-					  #       "province": "ON",
-					  #       "phone": "555-121",
-					  #       "zip": "123 ABC",
-					  #       "last_name": "Lastnameson",
-					  #       "first_name": "Mother",
-					  #       "country": "CA"
-					  #   	}
-						]
-					  }
-					}
+  	customer_hash= {"customer": 
+                    {"first_name": params[:distributor][:first_name],
+                    "last_name": params[:distributor][:last_name],
+                    "email": params[:distributor][:email],
+                    "verified_email": params[:distributor][:verified_email],
+                      "addresses": [
+					               {
+					                 "address1": params[:distributor][:addresses_attributes]['0'][:address1],
+					                 "city": params[:distributor][:addresses_attributes]['0'][:city],
+					                 "province": params[:distributor][:addresses_attributes]['0'][:province],
+					                 "phone": params[:distributor][:addresses_attributes]['0'][:phone],
+					                 "zip": params[:distributor][:addresses_attributes]['0'][:zip],
+					                 "last_name": params[:distributor][:addresses_attributes]['0'][:last_name],
+					                 "first_name": params[:distributor][:addresses_attributes]['0'][:first_name],
+					                 "country": params[:distributor][:addresses_attributes]['0'][:country]
+					               }
+  	 					        ]
+     			          }
+					        }
   	
     @distributor = Distributor.new(distributor_params)
 
     respond_to do |format|
       if @distributor.save
-      	# custo_hash = 
-      	byebug
-        ShopifyAPI::Customer.create(distributor_params)
+      	ShopifyAPI::Customer.create(customer_hash)
         format.html { redirect_to @distributor, notice: 'Distributor was successfully created.' }
         format.json { render :show, status: :created, location: @distributor }
       else

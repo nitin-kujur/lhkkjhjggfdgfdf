@@ -4,8 +4,8 @@
     
       document.addEventListener(eventName, function() {
     <haml_silent>     if flash[:notice] 
-    </haml_silent><haml_block>      ShopifyApp.flashNotice("#{j flash[:notice].html_safe}");
+    </haml_silent><haml_block>      ShopifyApp.flashNotice("#{j flash[:notice]}");
     </haml_block>
     <haml_silent>     if flash[:error] 
-    </haml_silent><haml_block>      ShopifyApp.flashError("#{j flash[:error].html_safe}");
+    </haml_silent><haml_block>      ShopifyApp.flashError("#{j flash[:error]}");
     </haml_block>  });

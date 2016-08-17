@@ -1,5 +1,5 @@
-class OrdersController < ApplicationController
-   include ShopifyApp::AppProxyVerification
+class OrdersController <  ShopifyApp::AuthenticatedController
+   #include ShopifyApp::AppProxyVerification
 
   def index
     render layout: false, content_type: 'application/liquid'
