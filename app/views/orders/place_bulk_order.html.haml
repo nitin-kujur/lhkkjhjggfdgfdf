@@ -1,0 +1,62 @@
+%h1 Place Bulk Order
+  %div
+    %div
+      %table.table.table-striped
+        %thead
+          %tr
+            %th 
+              Distributors
+              =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
+            %th Products
+        %tbody
+          - session[:bulk_order]['distributor'].keys.each do |sd|
+            - distributor = ShopifyAPI::Customer.find(sd) 
+            %tr
+              %td 
+                = hidden_field_tag 'order[distributor][]' , sd
+                = distributor.first_name
+                %br
+                = distributor.email
+                %br
+                %br
+                - if distributor.addresses.present?
+                  Address:
+                  = distributor.addresses[0].address1
+                  %br 
+                  = distributor.addresses[0].city
+                  %br 
+                  = distributor.addresses[0].phone
+                  
+              %td
+                %table.table.table-striped
+                  %tr
+                    %th 
+                      Product
+                      =link_to '' , "/get_prd_for_distri/#{distributor.id}" , class: 'btn glyphicon glyphicon-plus btn-primary'
+                    %th Price
+                    %th Quantity
+                    %th Total 
+                    - if session[:bulk_order]['distributor']["#{distributor.id}"].present?
+                      -session[:bulk_order]['distributor']["#{distributor.id}"][0].each do |prod|
+                        - product = ShopifyAPI::Product.find(prod)
+                        - if product.present?  
+                          %tr
+                            %td
+                              = hidden_field_tag "order[distributor][#{sd}]product[]", prod
+                              = image_tag product.image.src, class: 'product-image'
+                              %br
+                              =link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top"
+                            %td= product.variants[0].price
+                            %td
+                              = text_field_tag "order[distributor][#{sd}]product[#{prod}]quantity" , ""
+                            %td
+                              = product.variants[0].price.to_f * 1  
+          
+            
+%br
+
+=# link_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'
+=# link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-primary'
+
+
+

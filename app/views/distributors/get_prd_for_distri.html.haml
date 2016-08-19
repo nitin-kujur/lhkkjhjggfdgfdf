@@ -1,0 +1,19 @@
+%h1 Products
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Image
+      %th Name
+      %th Created at
+  %tbody
+    = form_tag("/set_prd_for_distri/#{params[:distributor_id]}") do  
+      - @products.each do |product|
+        %tr
+          %td= check_box_tag  "order[]distributor[#{params[:distributor_id]}][]", product.id
+          %td= image_tag product.image.src, class: 'product-image' ,width: 50
+          %td= product.title
+          %td= product.created_at
+      %tr
+        %td{colspan: '2'}
+          = submit_tag 'Save Products for bulk order' ,class: 'btn btn-primary'
