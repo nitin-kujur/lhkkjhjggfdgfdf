@@ -1,10 +1,6 @@
 class DistributorsController <  ShopifyApp::AuthenticatedController
   before_action :set_distributor, only: [:show, :edit, :update, :destroy]
 
-  def bulk_order
-    byebug
-    params
-  end
 
   def get_prd_for_distri
     @products = ShopifyAPI::Product.find(:all, :params => {:limit => 10})
@@ -20,12 +16,16 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   end
 
   def set_distributors_for_bulk
+    if params[:session_clear]
     #[{"distributor"=>{"4337082118"=>["1", "1", "1"]}}]
-    session[:bulk_order]= {}
-    params[:order].each do |o|
-      session[:bulk_order][:distributor] = {}
-      o.values[0].each do |value|
-        session[:bulk_order][:distributor]["#{value}"] =  []    
+      session[:bulk_order]= nil
+    else
+      session[:bulk_order]= {}
+      params[:order].each do |o|
+        session[:bulk_order][:distributor] = {}
+        o.values[0].each do |value|
+          session[:bulk_order][:distributor]["#{value}"] =  []    
+        end
       end
     end
     redirect_to place_bulk_order_path
@@ -70,8 +70,9 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   # GET /distributors
   # GET /distributors.json
   def index
-    @distributors = Distributor.all
-    #@distributors = ShopifyAPI::Customer.find(:all)
+    #@distributors = Distributor.all
+    @distributors = ShopifyAPI::Customer.find(:all)
+    render :get_distributors
   end
 
   # GET /distributors/1

@@ -6,7 +6,7 @@ class OrdersController <  ShopifyApp::AuthenticatedController
   end
 
   def place_bulk_order
- 		# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
+  	# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
   end
 
 	def bulk_order

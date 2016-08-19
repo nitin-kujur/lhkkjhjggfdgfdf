@@ -1,14 +1,16 @@
+= link_to 'Clear Bulk Order ', 'set_distributors_for_bulk?session_clear=true' ,method: :post
 %h1 Place Bulk Order
+%div
   %div
-    %div
-      %table.table.table-striped
-        %thead
-          %tr
-            %th 
-              Distributors
-              =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
-            %th Products
-        %tbody
+    %table.table.table-striped
+      %thead
+        %tr
+          %th 
+            Distributors
+            =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
+          %th Products
+      %tbody
+        - if  session[:bulk_order].present? && session[:bulk_order]['distributor'].present?
           - session[:bulk_order]['distributor'].keys.each do |sd|
             - distributor = ShopifyAPI::Customer.find(sd) 
             %tr
@@ -51,7 +53,7 @@
                               = text_field_tag "order[distributor][#{sd}]product[#{prod}]quantity" , ""
                             %td
                               = product.variants[0].price.to_f * 1  
-          
+            
             
 %br
 

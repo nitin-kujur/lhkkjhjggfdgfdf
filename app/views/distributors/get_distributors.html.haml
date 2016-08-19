@@ -1,18 +1,15 @@
 %h1 Listing distributors
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th #
-      %th First name
-      %th Last name
-      %th Email
-      %th Verified email
-      %th
-      %th
-
-  %tbody
-    = form_tag('/set_distributors_for_bulk', method: :post) do 
+= form_tag('/set_distributors_for_bulk', method: :post) do 
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th First name
+        %th Last name
+        %th Email
+        %th Verified email
+    %tbody
       - @distributors.each do |distributor|
         %tr
           %td= check_box_tag  'order[]distributor[]', distributor.id
@@ -20,7 +17,8 @@
           %td= distributor.last_name
           %td= distributor.email
           %td= distributor.verified_email
-      %tr
-        %td{colspan: '2'}
-          = submit_tag 'Save Distributors for bulk order' ,class: 'btn btn-primary'
+  = submit_tag 'Save Distributors for bulk order' ,class: 'btn btn-primary'
 %br
+
+= link_to 'New Distributor', new_distributor_path ,class: 'btn btn-success'
+= link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-success'
