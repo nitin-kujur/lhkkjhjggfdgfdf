@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'sync_distributors' => "distributors#sync_distributors" , as: :sync_distributors
   resources :distributors
   root :to => 'home#index'
   mount ShopifyApp::Engine, at: '/'
@@ -12,8 +13,14 @@ Rails.application.routes.draw do
     # GET /app_proxy/reviews will now be routed to
     # AppProxy::ReviewsController#index, for example
   end
-  resources :distributors
   resources :orders
+  get 'place_bulk_order' => 'orders#place_bulk_order' , as: :place_bulk_order
+  get '/get_distributors' => 'distributors#get_distributors' , as: :get_distributors
+  post '/set_distributors_for_bulk' => 'distributors#set_distributors_for_bulk' , as: :set_distributors_for_bulk
+  get '/get_prd_for_distri/:distributor_id' => 'distributors#get_prd_for_distri' , as: :get_prd_for_distri
+  post '/set_prd_for_distri/:distributor_id' => 'distributors#set_prd_for_distri' , as: :set_prd_for_distri
+  post '/bulk_order' => "orders#bulk_order" , as: :bulk_order
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

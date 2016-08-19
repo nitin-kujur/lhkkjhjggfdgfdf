@@ -18,10 +18,11 @@
         %td= distributor.last_name
         %td= distributor.email
         %td= distributor.verified_email
-        %td=# link_to 'Show', distributor
-        %td=# link_to 'Edit', edit_distributor_path(distributor)
-        %td=# link_to 'Destroy', distributor, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= link_to 'Show', distributor
+        %td= link_to 'Edit', edit_distributor_path(distributor)
+        %td= link_to 'Destroy', distributor, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 
 = link_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'
+= link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-primary'

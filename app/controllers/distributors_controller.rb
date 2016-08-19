@@ -1,11 +1,77 @@
 class DistributorsController <  ShopifyApp::AuthenticatedController
   before_action :set_distributor, only: [:show, :edit, :update, :destroy]
 
+  def bulk_order
+    byebug
+    params
+  end
+
+  def get_prd_for_distri
+    @products = ShopifyAPI::Product.find(:all, :params => {:limit => 10})
+  end
+
+  def set_prd_for_distri
+    session[:bulk_order]['distributor'][params[:distributor_id]] = params[:order][0]["distributor"].values
+    redirect_to place_bulk_order_path
+  end
+
+  def get_distributors
+    @distributors = ShopifyAPI::Customer.find(:all)
+  end
+
+  def set_distributors_for_bulk
+    #[{"distributor"=>{"4337082118"=>["1", "1", "1"]}}]
+    session[:bulk_order]= {}
+    params[:order].each do |o|
+      session[:bulk_order][:distributor] = {}
+      o.values[0].each do |value|
+        session[:bulk_order][:distributor]["#{value}"] =  []    
+      end
+    end
+    redirect_to place_bulk_order_path
+  end
+  
+  # GET /distributors
+  # GET /distributors.json
+  def sync_distributors
+    #get customers and sync on the system    
+    message= "Sync successfully"
+    customers_from_shop = ShopifyAPI::Customer.find(:all)
+    customers_from_shop.each do |customer|
+      unless Distributor.exists?(email: customer.email)
+        distributor = Distributor.new(email: customer.email, first_name: customer.first_name,
+          last_name: customer.last_name, verified_email: customer.verified_email)
+        if distributor.save
+          customer.addresses.each do |ad|
+            address = distributor.addresses.build
+            address.first_name = ad.first_name
+            address.last_name = ad.last_name
+            address.address1 = ad.address1
+            address.city = ad.city
+            address.province = ad.province
+            address.phone = ad.phone
+            address.zip = ad.zip
+            address.country = ad.country
+            address.save
+          end
+        end
+        # address.first_name = c
+      end
+    end
+    respond_to do |format|
+      format.html { redirect_to distributors_url, notice: message}
+      format.json { head :no_content }
+    end
+
+    #@distributors = ShopifyAPI::Customer.find(:all)
+  end
+
+
   # GET /distributors
   # GET /distributors.json
   def index
-    # @distributors = Distributor.all
-    @distributors = ShopifyAPI::Customer.find(:all)
+    @distributors = Distributor.all
+    #@distributors = ShopifyAPI::Customer.find(:all)
   end
 
   # GET /distributors/1
