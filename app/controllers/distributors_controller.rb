@@ -18,11 +18,11 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   def set_distributors_for_bulk
     if params[:session_clear]
     #[{"distributor"=>{"4337082118"=>["1", "1", "1"]}}]
-      session[:bulk_order]= nil
+      session[:bulk_order]= nil 
     else
-      session[:bulk_order]= {}
+      session[:bulk_order]= {} if(session[:bulk_order] == nil)
       params[:order].each do |o|
-        session[:bulk_order][:distributor] = {}
+        session[:bulk_order][:distributor] = {} if(session[:bulk_order][:distributor] == nil)
         o.values[0].each do |value|
           session[:bulk_order][:distributor]["#{value}"] =  []    
         end

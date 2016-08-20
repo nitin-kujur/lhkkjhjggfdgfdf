@@ -1,60 +1,61 @@
 = link_to 'Clear Bulk Order ', 'set_distributors_for_bulk?session_clear=true' ,method: :post
 %h1 Place Bulk Order
-%div
-  %div
-    %table.table.table-striped
-      %thead
-        %tr
-          %th 
-            Distributors
-            =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
-          %th Products
-      %tbody
-        - if  session[:bulk_order].present? && session[:bulk_order]['distributor'].present?
-          - session[:bulk_order]['distributor'].keys.each do |sd|
-            - distributor = ShopifyAPI::Customer.find(sd) 
-            %tr
-              %td 
-                = hidden_field_tag 'order[distributor][]' , sd
-                = distributor.first_name
-                %br
-                = distributor.email
-                %br
-                %br
-                - if distributor.addresses.present?
-                  Address:
-                  = distributor.addresses[0].address1
-                  %br 
-                  = distributor.addresses[0].city
-                  %br 
-                  = distributor.addresses[0].phone
-                  
-              %td
-                %table.table.table-striped
-                  %tr
-                    %th 
-                      Product
-                      =link_to '' , "/get_prd_for_distri/#{distributor.id}" , class: 'btn glyphicon glyphicon-plus btn-primary'
-                    %th Price
-                    %th Quantity
-                    %th Total 
-                    - if session[:bulk_order]['distributor']["#{distributor.id}"].present?
-                      -session[:bulk_order]['distributor']["#{distributor.id}"][0].each do |prod|
-                        - product = ShopifyAPI::Product.find(prod)
-                        - if product.present?  
-                          %tr
-                            %td
-                              = hidden_field_tag "order[distributor][#{sd}]product[]", prod
-                              = image_tag product.image.src, class: 'product-image'
-                              %br
-                              =link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top"
-                            %td= product.variants[0].price
-                            %td
-                              = text_field_tag "order[distributor][#{sd}]product[#{prod}]quantity" , ""
-                            %td
-                              = product.variants[0].price.to_f * 1  
-            
-            
+= form_tag('/bulk_order') do
+  .row
+    .col-xs-6.col-md-3
+      %strong Distributors
+      =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
+    .col-xs-6.col-md-6
+      %strong Products
+  %hr   
+  - if  session[:bulk_order].present? && session[:bulk_order]['distributor'].present?
+    - session[:bulk_order]['distributor'].keys.each do |sd|
+      - distributor = ShopifyAPI::Customer.find(sd) 
+      =# hidden_field_tag "order[distributor][]", sd
+      .row
+        .col-xs-6.col-md-3
+          = distributor.first_name
+          %br
+          = distributor.email
+          %br
+          %br
+          - if distributor.addresses.present?
+            Address:
+            = distributor.addresses[0].address1
+            %br 
+            = distributor.addresses[0].city
+            %br 
+            = distributor.addresses[0].phone
+        .col-xs-6.col-md-9
+          .row
+            .col-xs-6.col-md-3
+              %strong Products
+              =link_to '' , "/get_prd_for_distri/#{distributor.id}" , class: 'btn glyphicon glyphicon-plus btn-primary'  
+            .col-xs-6.col-md-2
+              %strong Price
+            .col-xs-6.col-md-2
+              %strong Quantity
+            .col-xs-6.col-md-2
+              %strong Total
+          - if session[:bulk_order]['distributor']["#{distributor.id}"].present?
+            -session[:bulk_order]['distributor']["#{distributor.id}"][0].each do |prod|
+              - product = ShopifyAPI::Product.find(prod)
+              - if product.present?
+                %hr  
+                .row
+                  .col-xs-6.col-md-3
+                    =# hidden_field_tag "order[distributor][#{sd}][product][]", prod
+                    = image_tag product.image.src, class: 'product-image'
+                    %br
+                    =link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top"
+                  .col-xs-6.col-md-2
+                    = product.variants[0].price
+                  .col-xs-6.col-md-2
+                    =  text_field_tag "order[distributor][#{sd}][product][#{prod}]quantity" , "" , class: 'form-control'
+                  .col-xs-6.col-md-2
+                    = product.variants[0].price.to_f * 1  
+      %hr
+  = submit_tag "Place Order ", class: 'btn btn-primary'            
 %br
 
 =# link_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'

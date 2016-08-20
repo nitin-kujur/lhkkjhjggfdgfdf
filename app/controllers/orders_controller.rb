@@ -6,11 +6,11 @@ class OrdersController <  ShopifyApp::AuthenticatedController
   end
 
   def place_bulk_order
+    byebug
   	# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
   end
 
 	def bulk_order
-    # byebug
     render text: params and return false
   end
 
