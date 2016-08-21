@@ -6,10 +6,13 @@ class OrdersController <  ShopifyApp::AuthenticatedController
   end
 
   def place_bulk_order
+      session[:bulk_order] = {} if session[:bulk_order].blank? || params[:session_clear].present?
   	# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
   end
 
 	def bulk_order
+    @error_message = {}
+    @orders = []
     params[:order][:distributors].each do |cust_id, values|
       customer = ShopifyAPI::Customer.find(cust_id)
       line_items = []
@@ -41,10 +44,21 @@ class OrdersController <  ShopifyApp::AuthenticatedController
       end
       if line_items.present?
         order = ShopifyAPI::Order.new(line_items: line_items, customer: {id: customer.id}, billing_address: billing_address, shipping_address: shipping_address, financial_status: financial_status)
-        order.save
+        if order.save
+          @orders << order
+        else
+          @error_message[cust_id] = order.errors.full_messages.join(', ')
+        end
       end
     end
-    redirect_to orders_path, notice: 'Bulk Orders have been successfully created.'
+    if @error_message.blank?
+      redirect_to orders_path, notice: 'Bulk Orders have been successfully created.'
+    else
+      @orders.each do |order|
+        order.destroy
+      end
+      render :place_bulk_order
+    end
   end
 
 end

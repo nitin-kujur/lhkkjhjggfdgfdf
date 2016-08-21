@@ -7,7 +7,7 @@
       %strong Distributors
       =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
       %strong Product
-      =link_to '' , '/' , class: 'btn glyphicon glyphicon-plus btn-primary'
+      =link_to '' , products_path , class: 'btn glyphicon glyphicon-plus btn-primary'
   %hr   
   .row
     - if  session[:bulk_order].present? && session[:bulk_order]['products'].present?
@@ -32,9 +32,16 @@
           = "#{customer.first_name} #{customer.last_name}"
           %br
           = customer.email
+          - if @error_message.present? && @error_message[distributor_id].present?
+            .error-message
+              = @error_message[distributor_id]
         - products.each do |product|
           %div{class: "col-xs-12", style: "width: 160px;"}
-            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , "" , class: 'form-control', placeholder: 'Quantity'
+            - if @orders.present?
+              - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
+            - else
+              - value = ''
+            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: 'form-control', placeholder: 'Quantity'
     = submit_tag "Place Order ", class: 'btn btn-primary'            
 %br
 

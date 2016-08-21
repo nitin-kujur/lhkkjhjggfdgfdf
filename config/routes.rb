@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'sync_distributors' => "distributors#sync_distributors" , as: :sync_distributors
   resources :distributors
-  root :to => 'home#index'
+  root :to => 'orders#place_bulk_order'
   mount ShopifyApp::Engine, at: '/'
 
   namespace :app_proxy do
@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get '/get_prd_for_distri/:distributor_id' => 'distributors#get_prd_for_distri' , as: :get_prd_for_distri
   post '/set_prd_for_distri' => 'distributors#set_prd_for_distri' , as: :set_prd_for_distri
   post '/bulk_order' => "orders#bulk_order" , as: :bulk_order
-  post '/products' => "home#index" , as: :products
+  get '/products' => "home#index" , as: :products
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
