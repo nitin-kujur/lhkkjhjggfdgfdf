@@ -1,0 +1,32 @@
+%h1 Products
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Product ID
+      %th Product Title
+      %th Quantity
+      %th Customer
+      %th Address
+      %th Order Date
+  %tbody
+    - @orders.each do |order|
+      - order.line_items.each do |line_item|
+        %tr
+          %td
+            = order.order_number
+          %td
+            = line_item.id
+          %td
+            = line_item.title
+          %td
+            = line_item.quantity
+          %td
+            - if order.try(:customer).present?
+              = "#{order.customer.first_name} #{order.customer.last_name}"
+          %td
+            - if order.try(:shipping_address).present?
+              = "#{order.shipping_address.address1}, #{order.shipping_address.city}"
+              = "#{order.shipping_address.province}, #{order.shipping_address.country}"
+          %td
+            = order.created_at
