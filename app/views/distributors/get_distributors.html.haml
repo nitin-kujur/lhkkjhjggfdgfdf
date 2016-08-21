@@ -1,5 +1,5 @@
 %h1 Listing distributors
-
+- pre_selection = session[:bulk_order]['distributors']||[]
 = form_tag('/set_distributors_for_bulk', method: :post) do 
   %table.table.table-striped
     %thead
@@ -12,7 +12,7 @@
     %tbody
       - @distributors.each do |distributor|
         %tr
-          %td= check_box_tag  'order[]distributor[]', distributor.id
+          %td= check_box_tag  'distributors[]', distributor.id, pre_selection.include?(distributor.id.to_s)
           %td= distributor.first_name
           %td= distributor.last_name
           %td= distributor.email

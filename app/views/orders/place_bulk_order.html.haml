@@ -1,61 +1,41 @@
-= link_to 'Clear Bulk Order ', 'set_distributors_for_bulk?session_clear=true' ,method: :post
+= link_to 'Clear Bulk Order ', root_path(session_clear: true), class: 'btn btn-success'
 %h1 Place Bulk Order
+- products = []
 = form_tag('/bulk_order') do
   .row
     .col-xs-6.col-md-3
       %strong Distributors
       =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
-    .col-xs-6.col-md-6
-      %strong Products
+      %strong Product
+      =link_to '' , '/' , class: 'btn glyphicon glyphicon-plus btn-primary'
   %hr   
-  - if  session[:bulk_order].present? && session[:bulk_order]['distributor'].present?
-    - session[:bulk_order]['distributor'].keys.each do |sd|
-      - distributor = ShopifyAPI::Customer.find(sd) 
-      =# hidden_field_tag "order[distributor][]", sd
+  .row
+    - if  session[:bulk_order].present? && session[:bulk_order]['products'].present?
+      %div{class: "col-xs-12 col-md-2"}
+        POP Element
+      - session[:bulk_order]['products'].each do |product_id|
+        - product = ShopifyAPI::Product.find(product_id) 
+        - variant = product.variants.first
+        - products << product
+        %div{class: "col-xs-12", style: "width: 160px;"}
+          = image_tag product.image.src, style: 'width:100px;'
+          %br
+          %br
+          = product.title
+          %br
+          = variant.price
+  - if  session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
+    - session[:bulk_order]['distributors'].each do |distributor_id|
+      - customer = ShopifyAPI::Customer.find(distributor_id) 
       .row
-        .col-xs-6.col-md-3
-          = distributor.first_name
+        %div{class: "col-xs-12 col-md-2"}
+          = "#{customer.first_name} #{customer.last_name}"
           %br
-          = distributor.email
-          %br
-          %br
-          - if distributor.addresses.present?
-            Address:
-            = distributor.addresses[0].address1
-            %br 
-            = distributor.addresses[0].city
-            %br 
-            = distributor.addresses[0].phone
-        .col-xs-6.col-md-9
-          .row
-            .col-xs-6.col-md-3
-              %strong Products
-              =link_to '' , "/get_prd_for_distri/#{distributor.id}" , class: 'btn glyphicon glyphicon-plus btn-primary'  
-            .col-xs-6.col-md-2
-              %strong Price
-            .col-xs-6.col-md-2
-              %strong Quantity
-            .col-xs-6.col-md-2
-              %strong Total
-          - if session[:bulk_order]['distributor']["#{distributor.id}"].present?
-            -session[:bulk_order]['distributor']["#{distributor.id}"][0].each do |prod|
-              - product = ShopifyAPI::Product.find(prod)
-              - if product.present?
-                %hr  
-                .row
-                  .col-xs-6.col-md-3
-                    =# hidden_field_tag "order[distributor][#{sd}][product][]", prod
-                    = image_tag product.image.src, class: 'product-image'
-                    %br
-                    =link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top"
-                  .col-xs-6.col-md-2
-                    = product.variants[0].price
-                  .col-xs-6.col-md-2
-                    =  text_field_tag "order[distributor][#{sd}][product][#{prod}]quantity" , "" , class: 'form-control'
-                  .col-xs-6.col-md-2
-                    = product.variants[0].price.to_f * 1  
-      %hr
-  = submit_tag "Place Order ", class: 'btn btn-primary'            
+          = customer.email
+        - products.each do |product|
+          %div{class: "col-xs-12", style: "width: 160px;"}
+            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , "" , class: 'form-control', placeholder: 'Quantity'
+    = submit_tag "Place Order ", class: 'btn btn-primary'            
 %br
 
 =# link_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'

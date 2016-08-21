@@ -1,23 +1,18 @@
-- content_for :javascript do
-  :javascript
-    ShopifyApp.ready(function(){
-      ShopifyApp.Bar.initialize({
-        title: "Home",
-        icon: "#{asset_path('favicon.ico')}"
-      });
-    });
 %h1 Products
-%table.table.table-striped
-  %thead
-    %tr
-      %th ID
-      %th Image
-      %th Name
-      %th Created at
-  %tbody
-    - @products.each do |product|
+- pre_selection = session[:bulk_order]['products']||[]
+= form_tag("/set_prd_for_distri") do  
+  %table.table.table-striped
+    %thead
       %tr
-        %td= product.id
-        %td= image_tag product.image.src, class: 'product-image'
-        %td= link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top"
-        %td= product.created_at
+        %th ID
+        %th Image
+        %th Name
+        %th Created at
+    %tbody
+      - @products.each do |product|
+        %tr
+          %td= check_box_tag  "products[]", product.id, pre_selection.include?(product.id.to_s)
+          %td= image_tag product.image.src, class: 'product-image' ,width: 50
+          %td= product.title
+          %td= product.created_at
+  = submit_tag 'Save Products for bulk order' ,class: 'btn btn-primary'

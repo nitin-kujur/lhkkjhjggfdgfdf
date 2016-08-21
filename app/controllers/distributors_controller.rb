@@ -3,11 +3,11 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 
 
   def get_prd_for_distri
-    @products = ShopifyAPI::Product.find(:all, :params => {:limit => 10})
+    @products = ShopifyAPI::Product.find(:all)
   end
 
   def set_prd_for_distri
-    session[:bulk_order]['distributor'][params[:distributor_id]] = params[:order][0]["distributor"].values
+    session[:bulk_order]['products'] = params[:products]
     redirect_to place_bulk_order_path
   end
 
@@ -21,12 +21,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
       session[:bulk_order]= nil 
     else
       session[:bulk_order]= {} if(session[:bulk_order] == nil)
-      params[:order].each do |o|
-        session[:bulk_order][:distributor] = {} if(session[:bulk_order][:distributor] == nil)
-        o.values[0].each do |value|
-          session[:bulk_order][:distributor]["#{value}"] =  []    
-        end
-      end
+      session[:bulk_order]['distributors'] = params[:distributors]
     end
     redirect_to place_bulk_order_path
   end

@@ -2,7 +2,7 @@ class OrdersController <  ShopifyApp::AuthenticatedController
    #include ShopifyApp::AppProxyVerification
 
   def index
-    @orders = ShopifyAPI::Order.find(:all, limit: 10)
+    @orders = ShopifyAPI::Order.find(:all)
   end
 
   def place_bulk_order
@@ -10,7 +10,7 @@ class OrdersController <  ShopifyApp::AuthenticatedController
   end
 
 	def bulk_order
-    params[:order][:distributor].each do |cust_id, values|
+    params[:order][:distributors].each do |cust_id, values|
       customer = ShopifyAPI::Customer.find(cust_id)
       line_items = []
       default_address = customer.default_address
