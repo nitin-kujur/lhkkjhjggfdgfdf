@@ -1,4 +1,4 @@
-%h1 Listing distributors
+%h1 Locations
 - pre_selection = session[:bulk_order]['distributors']||[]
 = form_tag('/set_distributors_for_bulk', method: :post) do 
   %table.table.table-striped
@@ -12,13 +12,14 @@
     %tbody
       - @distributors.each do |distributor|
         %tr
-          %td= check_box_tag  'distributors[]', distributor.id, pre_selection.include?(distributor.id.to_s)
+          %td= check_box_tag  'distributors[]', distributor.shopify_id, pre_selection.include?(distributor.shopify_id.to_s)
           %td= distributor.first_name
           %td= distributor.last_name
           %td= distributor.email
           %td= distributor.verified_email
-  = submit_tag 'Save Distributors for bulk order' ,class: 'btn btn-primary'
+          %td= link_to 'Edit', edit_distributor_path(distributor)
+  = submit_tag 'Save Locations for bulk order' ,class: 'btn btn-primary'
 %br
 
-= link_to 'New Distributor', new_distributor_path ,class: 'btn btn-success'
-= link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-success'
+= link_to 'New Location', new_distributor_path ,class: 'btn btn-success'
+=# link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-success'

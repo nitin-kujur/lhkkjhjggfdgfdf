@@ -12,7 +12,30 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   end
 
   def get_distributors
-    @distributors = ShopifyAPI::Customer.find(:all)
+    @distributors = Distributor.all
+    # @distributors.each do |d|
+    #   dist = Distributor.find_by_email(d.email)
+    #   if dist
+    #     dist.update_attributes(shopify_id: d.id)
+    #   else
+    #     distributor = Distributor.new(email: d.email, first_name: d.first_name,
+    #       last_name: d.last_name, verified_email: d.verified_email)
+    #     if distributor.save
+    #       d.addresses.each do |ad|
+    #         address = distributor.addresses.build
+    #         address.first_name = ad.first_name
+    #         address.last_name = ad.last_name
+    #         address.address1 = ad.address1
+    #         address.city = ad.city
+    #         address.province = ad.province
+    #         address.phone = ad.phone
+    #         address.zip = ad.zip
+    #         address.country = ad.country
+    #         address.save
+    #       end
+    #     end
+    #   end
+    # end
   end
 
   def set_distributors_for_bulk
@@ -65,8 +88,8 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   # GET /distributors
   # GET /distributors.json
   def index
-    #@distributors = Distributor.all
-    @distributors = ShopifyAPI::Customer.find(:all)
+    @distributors = Distributor.all
+    # @distributors = ShopifyAPI::Customer.find(:all)
     render :get_distributors
   end
 
@@ -83,6 +106,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 
   # GET /distributors/1/edit
   def edit
+    @address = @distributor.addresses.build if @distributor.addresses.blank?
   end
 
   # POST /distributors
@@ -112,7 +136,8 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 
     respond_to do |format|
       if @distributor.save
-      	ShopifyAPI::Customer.create(customer_hash)
+      	shop_customer = ShopifyAPI::Customer.create(customer_hash)
+        @distributor.update_attribute(:shopify_id, shop_customer.id)
         format.html { redirect_to @distributor, notice: 'Distributor was successfully created.' }
         format.json { render :show, status: :created, location: @distributor }
       else
@@ -126,7 +151,22 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   # PATCH/PUT /distributors/1.json
   def update
     respond_to do |format|
-      if @distributor.update(distributor_params)
+      if @distributor.update!(distributor_params)
+        customer = ShopifyAPI::Customer.find(@distributor.shopify_id)
+        customer.first_name = params[:distributor][:first_name]
+        customer.last_name = params[:distributor][:last_name]
+        customer.email =  params[:distributor][:email]
+        customer.verified_email =params[:distributor][:verified_email]
+        ad = params[:distributor][:addresses_attributes].first[1]
+        customer.addresses[0].address1 = ad[:address1]
+        customer.addresses[0].city = ad[:city]
+        customer.addresses[0].province = ad[:province]
+        customer.addresses[0].phone= ad[:phone]
+        customer.addresses[0].zip= ad[:zip]
+        customer.addresses[0].last_name= ad[:last_name]
+        customer.addresses[0].first_name= ad[:first_name]
+        customer.addresses[0].country= ad[:country]
+        customer.save        
         format.html { redirect_to @distributor, notice: 'Distributor was successfully updated.' }
         format.json { render :show, status: :ok, location: @distributor }
       else

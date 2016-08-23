@@ -7,7 +7,7 @@
         - @distributor.errors.full_messages.each do |msg|
           %li= msg
   %fieldset
-    %legend Distributor Information
+    %legend Location Information
     .input-group        
       .field
         = f.label :first_name
@@ -29,11 +29,11 @@
     = f.fields_for :addresses, @address do |a| 
       .input-group
         .field
-          = a.label :first_name
+          = a.label :first_name , "Market"
           = a.text_field :first_name, class: 'form-control'
       .input-group
         .field
-          = a.label :last_name
+          = a.label :last_name , "Location"
           = a.text_field :last_name, class: 'form-control'
       .input-group
         .field
