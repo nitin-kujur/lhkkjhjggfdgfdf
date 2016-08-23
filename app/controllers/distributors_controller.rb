@@ -12,7 +12,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   end
 
   def get_distributors
-    @distributors = Distributor.all
+    @distributors = Distributor.where.not(shopify_id: nil)
     # @distributors.each do |d|
     #   dist = Distributor.find_by_email(d.email)
     #   if dist
@@ -40,7 +40,6 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 
   def set_distributors_for_bulk
     if params[:session_clear]
-    #[{"distributor"=>{"4337082118"=>["1", "1", "1"]}}]
       session[:bulk_order]= nil 
     else
       session[:bulk_order]= {} if(session[:bulk_order] == nil)
@@ -88,7 +87,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   # GET /distributors
   # GET /distributors.json
   def index
-    @distributors = Distributor.all
+    @distributors = Distributor.where.not(shopify_id: nil)
     # @distributors = ShopifyAPI::Customer.find(:all)
     render :get_distributors
   end
@@ -133,16 +132,16 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 					        }
   	
     @distributor = Distributor.new(distributor_params)
-
     respond_to do |format|
-      if @distributor.save
-      	shop_customer = ShopifyAPI::Customer.create(customer_hash)
-        @distributor.update_attribute(:shopify_id, shop_customer.id)
+      @shop_customer = ShopifyAPI::Customer.create(customer_hash)
+      if @shop_customer.save
+        @distributor.shopify_id = @shop_customer.id
+        @distributor.save
         format.html { redirect_to @distributor, notice: 'Distributor was successfully created.' }
         format.json { render :show, status: :created, location: @distributor }
       else
         format.html { render :new }
-        format.json { render json: @distributor.errors, status: :unprocessable_entity }
+        format.json { render json: @shop_customer.errors, status: :unprocessable_entity }
       end
     end
   end

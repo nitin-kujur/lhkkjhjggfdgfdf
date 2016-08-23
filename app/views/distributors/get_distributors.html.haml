@@ -12,13 +12,13 @@
     %tbody
       - @distributors.each do |distributor|
         %tr
-          %td= check_box_tag  'distributors[]', distributor.shopify_id, pre_selection.include?(distributor.shopify_id.to_s)
+          %td= check_box_tag  'distributors[]', distributor.shopify_id, pre_selection.include?(distributor.shopify_id.to_s), class: 'distributor'
           %td= distributor.first_name
           %td= distributor.last_name
           %td= distributor.email
           %td= distributor.verified_email
           %td= link_to 'Edit', edit_distributor_path(distributor)
-  = submit_tag 'Save Locations for bulk order' ,class: 'btn btn-primary'
+  = submit_tag 'Save Locations for bulk order' ,class: 'btn btn-primary update-distributor'
 %br
 
 = link_to 'New Location', new_distributor_path ,class: 'btn btn-success'

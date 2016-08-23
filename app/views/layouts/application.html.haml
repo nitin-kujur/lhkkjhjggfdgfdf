@@ -8,4 +8,14 @@
     = csrf_meta_tags
   %body
     .container.bs-docs-container
+      .wrap.container
+        .notification
+          - if notice
+            .alert.alert-success
+              = notice
+              %button.close{"data-dismiss" => "alert"} ×
+          - if alert
+            .alert.alert-danger
+              = alert
+              %button.close{"data-dismiss" => "alert"} ×
       = yield

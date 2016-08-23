@@ -1,4 +1,4 @@
-= link_to 'Clear Bulk Order ', root_path(session_clear: true), class: 'btn btn-success'
+= link_to 'Clear Bulk Order ', root_path(session_clear: true), class: 'btn btn-success clear-cacheing'
 %h1 Place Bulk Order
 - products = []
 = form_tag('/bulk_order') do
@@ -41,7 +41,7 @@
               - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
             - else
               - value = ''
-            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: 'form-control', placeholder: 'Quantity'
+            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: 'form-control order-quantity', placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}"
     = submit_tag "Place Order ", class: 'btn btn-primary'            
 %br
 
