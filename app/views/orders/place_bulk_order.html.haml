@@ -10,8 +10,10 @@
       =link_to '' , products_path , class: 'btn glyphicon glyphicon-plus btn-primary'
       %strong Total Products
       .btn.glyphicon.btn-primary.total-products
+        0
       %strong Total Amount
       .btn.glyphicon.btn-primary.total-amount
+        0
   %hr   
   .row
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
