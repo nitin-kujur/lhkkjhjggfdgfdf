@@ -76,8 +76,6 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
       else
         distributor.update_attributes(shopify_id: customer.id)
       end
-        # address.first_name = c
-      end
     end
     respond_to do |format|
       format.html { redirect_to distributors_url, notice: message}
