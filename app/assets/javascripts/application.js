@@ -74,10 +74,30 @@ function update_total_value(element_id){
       total_distributor_price = total_distributor_price + (e_value*e_price);
     }
   });
+  $('.distributor-'+ids[1]).each(function(index, element) {
+    e_value = parseInt($(element).val());
+    e_price = parseFloat($(element).attr('product_price'));
+    if(e_value >= 0){
+      total_distributor_quantity = total_distributor_quantity + e_value;
+      total_distributor_price = total_distributor_price + (e_value*e_price);
+    }
+  });
+  total_quantity = 0;
+  total_amount = 0.0;
+  $( ".order-quantity" ).each(function(index, element) {
+    e_value = parseInt($(element).val());
+    e_price = parseFloat($(element).attr('product_price'));
+    if(e_value >= 0){
+      total_quantity = total_quantity + e_value;
+      total_amount = total_amount + (e_value*e_price);
+    }
+  });
   $('.distributor-total-quantity-'+ids[1]).html(total_distributor_quantity);
   $('.distributor-total-amount-'+ids[1]).html(total_distributor_price);
   $('.product-total-quantity-'+ids[2]).html(total_product_quantity);
   $('.product-total-amount-'+ids[2]).html(total_product_price);
+  $('.total-products').html(total_quantity);
+  $('.total-amount').html(total_amount);
 }
 
 $( document ).ready(function() {
@@ -93,7 +113,7 @@ $( document ).ready(function() {
 	$( ".clear-cacheing" ).click(function() {
 	  $( ".order-quantity" ).each(function() {
         setCookie($(this).attr('id'), '', 1)
-	  });
+	  });  
 	});
 
 	$( ".order-quantity" ).each(function() {

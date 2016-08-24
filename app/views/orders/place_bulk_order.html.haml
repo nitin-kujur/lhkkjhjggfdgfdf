@@ -3,11 +3,15 @@
 - products = []
 = form_tag('/bulk_order') do
   .row
-    .col-xs-6.col-md-3
+    .col-xs-12.col-md-6
       %strong Distributors
       =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
       %strong Product
       =link_to '' , products_path , class: 'btn glyphicon glyphicon-plus btn-primary'
+      %strong Total Products
+      .btn.glyphicon.btn-primary.total-products
+      %strong Total Amount
+      .btn.glyphicon.btn-primary.total-amount
   %hr   
   .row
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
@@ -31,11 +35,18 @@
   - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
     - session[:bulk_order]['distributors'].each do |distributor_id|
       - customer = ShopifyAPI::Customer.find(distributor_id) 
+      - default_address = customer.default_address
       .row
         %div{class: "col-xs-12 col-md-2"}
           = "#{customer.first_name} #{customer.last_name}"
           %br
           = customer.email
+          %br
+          = default_address.address1
+          %br
+          = "#{default_address.city}, #{default_address.province}"
+          %br
+          = default_address.country
           - if @error_message.present? && @error_message[distributor_id].present?
             .error-message
               = @error_message[distributor_id]
