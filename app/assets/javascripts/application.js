@@ -74,14 +74,6 @@ function update_total_value(element_id){
       total_distributor_price = total_distributor_price + (e_value*e_price);
     }
   });
-  $('.distributor-'+ids[1]).each(function(index, element) {
-    e_value = parseInt($(element).val());
-    e_price = parseFloat($(element).attr('product_price'));
-    if(e_value >= 0){
-      total_distributor_quantity = total_distributor_quantity + e_value;
-      total_distributor_price = total_distributor_price + (e_value*e_price);
-    }
-  });
   total_quantity = 0;
   total_amount = 0.0;
   $( ".order-quantity" ).each(function(index, element) {
