@@ -57,7 +57,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
     customers_from_shop.each do |customer|
       unless Distributor.exists?(email: customer.email)
         distributor = Distributor.new(email: customer.email, first_name: customer.first_name,
-          last_name: customer.last_name, verified_email: customer.verified_email)
+          last_name: customer.last_name, verified_email: customer.verified_email,shopify_id: customer.id)
         if distributor.save
           customer.addresses.each do |ad|
             address = distributor.addresses.build
