@@ -13,29 +13,6 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 
   def get_distributors
     @distributors = Distributor.where.not(shopify_id: nil)
-    # @distributors.each do |d|
-    #   dist = Distributor.find_by_email(d.email)
-    #   if dist
-    #     dist.update_attributes(shopify_id: d.id)
-    #   else
-    #     distributor = Distributor.new(email: d.email, first_name: d.first_name,
-    #       last_name: d.last_name, verified_email: d.verified_email)
-    #     if distributor.save
-    #       d.addresses.each do |ad|
-    #         address = distributor.addresses.build
-    #         address.first_name = ad.first_name
-    #         address.last_name = ad.last_name
-    #         address.address1 = ad.address1
-    #         address.city = ad.city
-    #         address.province = ad.province
-    #         address.phone = ad.phone
-    #         address.zip = ad.zip
-    #         address.country = ad.country
-    #         address.save
-    #       end
-    #     end
-    #   end
-    # end
   end
 
   def set_distributors_for_bulk
@@ -75,6 +52,18 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
         end
       else
         distributor.update_attributes(shopify_id: customer.id)
+        customer.addresses.each do |ad|
+          address = distributor.addresses.first ||  distributor.addresses.build
+          address.first_name = ad.first_name
+          address.last_name = ad.last_name
+          address.address1 = ad.address1
+          address.city = ad.city
+          address.province = ad.province
+          address.phone = ad.phone
+          address.zip = ad.zip
+          address.country = ad.country
+          address.save
+        end
       end
     end
     respond_to do |format|
@@ -107,7 +96,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 
   # GET /distributors/1/edit
   def edit
-    @address = @distributor.addresses.build if @distributor.addresses.blank?
+    @address = @distributor.addresses.first ? @distributor.addresses.first : @distributor.addresses.build
   end
 
   # POST /distributors
@@ -195,6 +184,6 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def distributor_params
-      params.require(:distributor).permit(:first_name, :last_name, :email, :verified_email, addresses_attributes: [:address1])
+      params.require(:distributor).permit(:first_name, :last_name, :email, :verified_email, addresses_attributes: [:id, :address1, :first_name, :last_name, :city, :phone, :zip, :country, :province])
     end
 end

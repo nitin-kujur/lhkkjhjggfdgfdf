@@ -58,8 +58,10 @@
       .input-group
         .field
           = a.label :country
-          = a.select :country ,options_for_select(["Inidia", "United States"]), {},class: 'form-control'
-          =# a.text_field :country, class: 'form-control'
+          %br
+          =#a.object.country
+          =# a.select :country ,options_for_select(["India", "United States"],selected: a.object.country)  ,class: 'form-control'
+          = a.text_field :country, class: 'form-control' , disabled: true, value: 'United States'
   %br
   .actions.input-group
     = f.submit 'Save', class: 'btn btn-primary'
