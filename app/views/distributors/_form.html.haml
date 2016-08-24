@@ -1,6 +1,6 @@
 
 = form_for @distributor , class: 'form'do |f|
-  - if @shop_customer.errors.any?
+  - if @shop_customer && @shop_customer.errors.any?
     #error_explanation
       %h2= "#{pluralize(@shop_customer.errors.count, "error")} prohibited this distributor from being saved:"
       %ul
@@ -43,10 +43,10 @@
         .field
           = a.label :city
           = a.text_field :city, class: 'form-control'
-      .input-group
-        .field
-          = a.label :province
-          = a.text_field :province, class: 'form-control'
+      / .input-group
+      /   .field
+      /     =# a.label :province
+      /     =# a.text_field :province, class: 'form-control'
       .input-group
         .field
           = a.label :phone
@@ -58,7 +58,8 @@
       .input-group
         .field
           = a.label :country
-          = a.text_field :country, class: 'form-control'
+          = a.select :country ,options_for_select(["Inidia", "United States"]), {},class: 'form-control'
+          =# a.text_field :country, class: 'form-control'
   %br
   .actions.input-group
     = f.submit 'Save', class: 'btn btn-primary'
