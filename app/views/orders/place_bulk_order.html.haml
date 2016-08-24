@@ -24,6 +24,10 @@
           = product.title
           %br
           = variant.price
+      %div{class: "col-xs-12 distributor-total-quantity total-info", style: "width: 160px;"}
+        Total Quantity
+      %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 160px;"}
+        Total Price
   - if  session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
     - session[:bulk_order]['distributors'].each do |distributor_id|
       - customer = ShopifyAPI::Customer.find(distributor_id) 
@@ -36,12 +40,29 @@
             .error-message
               = @error_message[distributor_id]
         - products.each do |product|
+          - variant = product.variants.first
           %div{class: "col-xs-12", style: "width: 160px;"}
             - if @orders.present?
               - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
             - else
               - value = ''
-            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: 'form-control order-quantity', placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}"
+            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price
+        %div{class: "col-xs-12 distributor-total-quantity-#{distributor_id}", style: "width: 160px;"}
+          0
+        %div{class: "col-xs-12 distributor-total-amount-#{distributor_id}", style: "width: 160px;"}
+          0
+    .row
+      %div{class: "col-xs-12 col-md-2 total-info"}
+        Total Quantity
+      - products.each do |product|
+        %div{class: "col-xs-12 product-total-quantity-#{product.id}", style: "width: 160px;"}
+          0
+    .row.total-price
+      %div{class: "col-xs-12 col-md-2 total-info"}
+        Total Price
+      - products.each do |product|
+        %div{class: "col-xs-12 product-total-amount-#{product.id}", style: "width: 160px;"}
+          0
     = submit_tag "Place Order ", class: 'btn btn-primary'            
 %br
 
