@@ -55,7 +55,8 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
     message= "Sync successfully"
     customers_from_shop = ShopifyAPI::Customer.find(:all)
     customers_from_shop.each do |customer|
-      unless Distributor.exists?(email: customer.email)
+      distributor = Distributor.find_by_email(customer.email)
+      if distributor.blank? 
         distributor = Distributor.new(email: customer.email, first_name: customer.first_name,
           last_name: customer.last_name, verified_email: customer.verified_email,shopify_id: customer.id)
         if distributor.save
@@ -72,6 +73,9 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
             address.save
           end
         end
+      else
+        distributor.update_attributes(shopify_id: customer.id)
+      end
         # address.first_name = c
       end
     end
