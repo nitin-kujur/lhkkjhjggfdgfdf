@@ -12,7 +12,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   end
 
   def get_distributors
-    @distributors = Distributor.where.not(shopify_id: nil)
+    @distributors = Distributor.where.not(shopify_id: nil).order('created_at DESC')
   end
 
   def set_distributors_for_bulk
@@ -78,7 +78,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   # GET /distributors
   # GET /distributors.json
   def index
-    @distributors = Distributor.where.not(shopify_id: nil)
+    @distributors = Distributor.where.not(shopify_id: nil).order('created_at DESC')
     # @distributors = ShopifyAPI::Customer.find(:all)
     render :get_distributors
   end
@@ -148,14 +148,18 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
         customer.email =  params[:distributor][:email]
         customer.verified_email =params[:distributor][:verified_email]
         ad = params[:distributor][:addresses_attributes].first[1]
-        customer.addresses[0].address1 = ad[:address1]
-        customer.addresses[0].city = ad[:city]
-        customer.addresses[0].province = ad[:province]
-        customer.addresses[0].phone= ad[:phone]
-        customer.addresses[0].zip= ad[:zip]
-        customer.addresses[0].last_name= ad[:last_name]
-        customer.addresses[0].first_name= ad[:first_name]
-        customer.addresses[0].country= ad[:country]
+        if customer.addresses.present? 
+          customer.addresses[0].address1 = ad[:address1]
+          customer.addresses[0].city = ad[:city]
+          customer.addresses[0].province = ad[:province]
+          customer.addresses[0].phone= ad[:phone]
+          customer.addresses[0].zip= ad[:zip]
+          customer.addresses[0].last_name= ad[:last_name]
+          customer.addresses[0].first_name= ad[:first_name]
+          customer.addresses[0].country= ad[:country]
+        else
+          # CREATE CUSTOMER ADDRESS
+        end
         customer.save        
         format.html { redirect_to @distributor, notice: 'Distributor was successfully updated.' }
         format.json { render :show, status: :ok, location: @distributor }
