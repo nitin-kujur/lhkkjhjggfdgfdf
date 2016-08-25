@@ -1,21 +1,24 @@
-= link_to 'Clear Bulk Order ', root_path(session_clear: true), class: 'btn btn-success clear-cacheing'
 %h1 Place Bulk Order
 - products = []
 = form_tag('/bulk_order') do
   .row
-    .col-xs-12.col-md-12
-      %strong Locations
-      =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
-      %strong Product
-      =link_to '' , products_url , class: 'btn glyphicon glyphicon-plus btn-primary'
-      %br
-      %br
-      %strong Total Products
-      .btn.glyphicon.btn-primary.total-products
-        0
-      %strong Total Amount
-      .btn.glyphicon.btn-primary.total-amount
-        0
+    .col-xs-12
+      .col-md-2
+        = submit_tag "Place Order ", class: 'btn btn-primary' 
+      .col-md-4
+        %strong Locations
+        =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
+        %strong Product
+        =link_to '' , products_url , class: 'btn glyphicon glyphicon-plus btn-primary'
+      .col-md-5
+        %strong Total Products
+        .btn.glyphicon.btn-primary.total-products
+          0
+        %strong Total Amount
+        .btn.glyphicon.btn-primary.total-amount
+          0
+      .col-md-1
+        = link_to 'Clear Bulk Order ', root_path(session_clear: true), class: 'btn btn-success clear-cacheing'
   %hr   
   .row
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
@@ -44,9 +47,7 @@
         %div{class: "col-xs-12 col-md-2"}
           = default_address.address1
           %br
-          = "#{default_address.city}, #{default_address.province}"
-          %br
-          = default_address.country
+          = "#{default_address.city}"
           - if @error_message.present? && @error_message[distributor_id].present?
             .error-message
               = @error_message[distributor_id]
@@ -76,7 +77,6 @@
         - products.each do |product|
           %div{class: "col-xs-12 product-total-amount-#{product.id}", style: "width: 160px;"}
             0
-      = submit_tag "Place Order ", class: 'btn btn-primary'            
 %br
 
 =# link_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'
