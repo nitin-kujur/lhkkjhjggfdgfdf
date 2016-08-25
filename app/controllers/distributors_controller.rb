@@ -128,7 +128,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
       if @shop_customer.save
         @distributor.shopify_id = @shop_customer.id
         @distributor.save
-        format.html { redirect_to @distributor, notice: 'Distributor was successfully created.' }
+        format.html { redirect_to @distributor, notice: 'Location was successfully created.' }
         format.json { render :show, status: :created, location: @distributor }
       else
         format.html { render :new }
@@ -161,7 +161,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
           # CREATE CUSTOMER ADDRESS
         end
         customer.save        
-        format.html { redirect_to @distributor, notice: 'Distributor was successfully updated.' }
+        format.html { redirect_to @distributor, notice: 'Location was successfully updated.' }
         format.json { render :show, status: :ok, location: @distributor }
       else
         format.html { render :edit }
@@ -175,7 +175,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   def destroy
     @distributor.destroy
     respond_to do |format|
-      format.html { redirect_to distributors_url, notice: 'Distributor was successfully destroyed.' }
+      format.html { redirect_to distributors_url, notice: 'Location was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

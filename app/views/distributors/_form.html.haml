@@ -2,10 +2,16 @@
 = form_for @distributor , class: 'form'do |f|
   - if @shop_customer && @shop_customer.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@shop_customer.errors.count, "error")} prohibited this distributor from being saved:"
+      %h2= "#{pluralize(@shop_customer.errors.count, "error")} prohibited this Location from being saved on shop:"
       %ul
         - @shop_customer.errors.full_messages.each do |msg|
-          %li= msg
+          %li= msg        
+  - if @distributor && @distributor.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@distributor.errors.count, "error")} prohibited this Location from being saved on app:"
+      %ul
+        - @distributor.errors.full_messages.each do |msg|
+          %li= msg 
   %fieldset
     %legend Location Information
     .input-group        
