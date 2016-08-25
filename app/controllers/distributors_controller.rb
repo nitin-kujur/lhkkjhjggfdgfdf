@@ -116,7 +116,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
 					                 "zip": params[:distributor][:addresses_attributes]['0'][:zip],
 					                 "last_name": params[:distributor][:addresses_attributes]['0'][:last_name],
 					                 "first_name": params[:distributor][:addresses_attributes]['0'][:first_name],
-					                 "country": params[:distributor][:addresses_attributes]['0'][:country]
+					                 "country": params[:distributor][:addresses_attributes]['0'][:country] || 'United States'
 					               }
   	 					        ]
      			          }
@@ -156,7 +156,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
           customer.addresses[0].zip= ad[:zip]
           customer.addresses[0].last_name= ad[:last_name]
           customer.addresses[0].first_name= ad[:first_name]
-          customer.addresses[0].country= ad[:country]
+          customer.addresses[0].country= ad[:country] || 'United States'
         else
           # CREATE CUSTOMER ADDRESS
         end
