@@ -1,6 +1,6 @@
 development:
+  shopify_api_key: "0ddf38b3172252f500bd00c21f7478ce"
+  shopify_secret: "506b86ba0c000bca41e4d9fd18e79efc"
+production:
   shopify_api_key: "d1739c8e3171f18a3de402c4943e2364"
   shopify_secret: "b59086beeb0552686074b64833374714"
-production:
-  shopify_api_key: "f510bde1a4ee22623532723cf74a60f6"
-  shopify_secret: "89c26e88dba118d778c1ff8435f99069"
