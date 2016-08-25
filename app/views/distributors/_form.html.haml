@@ -68,6 +68,7 @@
           =#a.object.country
           =# a.select :country ,options_for_select(["India", "United States"],selected: a.object.country)  ,class: 'form-control'
           = a.text_field :country, class: 'form-control' , disabled: true, value: 'United States'
+          = a.hidden_field :country, value: 'United States'
   %br
   .actions.input-group
     = f.submit 'Save', class: 'btn btn-primary'
