@@ -84,12 +84,12 @@ function update_total_value(element_id){
       total_amount = total_amount + (e_value*e_price);
     }
   });
-  $('.distributor-total-quantity-'+ids[1]).html(total_distributor_quantity);
-  $('.distributor-total-amount-'+ids[1]).html(total_distributor_price);
-  $('.product-total-quantity-'+ids[2]).html(total_product_quantity);
-  $('.product-total-amount-'+ids[2]).html(total_product_price);
-  $('.total-products').html(total_quantity);
-  $('.total-amount').html(total_amount);
+  $('.distributor-total-quantity-'+ids[1]).html(addCommas(total_distributor_quantity));
+  $('.distributor-total-amount-'+ids[1]).html("$"+addCommas(total_distributor_price));
+  $('.product-total-quantity-'+ids[2]).html(addCommas(total_product_quantity));
+  $('.product-total-amount-'+ids[2]).html("$"+addCommas(total_product_price));
+  $('.total-products').html(addCommas(total_quantity));
+  $('.total-amount').html(addCommas("$"+total_amount));
 }
 
 $( document ).ready(function() {
@@ -125,3 +125,14 @@ $( document ).ready(function() {
       }
   }
 });
+function addCommas(nStr){
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
+}

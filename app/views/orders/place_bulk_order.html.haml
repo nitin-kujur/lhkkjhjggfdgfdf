@@ -3,11 +3,13 @@
 - products = []
 = form_tag('/bulk_order') do
   .row
-    .col-xs-12.col-md-6
+    .col-xs-12.col-md-12
       %strong Locations
       =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
       %strong Product
       =link_to '' , products_url , class: 'btn glyphicon glyphicon-plus btn-primary'
+      %br
+      %br
       %strong Total Products
       .btn.glyphicon.btn-primary.total-products
         0
@@ -40,10 +42,6 @@
       - default_address = customer.default_address
       .row
         %div{class: "col-xs-12 col-md-2"}
-          = "#{customer.first_name} #{customer.last_name}"
-          %br
-          = customer.email
-          %br
           = default_address.address1
           %br
           = "#{default_address.city}, #{default_address.province}"
