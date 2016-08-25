@@ -1,5 +1,6 @@
-class OrdersController <  ShopifyApp::AuthenticatedController
-   #include ShopifyApp::AppProxyVerification
+class OrdersController < ApplicationController
+   before_action :authenticate_user!
+   include ShopifyApp::AppProxyVerification
 
   def index
     @orders = ShopifyAPI::Order.find(:all)

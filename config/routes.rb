@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'sync_distributors' => "distributors#sync_distributors" , as: :sync_distributors
   resources :distributors
-  root :to => 'orders#place_bulk_order'
+  root :to => 'users#index'
   mount ShopifyApp::Engine, at: '/'
 
   namespace :app_proxy do

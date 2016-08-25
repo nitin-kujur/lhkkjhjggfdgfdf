@@ -7,8 +7,34 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => false
     = csrf_meta_tags
   %body
-    .container.bs-docs-container
-      .wrap.container
+    %nav.navbar.navbar-default{:role => "navigation"}
+      .container-fluid
+        .navbar-header
+          %button.navbar-toggle{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+        - if params[:controller] != "shopify_app/sessions"
+          - if current_user.blank?
+            %a.navbar-brand{:href => new_session_path(:user)} Bulk Order
+            %a.navbar-brand.pull-right{:href => new_session_path(:user)} Login
+          - if current_user
+            %a.navbar-brand{:href => root_url} Bulk Order
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+              %ul.nav.navbar-nav.navbar-right
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                    Logged In As #{current_user.email}
+                    %b.caret
+                  %ul.dropdown-menu
+                    %li
+                      = link_to "Account Settings", edit_user_registration_path()
+                    %li.divider
+                    %li
+                      = link_to "Logout", :destroy_user_session, method: :delete
+    .wrap.container
+      - if params[:controller] != "shopify_app/sessions"
         .notification
           - if notice
             .alert.alert-success

@@ -1,4 +1,6 @@
-class DistributorsController <  ShopifyApp::AuthenticatedController
+class DistributorsController <  ApplicationController
+  before_action :authenticate_user!
+  include ShopifyApp::AppProxyVerification
   before_action :set_distributor, only: [:show, :edit, :update, :destroy]
 
 
