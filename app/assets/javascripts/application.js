@@ -78,8 +78,7 @@ function update_total_value(element_id){
     }
   });
   if(total_distributor_price > 0){
-    console.log(ids);
-    console.log(total_distributor_price);
+    $('.distributor-total-shipping-amount-'+ids[1]).html($("#loader").html());
     $.ajax({ 
       url: "distributors/get_shipping_amount",
       data:{
