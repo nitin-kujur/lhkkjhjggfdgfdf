@@ -66,14 +66,36 @@ function update_total_value(element_id){
   });
   total_distributor_quantity = 0;
   total_distributor_price = 0;
+  total_distributor_weight = 0.0;
   $('.distributor-'+ids[1]).each(function(index, element) {
     e_value = parseInt($(element).val());
     e_price = parseFloat($(element).attr('product_price'));
+    e_weight = parseFloat($(element).attr('product_weight'));
     if(e_value >= 0){
       total_distributor_quantity = total_distributor_quantity + e_value;
       total_distributor_price = total_distributor_price + (e_value*e_price);
+      total_distributor_weight = total_distributor_weight + (e_weight*e_value)
     }
   });
+  if(total_distributor_price > 0){
+    console.log(ids);
+    console.log(total_distributor_price);
+    $.ajax({ 
+      url: "distributors/get_shipping_amount",
+      data:{
+        distributor_id: ids[1],
+        country: $('.distributor-'+ids[1]).attr('country'),
+        province: $('.distributor-'+ids[1]).attr('province'),
+        price: total_distributor_price,
+        weight: total_distributor_weight
+      },
+      dataType: 'json'
+    }).done(function(data) {
+      $('.distributor-total-shipping-amount-'+data['distributor_id']).html('$'+addCommas(data['shipping_amount']));
+    });
+  }else{
+    $('.distributor-total-shipping-amount-'+ids[1]).html('$0');
+  }
   total_quantity = 0;
   total_amount = 0.0;
   $( ".order-quantity" ).each(function(index, element) {
@@ -111,7 +133,9 @@ $( document ).ready(function() {
 	$( ".order-quantity" ).each(function() {
     cacheing_value = getCookie($(this).attr('id'))
     $(this).val(cacheing_value)
-    update_total_value($(this).attr('id'));
+    if(parseInt($(this).val()) > 0){
+      update_total_value($(this).attr('id'));
+    }
   });
   var ca = document.cookie.split(';');
   for(var i = 0; i <ca.length; i++) {

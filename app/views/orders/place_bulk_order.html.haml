@@ -36,9 +36,14 @@
           %br
           = variant.price
       %div{class: "col-xs-12 distributor-total-quantity total-info", style: "width: 160px;"}
-        Total Quantity
+        Total 
+        Quantity
       %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 160px;"}
-        Total Price
+        Total 
+        Price
+      %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 160px;"}
+        Shipping 
+        Cost
   - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
     - session[:bulk_order]['distributors'].each do |distributor_id|
       - customer = ShopifyAPI::Customer.find(distributor_id) 
@@ -58,11 +63,13 @@
               - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
             - else
               - value = ''
-            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price
+            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price, product_weight: variant.weight, country: default_address.country, province: default_address.province
         - if products.present?
           %div{class: "col-xs-12 distributor-total-quantity-#{distributor_id}", style: "width: 160px;"}
             0
           %div{class: "col-xs-12 distributor-total-amount-#{distributor_id}", style: "width: 160px;"}
+            0
+          %div{class: "col-xs-12 distributor-total-shipping-amount-#{distributor_id}", style: "width: 160px;"}
             0
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present? && session[:bulk_order]['distributors'].present?
       .row

@@ -180,6 +180,14 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
     end
   end
 
+  def get_shipping_amount
+    amount = Shop.calculate_min_shipping_rate(params[:country], params[:province], params[:price], params[:weight])
+    
+    respond_to do |format|
+      format.json { render json: {'distributor_id' => params[:distributor_id], 'shipping_amount' =>  amount} }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_distributor

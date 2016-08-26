@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   get 'sync_distributors' => "distributors#sync_distributors" , as: :sync_distributors
-  resources :distributors
   root :to => 'orders#place_bulk_order'
   mount ShopifyApp::Engine, at: '/'
 
@@ -14,6 +13,11 @@ Rails.application.routes.draw do
     # AppProxy::ReviewsController#index, for example
   end
   resources :orders
+  resources :distributors do 
+    collection do
+      get 'get_shipping_amount'
+    end
+  end
   get 'place_bulk_order' => 'orders#place_bulk_order' , as: :place_bulk_order
   get '/get_distributors' => 'distributors#get_distributors' , as: :get_distributors
   post '/set_distributors_for_bulk' => 'distributors#set_distributors_for_bulk' , as: :set_distributors_for_bulk
