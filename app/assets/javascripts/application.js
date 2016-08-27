@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require 'bootstrap'
 //= require turbolinks
+//= require turboboost/turboboost
 //= require_tree .
 
 function setCookie(cname, cvalue, exdays) {

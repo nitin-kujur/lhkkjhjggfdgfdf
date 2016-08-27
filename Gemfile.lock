@@ -197,6 +197,11 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
+    turboboost (0.1.0)
+      coffee-rails
+      jquery-rails
+      railties
+      turbolinks
     turbolinks (2.5.3)
       coffee-rails
     tzinfo (1.2.2)
@@ -231,6 +236,7 @@ DEPENDENCIES
   shopify_api
   shopify_app
   spring
+  turboboost
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)

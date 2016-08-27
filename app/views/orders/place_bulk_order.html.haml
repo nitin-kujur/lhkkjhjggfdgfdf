@@ -1,6 +1,6 @@
 %h1 Place Bulk Order
 - products = []
-= form_tag('/bulk_order') do
+= form_tag('/bulk_order', method: :post, turboboost: true ) do
   .row
     .col-xs-20
       .col-md-1
