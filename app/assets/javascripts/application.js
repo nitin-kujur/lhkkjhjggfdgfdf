@@ -101,7 +101,7 @@ function update_total_value(element_id){
         $('.distributor-total-shipping-amount-'+data['distributor_id']).html('$'+addCommas(data['shipping_amount']));
       }else{
         $("#shipping-"+data['distributor_id']).val(0)
-        $('.distributor-total-shipping-amount-'+data['distributor_id']).html(data['shipping_amount']);
+        $('.distributor-total-shipping-amount-'+data['distributor_id']).html("<div class='error-message'>"+data['shipping_amount']+"</div>");
       }
     });
   }else{
