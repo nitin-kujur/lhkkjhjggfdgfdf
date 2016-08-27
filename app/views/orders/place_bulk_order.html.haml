@@ -3,14 +3,14 @@
 = form_tag('/bulk_order') do
   .row
     .col-xs-20
-      .col-md-2
+      .col-md-1
         = submit_tag "Place Order ", class: 'btn btn-primary' 
       .col-md-3
         %strong Locations
         =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
         %strong Product
         =link_to '' , products_url , class: 'btn glyphicon glyphicon-plus btn-primary'
-      .col-md-6
+      .col-md-7
         %strong Total Products
         .btn.glyphicon.btn-primary.total-products
           0
