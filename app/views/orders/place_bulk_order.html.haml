@@ -26,26 +26,27 @@
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
       %div{class: "col-xs-12 col-md-2"}
         POP Element
-      %div{class: "col-xs-12 distributor-total-quantity total-info", style: "width: 160px;"}
+      %div{class: "col-xs-12 distributor-total-quantity total-info", style: "width: 100px;"}
         Total 
         Quantity
-      %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 160px;"}
+      %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 100px;"}
         Total 
         Price
-      %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 160px;"}
+      %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 100px;"}
         Shipping 
         Cost
-      - session[:bulk_order]['products'].each do |product_id|
-        - product = ShopifyAPI::Product.find(product_id) 
-        - variant = product.variants.first
-        - products << product
-        %div{class: "col-xs-12", style: "width: 160px;"}
-          = image_tag product.image.src, style: 'width:100px;'
-          %br
-          %br
-          = product.title
-          %br
-          = variant.price
+      %div{style: 'width:640px;overflow-x: auto'}
+        - session[:bulk_order]['products'].each do |product_id|
+          - product = ShopifyAPI::Product.find(product_id) 
+          - variant = product.variants.first
+          - products << product
+          %div{class: "col-xs-12", style: "width: 160px;"}
+            = image_tag product.image.src, style: 'width:100px;'
+            %br
+            %br
+            = product.title
+            %br
+            = variant.price
   - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
     - session[:bulk_order]['distributors'].each do |distributor_id|
       - customer = ShopifyAPI::Customer.find(distributor_id) 
@@ -59,38 +60,41 @@
             .error-message
               = @error_message[distributor_id]
         - if products.present?
-          %div{class: "col-xs-12 distributor-total-quantity-#{distributor_id}", style: "width: 160px;"}
+          %div{class: "col-xs-12 distributor-total-quantity-#{distributor_id}", style: "width: 100px;"}
             0
-          %div{class: "col-xs-12 distributor-total-amount-#{distributor_id}", style: "width: 160px;"}
+          %div{class: "col-xs-12 distributor-total-amount-#{distributor_id}", style: "width: 100px;"}
             0
-          %div{class: "col-xs-12 distributor-shipping-amount distributor-total-shipping-amount-#{distributor_id}", style: "width: 160px;"}
+          %div{class: "col-xs-12 distributor-shipping-amount distributor-total-shipping-amount-#{distributor_id}", style: "width: 100px;"}
             0
-        - products.each do |product|
-          - variant = product.variants.first
-          %div{class: "col-xs-12", style: "width: 160px;"}
-            - if @orders.present?
-              - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
-            - else
-              - value = ''
-            =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
+        %div{style: 'width:640px;overflow-x: auto'}
+          - products.each do |product|
+            - variant = product.variants.first
+            %div{class: "col-xs-12", style: "width: 160px;"}
+              - if @orders.present?
+                - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
+              - else
+                - value = ''
+              =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
         =  hidden_field_tag "order[distributors][#{distributor_id}]shipping_amount" ,0 , id: "shipping-#{distributor_id}"
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present? && session[:bulk_order]['distributors'].present?
       .row
-        %div{class: "col-xs-12 col-md-7 total-info"}
+        %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
           Total Quantity
-        - products.each do |product|
-          %div{class: "col-xs-12 product-total-quantity-#{product.id}", style: "width: 160px;"}
-            0
+        %div{style: 'width:640px;overflow-x: auto'}  
+          - products.each do |product|
+            %div{class: "col-xs-12 product-total-quantity-#{product.id}", style: "width: 160px;"}
+              0
       .row.total-price
-        %div{class: "col-xs-12 col-md-7 total-info"}
+        %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
           Total Price
-        - products.each do |product|
-          %div{class: "col-xs-12 product-total-amount-#{product.id}", style: "width: 160px;"}
-            0
+        %div{style: 'width:640px;overflow-x: auto'}
+          - products.each do |product|
+            %div{class: "col-xs-12 product-total-amount-#{product.id}", style: "width: 160px;"}
+              0
 %br
 #loader.none
   = image_tag 'loader.png'
-=# link_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'
+=# li'nk_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'
 =# link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-primary'
 
 
