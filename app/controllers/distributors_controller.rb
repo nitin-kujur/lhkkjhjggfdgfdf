@@ -181,7 +181,7 @@ class DistributorsController <  ShopifyApp::AuthenticatedController
   end
 
   def get_shipping_amount
-    amount = Shop.calculate_min_shipping_rate(params[:country], params[:province], params[:price], params[:weight])
+    amount = Shop.calculate_min_shipping_rate(params[:shipping_type],params[:country],params[:country_code], params[:province],params[:province_code], params[:city], params[:zip], params[:price], params[:weight])
     
     respond_to do |format|
       format.json { render json: {'distributor_id' => params[:distributor_id], 'shipping_amount' =>  amount} }

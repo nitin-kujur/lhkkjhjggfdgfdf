@@ -82,17 +82,30 @@ function update_total_value(element_id){
     $.ajax({ 
       url: "distributors/get_shipping_amount",
       data:{
+        shipping_type: $('#shipping_type').val(),
         distributor_id: ids[1],
         country: $('.distributor-'+ids[1]).attr('country'),
         province: $('.distributor-'+ids[1]).attr('province'),
+        country_code: $('.distributor-'+ids[1]).attr('country_code'),
+        province_code: $('.distributor-'+ids[1]).attr('province_code'),
+        city: $('.distributor-'+ids[1]).attr('city'),
+        zip: $('.distributor-'+ids[1]).attr('zip'),
         price: total_distributor_price,
         weight: total_distributor_weight
       },
       dataType: 'json'
     }).done(function(data) {
-      $('.distributor-total-shipping-amount-'+data['distributor_id']).html('$'+addCommas(data['shipping_amount']));
+      price = parseFloat(data['shipping_amount'])
+      if(price >= 0){
+        $("#shipping-"+data['distributor_id']).val(data['shipping_amount'])
+        $('.distributor-total-shipping-amount-'+data['distributor_id']).html('$'+addCommas(data['shipping_amount']));
+      }else{
+        $("#shipping-"+data['distributor_id']).val(0)
+        $('.distributor-total-shipping-amount-'+data['distributor_id']).html(data['shipping_amount']);
+      }
     });
   }else{
+    $("#shippig-"+ids[1]).val(0)
     $('.distributor-total-shipping-amount-'+ids[1]).html('$0');
   }
   total_quantity = 0;
@@ -123,6 +136,14 @@ $( document ).ready(function() {
     }
     update_total_value($(this).attr('id'));
 	});
+  $('#shipping_type').change(function() {
+    $('.distributor-shipping-amount').html($("#loader").html());
+    $( ".order-quantity" ).each(function(index, element) {
+      if(parseInt($(element).val()) > 0){
+        update_total_value($(element).attr('id'));
+      }
+    });
+  });
 	$( ".clear-cacheing" ).click(function() {
 	  $( ".order-quantity" ).each(function() {
         setCookie($(this).attr('id'), '', 1)
@@ -147,6 +168,12 @@ $( document ).ready(function() {
 
       }
   }
+  $( document ).ajaxComplete(function( event, xhr, settings ) {
+      console.log(xhr.responseText );
+  });
+  $('#bumperframe').bind("DOMSubtreeModified",function(){
+    alert('changed');
+  });
 });
 function addCommas(nStr){
     nStr += '';
