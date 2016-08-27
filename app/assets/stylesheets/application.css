@@ -13,3 +13,28 @@
  *= require_tree .
  *= require_self
  */
+.row-fluid{
+    white-space: nowrap;
+}
+.row-fluid .col-lg-3{
+    display: inline-block;
+}
+
+.DocumentList
+{
+    overflow-x:scroll;
+    overflow-y:hidden;
+    width:100%;
+    padding: 0 15px;
+}
+
+.DocumentItem
+{
+    padding:0;
+    width:30%;
+}
+
+.list-inline {
+  white-space:nowrap;
+  display: inline-flex;
+}
