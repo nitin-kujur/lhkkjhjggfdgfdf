@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'sync_distributors' => "distributors#sync_distributors" , as: :sync_distributors
-  root :to => 'orders#place_bulk_order'
+  root :to => 'home#index'
   mount ShopifyApp::Engine, at: '/'
 
   namespace :app_proxy do
