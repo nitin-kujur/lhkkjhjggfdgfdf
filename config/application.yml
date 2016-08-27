@@ -5,8 +5,8 @@ development:
   ups_password: 'P444word!'
   ups_key: 'ACD8A71E16D5BA35'
 production:
-  shopify_api_key: "f510bde1a4ee22623532723cf74a60f6"
-  shopify_secret: "89c26e88dba118d778c1ff8435f99069"
+  shopify_api_key: "d1739c8e3171f18a3de402c4943e2364"
+  shopify_secret: "b59086beeb0552686074b64833374714"
   ups_user_id: 'jnatowitz@lapineinc.com'
   ups_password: 'P444word!'
   ups_key: 'ACD8A71E16D5BA35'
