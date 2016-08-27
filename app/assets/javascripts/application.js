@@ -139,9 +139,7 @@ $( document ).ready(function() {
   $('#shipping_type').change(function() {
     $('.distributor-shipping-amount').html($("#loader").html());
     $( ".order-quantity" ).each(function(index, element) {
-      if(parseInt($(element).val()) > 0){
-        update_total_value($(element).attr('id'));
-      }
+      update_total_value($(element).attr('id'));
     });
   });
 	$( ".clear-cacheing" ).click(function() {
