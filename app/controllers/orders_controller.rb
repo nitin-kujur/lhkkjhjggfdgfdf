@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  #include ShopifyApp::AppProxyVerification
+  include ShopifyApp::AppProxyVerification
 
   before_action :set_session
 
@@ -58,7 +58,7 @@ class OrdersController < ApplicationController
 
   def update_location(params)
     respond_to do |format|
-      if @distributor.update!(distributor_params)
+      if @distributor.update(distributor_params)
         customer = ShopifyAPI::Customer.find(@distributor.shopify_id)
         customer.first_name = params[:distributor][:first_name]
         customer.last_name = params[:distributor][:last_name]
@@ -78,11 +78,13 @@ class OrdersController < ApplicationController
           # CREATE CUSTOMER ADDRESS
         end
         customer.save        
-        format.html { redirect_to @distributor, notice: 'Location was successfully updated.' }
-        format.json { render :show, status: :ok, location: @distributor }
+        flash[:notice] 'Location was successfully created.'
+        # format.html { redirect_to @distributor, notice: 'Location was successfully created.' }
+        # format.json { render :show, status: :created, location: @distributor }
       else
-        format.html { render :edit }
-        format.json { render json: @distributor.errors, status: :unprocessable_entity }
+        flash[:notice] = 'Location could not be saved'
+        # format.html { render :new }
+        # format.json { render json: @shop_customer.errors, status: :unprocessable_entity }
       end
     end
   end
