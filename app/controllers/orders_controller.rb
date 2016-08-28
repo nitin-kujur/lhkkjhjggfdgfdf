@@ -1,6 +1,5 @@
 class OrdersController < ApplicationController
   include ShopifyApp::AppProxyVerification
-  before_action :login_again_if_different_shop
   around_action :shopify_session
 
   def index
