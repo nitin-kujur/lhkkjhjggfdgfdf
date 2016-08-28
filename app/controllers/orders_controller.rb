@@ -173,7 +173,8 @@ class OrdersController < ApplicationController
       end
     end
     if @error_message.blank?
-      redirect_to "/tools"+place_bulk_order_path(action_type: 'list_orders'), notice: 'Bulk Orders have been successfully created.'
+      @orders = ShopifyAPI::Order.find(:all)
+      render :template => 'orders/index.html.haml'
     else
       @orders.each do |order|
         order.destroy
