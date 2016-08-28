@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  include ShopifyApp::AppProxyVerification
+  #include ShopifyApp::AppProxyVerification
 
   before_action :set_session
 
@@ -110,11 +110,11 @@ class OrdersController < ApplicationController
       if @shop_customer.save
         @distributor.shopify_id = @shop_customer.id
         @distributor.save
-        message = {notice: 'Location was successfully created.'}
+        flash[:notice] 'Location was successfully created.'
         # format.html { redirect_to @distributor, notice: 'Location was successfully created.' }
         # format.json { render :show, status: :created, location: @distributor }
       else
-        mesage = @shop_customer.errors
+        flash[:notice] = 'Location could not be saved'
         # format.html { render :new }
         # format.json { render json: @shop_customer.errors, status: :unprocessable_entity }
       end
