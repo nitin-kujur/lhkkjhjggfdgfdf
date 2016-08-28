@@ -2,7 +2,8 @@ class AppProxyController < ApplicationController
    include ShopifyApp::AppProxyVerification
 
   def index
-    render layout: false, content_type: 'application/liquid'
+    session[:bulk_order] = {} if session[:bulk_order].blank? || params[:session_clear].present?
+  	# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
   end
 
 end
