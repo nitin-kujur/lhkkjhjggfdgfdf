@@ -13,7 +13,7 @@ class DistributorsController < ApplicationController
   end
 
   def get_distributors
-    @distributors = Distributor.where.not(shopify_id: nil).order('created_at DESC')
+    @distributors = ShopifyAPI::Customer.find(:all)
   end
 
   def set_distributors_for_bulk
