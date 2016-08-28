@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  #include ShopifyApp::AppProxyVerification
+  include ShopifyApp::AppProxyVerification
 
   before_action :set_session
 
@@ -9,6 +9,10 @@ class OrdersController < ApplicationController
 
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank? || params[:session_clear].present?
+    if params[:action_type]=='list-location'
+       @distributors = Distributor.where.not(shopify_id: nil).order('created_at DESC')
+      render :template => 'distributors/get_distributors.html.haml'
+    end
   end
 
 	def bulk_order

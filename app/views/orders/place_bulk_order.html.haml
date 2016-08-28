@@ -1,128 +1,124 @@
-- if params[:action_type] == 'list-location'
-  - @distributors = []
-  = render :template => 'distibutors/get_distributors.html.haml'
-- else
-  %h1 Place Bulk Order
-  - products = []
-  .row
-    .col-xs-20
-      .col-md-1
-        = submit_tag "Place Order ", class: 'btn btn-primary' 
-      .col-md-3.center
-        %strong Locations
-        = link_to '' , "/tools/place-bulk-order?action_type=list-location", class: 'btn glyphicon glyphicon-plus btn-primary'
-        %strong Product
-        = link_to '' , "/tools/place-bulk-order?action_type=list-product", class: 'btn glyphicon glyphicon-plus btn-primary'
-      .col-md-7
-        %strong Total Products
-        .btn.glyphicon.btn-primary.total-products
-          0
-        %strong Total Amount
-        .btn.glyphicon.btn-primary.total-amount
-          0
-        %strong Shipping
-        = select_tag "shipping_type", options_for_select(get_shipping_options)
-      .col-md-1
-        = link_to 'Clear Bulk Order ', root_url(session_clear: true), class: 'btn btn-success clear-cacheing'
-  = form_tag( bulk_order_url, method: :post, turboboost: true ) do
-    %hr   
-    .col-md-6.pull-right  
-      - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
-        - place_height = session[:bulk_order]['distributors'].present? ? 75 * session[:bulk_order]['distributors'].size + 300 : 300
-        .DocumentList{style: "height: #{place_height}px"}  
-          %ul{class: 'list-inline',style: "height: #{place_height}px"}
-            - session[:bulk_order]['products'].each do |product_id|
-              - product = ShopifyAPI::Product.find(product_id) 
+%h1 Place Bulk Order
+- products = []
+.row
+  .col-xs-20
+    .col-md-1
+      = submit_tag "Place Order ", class: 'btn btn-primary' 
+    .col-md-3.center
+      %strong Locations
+      = link_to '' , "/tools/place-bulk-order?action_type=list-location", class: 'btn glyphicon glyphicon-plus btn-primary'
+      %strong Product
+      = link_to '' , "/tools/place-bulk-order?action_type=list-product", class: 'btn glyphicon glyphicon-plus btn-primary'
+    .col-md-7
+      %strong Total Products
+      .btn.glyphicon.btn-primary.total-products
+        0
+      %strong Total Amount
+      .btn.glyphicon.btn-primary.total-amount
+        0
+      %strong Shipping
+      = select_tag "shipping_type", options_for_select(get_shipping_options)
+    .col-md-1
+      = link_to 'Clear Bulk Order ', root_url(session_clear: true), class: 'btn btn-success clear-cacheing'
+= form_tag( bulk_order_url, method: :post, turboboost: true ) do
+  %hr   
+  .col-md-6.pull-right  
+    - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
+      - place_height = session[:bulk_order]['distributors'].present? ? 75 * session[:bulk_order]['distributors'].size + 300 : 300
+      .DocumentList{style: "height: #{place_height}px"}  
+        %ul{class: 'list-inline',style: "height: #{place_height}px"}
+          - session[:bulk_order]['products'].each do |product_id|
+            - product = ShopifyAPI::Product.find(product_id) 
+            - variant = product.variants.first
+            - products << product
+            %li{class: 'DocumentItem' ,style: "height: #{place_height}px"}
+              %div{style: 'height:200px'}
+                = image_tag product.image.src, style: 'width:100px;'
+                %br
+                %br
+                = product.title
+                %br
+                = variant.price
+                - if @orders.present?
+                  - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
+                - else
+                  - value = ''
+              - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
+                - session[:bulk_order]['distributors'].each do |distributor_id|
+                  
+                  - customer = ShopifyAPI::Customer.find(distributor_id) 
+                  - default_address = customer.default_address
+                  %div{style: 'height:75px;width:100px'}
+                    =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
+              %div{class: "col-xs-12 product-total-quantity-#{product.id}"}
+                0
+              %div{class: "col-xs-12 product-total-amount-#{product.id}"}
+                0
+  .col-md-6.pull-left
+    - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
+      %div{style: 'height:200px'}
+        %div{class: "col-xs-12 col-md-5", style: 'font-weight: bolder;'}
+          POP Element
+        %div{class: "col-xs-12 distributor-total-quantity total-info", style: "width: 100px;"}
+          Total 
+          Quantity
+        %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 100px;"}
+          Total 
+          Price
+        %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 100px;"}
+          Shipping 
+          Cost  
+    - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
+      - session[:bulk_order]['distributors'].each do |distributor_id|
+        - customer = ShopifyAPI::Customer.find(distributor_id) 
+        - default_address = customer.default_address
+        %div{style: 'height:75px'}
+          %div{class: "col-xs-12 col-md-5"}
+            = "#{default_address.address1}, #{"#{default_address.city}"}"
+            - if @error_message.present? && @error_message[distributor_id].present?
+              .error-message
+                = @error_message[distributor_id]
+          - if products.present?
+            %div{class: "col-xs-12 distributor-total-quantity-#{distributor_id}", style: "width: 100px;"}
+              0
+            %div{class: "col-xs-12 distributor-total-amount-#{distributor_id}", style: "width: 100px;"}
+              0
+            %div{class: "col-xs-12 distributor-shipping-amount distributor-total-shipping-amount-#{distributor_id}", style: "width: 100px;"}
+              0
+          %div
+            - products.each do |product|
               - variant = product.variants.first
-              - products << product
-              %li{class: 'DocumentItem' ,style: "height: #{place_height}px"}
-                %div{style: 'height:200px'}
-                  = image_tag product.image.src, style: 'width:100px;'
-                  %br
-                  %br
-                  = product.title
-                  %br
-                  = variant.price
-                  - if @orders.present?
-                    - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
-                  - else
-                    - value = ''
-                - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
-                  - session[:bulk_order]['distributors'].each do |distributor_id|
-                    
-                    - customer = ShopifyAPI::Customer.find(distributor_id) 
-                    - default_address = customer.default_address
-                    %div{style: 'height:75px;width:100px'}
-                      =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
-                %div{class: "col-xs-12 product-total-quantity-#{product.id}"}
-                  0
-                %div{class: "col-xs-12 product-total-amount-#{product.id}"}
-                  0
-    .col-md-6.pull-left
-      - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
-        %div{style: 'height:200px'}
-          %div{class: "col-xs-12 col-md-5", style: 'font-weight: bolder;'}
-            POP Element
-          %div{class: "col-xs-12 distributor-total-quantity total-info", style: "width: 100px;"}
-            Total 
-            Quantity
-          %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 100px;"}
-            Total 
-            Price
-          %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 100px;"}
-            Shipping 
-            Cost  
-      - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
-        - session[:bulk_order]['distributors'].each do |distributor_id|
-          - customer = ShopifyAPI::Customer.find(distributor_id) 
-          - default_address = customer.default_address
-          %div{style: 'height:75px'}
-            %div{class: "col-xs-12 col-md-5"}
-              = "#{default_address.address1}, #{"#{default_address.city}"}"
-              - if @error_message.present? && @error_message[distributor_id].present?
-                .error-message
-                  = @error_message[distributor_id]
-            - if products.present?
-              %div{class: "col-xs-12 distributor-total-quantity-#{distributor_id}", style: "width: 100px;"}
-                0
-              %div{class: "col-xs-12 distributor-total-amount-#{distributor_id}", style: "width: 100px;"}
-                0
-              %div{class: "col-xs-12 distributor-shipping-amount distributor-total-shipping-amount-#{distributor_id}", style: "width: 100px;"}
-                0
-            %div
-              - products.each do |product|
-                - variant = product.variants.first
-                %div{class: "col-xs-12", style: "width: 160px;"}
-            =  hidden_field_tag "order[distributors][#{distributor_id}]shipping_amount" ,0 , id: "shipping-#{distributor_id}"
-        - if session[:bulk_order].present? && session[:bulk_order]['products'].present? && session[:bulk_order]['distributors'].present?
+              %div{class: "col-xs-12", style: "width: 160px;"}
+          =  hidden_field_tag "order[distributors][#{distributor_id}]shipping_amount" ,0 , id: "shipping-#{distributor_id}"
+      - if session[:bulk_order].present? && session[:bulk_order]['products'].present? && session[:bulk_order]['distributors'].present?
+        %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
+          Total Quantity
+        .total-price
           %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
-            Total Quantity
-          .total-price
-            %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
-              Total Price
-            
-  %br
-  #loader.none
-    = image_tag 'loader.png'
-  =# li'nk_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'
-  =# link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-primary'
+            Total Price
+          
+%br
+#loader.none
+  = image_tag 'loader.png'
+=# li'nk_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'
+=# link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-primary'
 
-  :javascript
-    $( ".order-quantity" ).each(function() {
-      cacheing_value = getCookie($(this).attr('id'))
-      $(this).val(cacheing_value)
-      if(parseInt($(this).val()) > 0){
-        update_total_value($(this).attr('id'));
-      }
-    });
-    var ca = document.cookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        if(ca.indexOf('order-' == 0)){
-            var c = ca[i].split('=')[0];
-            console.log(c);
-            if($('#'+c.trim()).length == 0){
-              document.cookie = c + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-            }
-
-        }
+:javascript
+  $( ".order-quantity" ).each(function() {
+    cacheing_value = getCookie($(this).attr('id'))
+    $(this).val(cacheing_value)
+    if(parseInt($(this).val()) > 0){
+      update_total_value($(this).attr('id'));
     }
+  });
+  var ca = document.cookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+      if(ca.indexOf('order-' == 0)){
+          var c = ca[i].split('=')[0];
+          console.log(c);
+          if($('#'+c.trim()).length == 0){
+            document.cookie = c + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          }
+
+      }
+  }
