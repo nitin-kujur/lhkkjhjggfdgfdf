@@ -76,6 +76,7 @@ function update_total_value(element_id){
       total_distributor_weight = total_distributor_weight + (e_weight*e_value)
     }
   });
+  
   if(total_distributor_price > 0){
     $('.distributor-total-shipping-amount-'+ids[1]).html($("#loader").html());
     $.ajax({ 
@@ -137,6 +138,7 @@ function addCommas(nStr){
     }
     return x1 + x2;
 }
+
 var ready;
 ready = function() {
   $( document ).ready(function() {
@@ -162,5 +164,6 @@ ready = function() {
   	});
   });
 };
+
 $(document).ready(ready);
 $(document).on('page:load', ready);
