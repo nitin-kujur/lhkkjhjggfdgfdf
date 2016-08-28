@@ -103,5 +103,22 @@
 =# li'nk_to 'New Distributor', new_distributor_path ,class: 'btn btn-primary'
 =# link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-primary'
 
+:javascript
+  $( ".order-quantity" ).each(function() {
+    cacheing_value = getCookie($(this).attr('id'))
+    $(this).val(cacheing_value)
+    if(parseInt($(this).val()) > 0){
+      update_total_value($(this).attr('id'));
+    }
+  });
+  var ca = document.cookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+      if(ca.indexOf('order-' == 0)){
+          var c = ca[i].split('=')[0];
+          console.log(c);
+          if($('#'+c.trim()).length == 0){
+            document.cookie = c + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          }
 
-
+      }
+  }
