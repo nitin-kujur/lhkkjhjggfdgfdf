@@ -10,7 +10,7 @@ class OrdersController < ApplicationController
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank?
     if params[:action_type]=='list-location'
-      @distributors = Distributor.where.not(shopify_id: nil).order('created_at DESC')
+      @distributors = ShopifyAPI::Customer.find(:all)
       render :template => 'distributors/get_distributors.html.haml'
     elsif params[:action_type]=='list-product'
       @products = ShopifyAPI::Product.find(:all)
