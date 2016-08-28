@@ -127,53 +127,6 @@ function update_total_value(element_id){
   $('.total-amount').html(addCommas("$"+total_amount));
 }
 
-$( document ).ready(function() {
-	$( ".order-quantity" ).keyup(function() {
-    current_value = parseInt($(this).val())
-		if(current_value >= 0){
-	    setCookie($(this).attr('id'), $(this).val(), 1)
-    }else{
-    	setCookie($(this).attr('id'), '', 1)
-    }
-    update_total_value($(this).attr('id'));
-	});
-  $('#shipping_type').change(function() {
-    $('.distributor-shipping-amount').html($("#loader").html());
-    $( ".order-quantity" ).each(function(index, element) {
-      update_total_value($(element).attr('id'));
-    });
-  });
-	$( ".clear-cacheing" ).click(function() {
-	  $( ".order-quantity" ).each(function() {
-        setCookie($(this).attr('id'), '', 1)
-	  });  
-	});
-
-	$( ".order-quantity" ).each(function() {
-    cacheing_value = getCookie($(this).attr('id'))
-    $(this).val(cacheing_value)
-    if(parseInt($(this).val()) > 0){
-      update_total_value($(this).attr('id'));
-    }
-  });
-  var ca = document.cookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-      if(ca.indexOf('order-' == 0)){
-          var c = ca[i].split('=')[0];
-          console.log(c);
-          if($('#'+c.trim()).length == 0){
-            document.cookie = c + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          }
-
-      }
-  }
-  $( document ).ajaxComplete(function( event, xhr, settings ) {
-      console.log(xhr.responseText );
-  });
-  $('#bumperframe').bind("DOMSubtreeModified",function(){
-    alert('changed');
-  });
-});
 function addCommas(nStr){
     nStr += '';
     x = nStr.split('.');
@@ -185,3 +138,30 @@ function addCommas(nStr){
     }
     return x1 + x2;
 }
+var ready;
+ready = function() {
+  $( document ).ready(function() {
+  	$( ".order-quantity" ).keyup(function() {
+      current_value = parseInt($(this).val())
+  		if(current_value >= 0){
+  	    setCookie($(this).attr('id'), $(this).val(), 1)
+      }else{
+      	setCookie($(this).attr('id'), '', 1)
+      }
+      update_total_value($(this).attr('id'));
+  	});
+    $('#shipping_type').change(function() {
+      $('.distributor-shipping-amount').html($("#loader").html());
+      $( ".order-quantity" ).each(function(index, element) {
+        update_total_value($(element).attr('id'));
+      });
+    });
+  	$( ".clear-cacheing" ).click(function() {
+  	  $( ".order-quantity" ).each(function() {
+          setCookie($(this).attr('id'), '', 1)
+  	  });  
+  	});
+  });
+};
+$(document).ready(ready);
+$(document).on('page:load', ready);
