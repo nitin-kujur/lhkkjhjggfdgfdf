@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  #include ShopifyApp::AppProxyVerification
+  include ShopifyApp::AppProxyVerification
 
   before_action :set_session
 
