@@ -1,6 +1,6 @@
 %h1 Locations
 - pre_selection = session[:bulk_order]['distributors']||[]
-= form_tag(set_distributors_for_bulk_url, method: :post, turboboost: true) do 
+= form_tag("/tools/place-bulk-order?action_type=save-location-list", method: :post, turboboost: true) do 
   %table.table.table-striped
     %thead
       %tr
