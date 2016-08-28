@@ -80,7 +80,7 @@ function update_total_value(element_id){
   if(total_distributor_price > 0){
     $('.distributor-total-shipping-amount-'+ids[1]).html($("#loader").html());
     $.ajax({ 
-      url: "tools/place_bulk_order",
+      url: "/tools/place_bulk_order",
       data:{
         action_type: 'fetch_shipping',
         shipping_type: $('#shipping_type').val(),
