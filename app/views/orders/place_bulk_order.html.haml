@@ -1,5 +1,5 @@
 - if params[:action_type] == 'list-location'
-  - @distributors = Distributor.where.not(shopify_id: nil).order('created_at DESC')
+  - @distributors = []
   = render :template => 'distibutors/get_distributors.html.haml'
 - else
   %h1 Place Bulk Order
