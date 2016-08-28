@@ -23,7 +23,17 @@ class OrdersController < ApplicationController
       session[:bulk_order]['distributors'] = params[:distributors]
     elsif params[:action_type]=='session_clear'
       session[:bulk_order]= nil 
+    elsif params[:action_type]=='fetch_shipping'
+      begin
+        amount = Shop.calculate_min_shipping_rate(params[:shipping_type],params[:country],params[:country_code], params[:province],params[:province_code], params[:city], params[:zip], params[:price], params[:weight])
+      rescue => ex
+        amount = ex.message
+      end
+      respond_to do |format|
+        format.json { render json: {'distributor_id' => params[:distributor_id], 'shipping_amount' =>  amount} }
+      end
     end
+    
   end
 
 	def bulk_order
