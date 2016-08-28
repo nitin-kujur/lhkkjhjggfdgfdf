@@ -9,10 +9,6 @@ class OrdersController < ApplicationController
 
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank? || params[:session_clear].present?
-    if params[:action_type]=='list-location'
-       @distributors = Distributor.where.not(shopify_id: nil).order('created_at DESC')
-      render :template => 'distibutors/get_distributors.html.haml'
-    end
   end
 
 	def bulk_order
