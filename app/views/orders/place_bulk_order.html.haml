@@ -77,9 +77,10 @@
         %div{style: 'height:75px'}
           %div{class: "col-xs-12 col-md-5"}
             = "#{default_address.address1}, #{default_address.city}"
-            - if @error_message.present? && @error_message[distributor_id].present?
-              .error-message
-                = @error_message[distributor_id]
+            - if @error_message.present? 
+              - if @error_message[distributor_id].present?
+                .error-message
+                  = @error_message[distributor_id]
           - if products.present?
             %div{class: "col-xs-12 distributor-total-quantity-#{distributor_id}", style: "width: 100px;"}
               0
