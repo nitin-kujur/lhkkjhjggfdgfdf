@@ -78,7 +78,7 @@ class OrdersController < ApplicationController
           # CREATE CUSTOMER ADDRESS
         end
         customer.save        
-        flash[:notice] 'Location was successfully created.'
+        flash[:notice] = 'Location was successfully created.'
         # format.html { redirect_to @distributor, notice: 'Location was successfully created.' }
         # format.json { render :show, status: :created, location: @distributor }
       else
@@ -117,7 +117,7 @@ class OrdersController < ApplicationController
       if @shop_customer.save
         @distributor.shopify_id = @shop_customer.id
         @distributor.save
-        flash[:notice] 'Location was successfully created.'
+        flash[:notice] = 'Location was successfully created.'
         # format.html { redirect_to @distributor, notice: 'Location was successfully created.' }
         # format.json { render :show, status: :created, location: @distributor }
       else
