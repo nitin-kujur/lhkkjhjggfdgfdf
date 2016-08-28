@@ -8,9 +8,9 @@
       = submit_tag "Place Order ", class: 'btn btn-primary' 
     .col-md-3.center
       %strong Locations
-      = link_to '' , "/tools/place-bulk-order?action_type=list-location", class: 'btn glyphicon glyphicon-plus btn-primary'
+      = link_to '' , "/tools"+place_bulk_order_path(action_type: 'list-location', locations: params[:distributors]||[], products: params[:products]||[]), class: 'btn glyphicon glyphicon-plus btn-primary'
       %strong Product
-      = link_to '' , "/tools/place-bulk-order?action_type=list-product", class: 'btn glyphicon glyphicon-plus btn-primary'
+      = link_to '' , "/tools"+place_bulk_order_path(action_type: 'list-product', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'btn glyphicon glyphicon-plus btn-primary'
     .col-md-7
       %strong Total Products
       .btn.glyphicon.btn-primary.total-products

@@ -1,9 +1,10 @@
 = params.inspect
 = session[:bulk_order].inspect
 %h1 Locations
-- pre_selection = session[:bulk_order]['distributors']||[]
+- pre_selection = params[:locations]||[]
 = form_tag("/tools/place-bulk-order", method: :post) do 
-  = hidden_field_tag "action_type", "save-location-list" 
+  = hidden_field_tag "action_type", "save-location-list"
+  = hidden_field_tag "products", params[:products]||[]
   %table.table.table-striped
     %thead
       %tr
