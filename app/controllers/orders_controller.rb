@@ -24,7 +24,7 @@ class OrdersController < ApplicationController
     elsif params[:action_type]=='session_clear'
       session[:bulk_order]= nil
     elsif params[:action_type]=='new-location'
-      @distributor = Distributor.new    
+      @distributor = Distributor.new
       @address = @distributor.addresses.build
       render :template => 'distributors/new.html.haml'
     elsif params[:action_type]=='create-location'
@@ -38,6 +38,11 @@ class OrdersController < ApplicationController
       status = update_location(params)
       @distributors = ShopifyAPI::Customer.find(:all)
       render :template => 'distributors/get_distributors.html.haml'
+    elsif params[:action_type]=='save_orders'
+      bulk_order()
+    elsif params[:action_type]=='list_orders'
+      @orders = ShopifyAPI::Order.find(:all)
+      render :template => 'orders/index.html.haml'
     elsif params[:action_type]=='fetch_shipping'
       begin
         amount = Shop.calculate_min_shipping_rate(params[:shipping_type],params[:country],params[:country_code], params[:province],params[:province_code], params[:city], params[:zip], params[:price], params[:weight])
@@ -164,7 +169,7 @@ class OrdersController < ApplicationController
       end
     end
     if @error_message.blank?
-      redirect_to orders_path, notice: 'Bulk Orders have been successfully created.'
+      redirect_to "/tools"+place_bulk_order_path(action_type: 'list_orders'), notice: 'Bulk Orders have been successfully created.'
     else
       @orders.each do |order|
         order.destroy
