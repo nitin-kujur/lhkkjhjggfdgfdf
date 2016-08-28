@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
       render :template => 'home/index.html.haml'
     elsif params[:action_type]=='save-product-list'
       session[:bulk_order]['products'] = params[:products]
-      session[:bulk_order]['distributors'] = params[:location]
+      session[:bulk_order]['distributors'] = params[:locations]
     elsif params[:action_type]=='save-location-list'
       session[:bulk_order]['products'] = params[:products]
       session[:bulk_order]['distributors'] = params[:distributors]
@@ -38,7 +38,17 @@ class OrdersController < ApplicationController
       status = update_location(params)
       @distributors = ShopifyAPI::Customer.find(:all)
       render :template => 'distributors/get_distributors.html.haml'
+    elsif params[:action_type]=='fetch_shipping'
+      begin
+        amount = Shop.calculate_min_shipping_rate(params[:shipping_type],params[:country],params[:country_code], params[:province],params[:province_code], params[:city], params[:zip], params[:price], params[:weight])
+      rescue => ex
+        amount = ex.message
+      end
+      respond_to do |format|
+        format.json { render json: {'distributor_id' => params[:distributor_id], 'shipping_amount' =>  amount} }
+      end
     end
+    
   end
 
   def update_location(params)
