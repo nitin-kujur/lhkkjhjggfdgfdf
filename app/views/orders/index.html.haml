@@ -1,4 +1,4 @@
-= link_to 'New Bulk Order',root_url(session_clear: true) ,class: 'btn btn-success'
+= link_to 'New Bulk Order',"/tools"+place_bulk_order_path(action_type: 'session_clear') ,class: 'btn btn-success'
 %h1 Orders
 %table.table.table-striped
   %thead
