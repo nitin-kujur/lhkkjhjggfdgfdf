@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
       render :template => 'home/index.html.haml'
     elsif params[:action_type]=='save-product-list'
       session[:bulk_order]['products'] = params[:products]
-      session[:bulk_order]['distributors'] = params[:location]
+      session[:bulk_order]['distributors'] = params[:locations]
     elsif params[:action_type]=='save-location-list'
       session[:bulk_order]['products'] = params[:products]
       session[:bulk_order]['distributors'] = params[:distributors]
