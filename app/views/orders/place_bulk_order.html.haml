@@ -74,7 +74,7 @@
       - session[:bulk_order]['distributors'].each do |distributor_id|
         - customer = ShopifyAPI::Customer.find(distributor_id) rescue nil
         - if customer.present?
-          - default_address = customer.default_address
+          - default_address = customer.default_address rescue nil
           - if default_address.present?
             %div{style: 'height:75px'}
               %div{class: "col-xs-12 col-md-5"}
