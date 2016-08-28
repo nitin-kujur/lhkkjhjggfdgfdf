@@ -4,7 +4,8 @@
 - pre_selection = params[:locations]||[]
 = form_tag("/tools/place_bulk_order", method: :post) do 
   = hidden_field_tag "action_type", "save-location-list"
-  = hidden_field_tag "products[]", params[:products]||[]
+  - (params[:products]||[]).each do |v|
+    = hidden_field_tag "products[]", v
   %table.table.table-striped
     %thead
       %tr
