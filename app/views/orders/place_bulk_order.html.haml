@@ -7,9 +7,9 @@
         = submit_tag "Place Order ", class: 'btn btn-primary' 
       .col-md-3.center
         %strong Locations
-        =link_to '' , get_distributors_url , class: 'btn glyphicon glyphicon-plus btn-primary'
+        =link_to '' , get_app_url(get_distributors_path), class: 'btn glyphicon glyphicon-plus btn-primary'
         %strong Product
-        =link_to '' , products_url , class: 'btn glyphicon glyphicon-plus btn-primary'
+        =link_to '' , get_app_url(products_path) , class: 'btn glyphicon glyphicon-plus btn-primary'
       .col-md-7
         %strong Total Products
         .btn.glyphicon.btn-primary.total-products
