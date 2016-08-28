@@ -38,6 +38,7 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
   config.action_controller.asset_host = 'shopify-bulk-order.herokuapp.com'
+  config.assets.version = config.action_controller.asset_host
   config.action_mailer.default_url_options = { :host => 'shopify-bulk-order.herokuapp.com' }
   
   # Raises error for missing translations
