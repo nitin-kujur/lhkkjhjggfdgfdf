@@ -17,4 +17,8 @@ module ApplicationHelper
 	  end
 		shipping_options.uniq
 	end
+
+	def get_app_url(path)
+		ENV["app_url"]+path
+	end
 end
