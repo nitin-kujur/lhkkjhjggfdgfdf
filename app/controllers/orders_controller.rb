@@ -39,6 +39,8 @@ class OrdersController < ApplicationController
       @distributors = ShopifyAPI::Customer.find(:all)
       render :template => 'distributors/get_distributors.html.haml'
     elsif params[:action_type]=='save_orders'
+      session[:bulk_order]['products'] = params[:products]
+      session[:bulk_order]['distributors'] = params[:locations]
       bulk_order()
     elsif params[:action_type]=='list_orders'
       @orders = ShopifyAPI::Order.find(:all)
