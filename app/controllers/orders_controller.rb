@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
   include ShopifyApp::AppProxyVerification
+  before_action :login_again_if_different_shop
+  around_action :shopify_session
 
   def index
     @orders = ShopifyAPI::Order.find(:all)
@@ -7,6 +9,7 @@ class OrdersController < ApplicationController
 
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank? || params[:session_clear].present?
+    @orders = ShopifyAPI::Order.find(:all)
     @shipping_options = ['test']
   	# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
   end
