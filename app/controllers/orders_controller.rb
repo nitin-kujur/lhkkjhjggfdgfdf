@@ -12,8 +12,6 @@ class OrdersController < ApplicationController
     ShopifyAPI::Base.activate_session(sess)
     session[:shopify_domain] = shop.shopify_domain
     session[:bulk_order] = {} if session[:bulk_order].blank? || params[:session_clear].present?
-    @shipping_options = ['test']
-    @orders = ShopifyAPI::Order.find(:all)
   	# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
   end
 
