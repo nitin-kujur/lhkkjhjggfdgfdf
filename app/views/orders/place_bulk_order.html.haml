@@ -18,7 +18,7 @@
         .btn.glyphicon.btn-primary.total-amount
           0
         %strong Shipping
-        = select_tag "shipping_type", options_for_select(get_shipping_options)
+        = select_tag "shipping_type", []
       .col-md-1
-        = link_to 'Clear Bulk Order ', '/', class: 'btn btn-success clear-cacheing'
+        = link_to 'Clear Bulk Order ', root_path(session_clear: true), class: 'btn btn-success clear-cacheing'
   %hr   
