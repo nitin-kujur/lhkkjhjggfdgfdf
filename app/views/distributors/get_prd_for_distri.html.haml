@@ -1,5 +1,5 @@
 %h1 Products
-= form_tag("/set_prd_for_distri/#{params[:distributor_id]}", method: :post, turboboost: true ) do  
+= form_tag(set_prd_for_distri_url(params[:distributor_id]), method: :post, turboboost: true ) do  
   %table.table.table-striped
     %thead
       %tr

@@ -13,6 +13,6 @@
   %b Verified email:
   = @distributor.verified_email
 
-= link_to 'Edit', edit_distributor_path(@distributor)
+= link_to 'Edit', edit_distributor_url(@distributor)
 \|
-= link_to 'Back', distributors_path
+= link_to 'Back', get_distributors_url

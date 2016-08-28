@@ -1,13 +1,13 @@
 %h1 Place Bulk Order
 - products = []
-= form_tag('/bulk_order', method: :post, turboboost: true ) do
+= form_tag( bulk_order_url, method: :post, turboboost: true ) do
   .row
     .col-xs-20
       .col-md-1
         = submit_tag "Place Order ", class: 'btn btn-primary' 
       .col-md-3.center
         %strong Locations
-        =link_to '' , '/get_distributors' , class: 'btn glyphicon glyphicon-plus btn-primary'
+        =link_to '' , get_distributors_url , class: 'btn glyphicon glyphicon-plus btn-primary'
         %strong Product
         =link_to '' , products_url , class: 'btn glyphicon glyphicon-plus btn-primary'
       .col-md-7
@@ -20,7 +20,7 @@
         %strong Shipping
         = select_tag "shipping_type", options_for_select(get_shipping_options)
       .col-md-1
-        = link_to 'Clear Bulk Order ', root_path(session_clear: true), class: 'btn btn-success clear-cacheing'
+        = link_to 'Clear Bulk Order ', root_url(session_clear: true), class: 'btn btn-success clear-cacheing'
   %hr   
   .col-md-6.pull-right  
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present?

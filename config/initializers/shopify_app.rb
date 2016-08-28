@@ -4,3 +4,5 @@ ShopifyApp.configure do |config|
   config.scope = "write_orders, read_orders, read_products, read_customers, write_customers, write_shipping"
   config.embedded_app = false
 end
+
+SITE_URL = 'https://shopify-bulk-order.herokuapp.com'

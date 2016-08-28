@@ -1,5 +1,5 @@
 
-= form_for @distributor , class: 'form', turboboost: true do |f|
+= form_for @distributor , :host => SITE_URL, class: 'form', turboboost: true do |f|
   - if @shop_customer && @shop_customer.errors.any?
     #error_explanation
       %h2= "#{pluralize(@shop_customer.errors.count, "error")} prohibited this Location from being saved on shop:"
