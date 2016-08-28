@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     end
   end
   get 'place_bulk_order' => 'orders#place_bulk_order' , as: :place_bulk_order
-  post 'place_bulk_order' => 'orders#place_bulk_order' , as: :place_bulk_order
+  post 'place_bulk_order' => 'orders#place_bulk_order'
   get '/get_distributors' => 'distributors#get_distributors' , as: :get_distributors
   post '/set_distributors_for_bulk' => 'distributors#set_distributors_for_bulk' , as: :set_distributors_for_bulk
   get '/get_prd_for_distri/:distributor_id' => 'distributors#get_prd_for_distri' , as: :get_prd_for_distri
