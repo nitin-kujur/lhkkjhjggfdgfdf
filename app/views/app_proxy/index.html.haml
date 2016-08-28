@@ -1,5 +1,2 @@
-%h1 Place Bulk Order
-***************************************************************
-= params
-*************************************************************
-= session.inspect
+- url = get_app_url(place_bulk_order_path(session[:shopify_details]))
+%iframe#bumperframe{:src => url}

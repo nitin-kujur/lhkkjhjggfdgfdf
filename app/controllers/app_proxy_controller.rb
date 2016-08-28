@@ -9,12 +9,9 @@ class AppProxyController < ApplicationController
   private
   
     def set_session
-      shop = Shop.find_by_shopify_domain(params[:shop])
-      if shop.present?
-        sess = ShopifyAPI::Session.new(shop.shopify_domain, shop.shopify_token)
-        session[:shopify] = ShopifyApp::SessionRepository.store(sess)
-        ShopifyAPI::Base.activate_session(sess)
-        session[:shopify_domain] = shop.shopify_domain
-      end
+      session[:shopify_details] = {}
+      session[:shopify_details][:shop] = params[:shop]
+      session[:shopify_details][:path_prefix] = params[:path_prefix]
+      session[:shopify_details][:signature] = params[:signature]
     end
 end
