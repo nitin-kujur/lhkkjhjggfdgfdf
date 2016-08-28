@@ -21,7 +21,7 @@
       %strong Shipping
       = select_tag "shipping_type", options_for_select(get_shipping_options)
     .col-md-1
-      = link_to 'Clear Bulk Order ', "/tools/place-bulk-order?action_type=session_clear", class: 'btn btn-success clear-cacheing'
+      = link_to 'Clear Bulk Order ', "/tools/place_bulk_order?action_type=session_clear", class: 'btn btn-success clear-cacheing'
 = form_tag( bulk_order_url, method: :post) do
   %hr   
   .col-md-6.pull-right  
