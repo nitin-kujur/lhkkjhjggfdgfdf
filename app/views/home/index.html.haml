@@ -1,6 +1,6 @@
 %h1 Products
 - pre_selection = session[:bulk_order]['products']||[]
-= form_tag("/tools/place-bulk-order?action_type=save-product-list", method: :post, turboboost: true ) do  
+= form_tag("/tools/place-bulk-order?action_type=save-product-list", method: :post) do  
   %table.table.table-striped
     %thead
       %tr
