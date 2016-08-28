@@ -18,7 +18,7 @@ class OrdersController < ApplicationController
         end
       end
     rescue => ex
-      shipping_options << ex.message
+      @shipping_options << ex.message
     end
     @shipping_options = @shipping_options.uniq
   	# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
