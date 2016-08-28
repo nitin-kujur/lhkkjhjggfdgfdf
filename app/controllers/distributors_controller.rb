@@ -1,7 +1,7 @@
 class DistributorsController < ApplicationController
-  include ShopifyApp::AppProxyVerification
+ 
   before_action :set_distributor, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_session
 
   def get_prd_for_distri
     @products = ShopifyAPI::Product.find(:all)
@@ -202,5 +202,19 @@ class DistributorsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def distributor_params
       params.require(:distributor).permit(:first_name, :last_name, :email, :verified_email, addresses_attributes: [:id, :address1, :first_name, :last_name, :city, :phone, :zip, :country, :province])
+    end
+
+    def set_session
+      if session[:shopify].blank?
+        if params[:shop].present?
+          shop = Shop.find_by_shopify_domain(params[:shop])
+          if shop.present?
+            sess = ShopifyAPI::Session.new(shop.shopify_domain, shop.shopify_token)
+            session[:shopify] = ShopifyApp::SessionRepository.store(sess)
+            ShopifyAPI::Base.activate_session(sess)
+            session[:shopify_domain] = shop.shopify_domain
+          end
+        end
+      end
     end
 end
