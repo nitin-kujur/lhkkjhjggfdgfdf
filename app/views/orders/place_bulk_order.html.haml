@@ -70,6 +70,19 @@
         %div{class: "col-xs-12 distributor-total-amount total-info", style: "width: 100px;"}
           Shipping 
           Cost  
+    - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
+      - session[:bulk_order]['distributors'].each do |distributor_id|
+        - customer = ShopifyAPI::Customer.find(distributor_id) 
+        - default_address = customer.default_address
+        %div{style: 'height:75px'}
+          %div{class: "col-xs-12 col-md-5"}
+            = "#{default_address.address1}, #{"#{default_address.city}"}"
+      - if session[:bulk_order].present? && session[:bulk_order]['products'].present? && session[:bulk_order]['distributors'].present?
+        %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
+          Total Quantity
+        .total-price
+          %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
+            Total Price
           
 %br
 #loader.none
