@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  # include ShopifyApp::AppProxyVerification
+  include ShopifyApp::AppProxyVerification
 
   before_action :set_session
 
@@ -9,7 +9,10 @@ class OrdersController < ApplicationController
 
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank? || params[:session_clear].present?
-  	# @distibutors = ShopifyAPI::Customer.where(id: session[:bulk_order]['distributor'].keys)
+    if params[:action_type]=='list-location'
+       @distributors = Distributor.where.not(shopify_id: nil).order('created_at DESC')
+      render :template => 'distibutors/get_distributors'
+    end
   end
 
 	def bulk_order
@@ -66,9 +69,16 @@ class OrdersController < ApplicationController
   private
 
     def set_session
-      session[:shopify_details] = {}
-      session[:shopify_details][:shop] = params[:shop]
-      session[:shopify_details][:path_prefix] = params[:path_prefix]
-      session[:shopify_details][:signature] = params[:signature]
+      if session[:shopify].blank?
+        if params[:shop].present?
+          shop = Shop.find_by_shopify_domain(params[:shop])
+          if shop.present?
+            sess = ShopifyAPI::Session.new(shop.shopify_domain, shop.shopify_token)
+            session[:shopify] = ShopifyApp::SessionRepository.store(sess)
+            ShopifyAPI::Base.activate_session(sess)
+            session[:shopify_domain] = shop.shopify_domain
+          end
+        end
+      end
     end
 end
