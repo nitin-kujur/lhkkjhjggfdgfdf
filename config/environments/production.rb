@@ -30,16 +30,13 @@ Rails.application.configure do
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
   config.assets.digest = true
-  config.serve_static_assets = true
-  config.assets.compile = true
 
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
   config.action_controller.asset_host = 'shopify-bulk-order-app.herokuapp.com'
-  config.action_mailer.default_url_options = { :host => 'shopify-bulk-order-app.herokuapp.com' }
-  
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
