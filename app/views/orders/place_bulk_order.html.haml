@@ -132,3 +132,25 @@
 
       }
   }
+- if session[:bulk_order]['distributors'].present?
+  :javascript
+    setCookie("#{params[:shop]}_locations", #{session[:bulk_order]['distributors'].join(',')}, 1)
+- if session[:bulk_order]['products'].present?
+  :javascript
+    setCookie("#{params[:shop]}_products", #{session[:bulk_order]['products'].join(',')}, 1)
+- if session[:bulk_order]['distributors'].blank? && session[:bulk_order]['products'].present?
+  :javascript
+    location_ids = getCookie("#{params[:shop]}_locations");
+    product_ids = getCookie("#{params[:shop]}_products");
+    if(product_ids != '' || location_ids != ""){
+      $.ajax({ 
+        url: "/tools/place_bulk_order",
+        datatype: 'script',
+        data:{
+          action_type: 'get_caches_locations',
+          cache_locations: location_ids,
+          cache_products: product_ids
+        },
+        dataType: 'json'
+      })
+    }

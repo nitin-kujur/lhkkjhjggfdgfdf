@@ -15,6 +15,12 @@ class OrdersController < ApplicationController
     elsif params[:action_type]=='list-product'
       @products = ShopifyAPI::Product.find(:all)
       render :template => 'home/index.html.haml'
+    elsif params[:action_type]=='get_caches_locations'
+      session[:bulk_order]['products'] = params[:product_ids].split(',')
+      session[:bulk_order]['distributors'] = params[:cache_locations].split(',')
+      respond_to do |format|
+        format.js {}
+      end
     elsif params[:action_type]=='save-product-list'
       session[:bulk_order]['products'] = params[:products]
       session[:bulk_order]['distributors'] = params[:locations]
