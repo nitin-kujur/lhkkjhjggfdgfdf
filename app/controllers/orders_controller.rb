@@ -160,7 +160,6 @@ class OrdersController < ApplicationController
                       source: 'Bulk Order APP',
                       title: params[:shipping_type],
                       carrier_identifier: params[:shipping_type].split(' ').join('_')}
-
       financial_status = 'partially_paid'
       values[:product].each do |product_id, p_values|
         if p_values[:quantity].present? && p_values[:quantity].to_i > 0
@@ -170,7 +169,7 @@ class OrdersController < ApplicationController
         end
       end
       if line_items.present?
-        order = ShopifyAPI::Order.new(line_items: line_items, customer: {id: customer.id}, billing_address: billing_address, shipping_address: shipping_address, financial_status: financial_status, shipping_lines: [shipping_line])
+        order = ShopifyAPI::Order.new(shipping_lines: [shipping_line],line_items: line_items, customer: {id: customer.id}, billing_address: billing_address, shipping_address: shipping_address, financial_status: financial_status)
         if order.save
           @orders << order
         else
