@@ -28,16 +28,12 @@ class OrdersController < ApplicationController
       @address = @distributor.addresses.build
       render :template => 'distributors/new.html.haml'
     elsif params[:action_type]=='create-location'
-      status = create_location(params)
-      @distributors = ShopifyAPI::Customer.find(:all)
-      render :template => 'distributors/get_distributors.html.haml'
+      create_location(params)
     elsif params[:action_type]=='edit-location'
       @distributor = Distributor.find(params[:id])
       @address = @distributor.addresses.first ? @distributor.addresses.first : @distributor.addresses.build
     elsif params[:action_type]=='update-location'
-      status = update_location(params)
-      @distributors = ShopifyAPI::Customer.find(:all)
-      render :template => 'distributors/get_distributors.html.haml'
+      update_location(params)
     elsif params[:action_type]=='save_orders'
       session[:bulk_order]['products'] = params[:products]
       session[:bulk_order]['distributors'] = params[:locations]
@@ -59,40 +55,36 @@ class OrdersController < ApplicationController
   end
 
   def update_location(params)
-    respond_to do |format|
-      if @distributor.update(distributor_params)
-        customer = ShopifyAPI::Customer.find(@distributor.shopify_id)
-        customer.first_name = params[:distributor][:first_name]
-        customer.last_name = params[:distributor][:last_name]
-        customer.email =  params[:distributor][:email]
-        customer.verified_email =params[:distributor][:verified_email]
-        ad = params[:distributor][:addresses_attributes].first[1]
-        if customer.addresses.present? 
-          customer.addresses[0].address1 = ad[:address1]
-          customer.addresses[0].city = ad[:city]
-          customer.addresses[0].province = ad[:province]
-          customer.addresses[0].phone= ad[:phone]
-          customer.addresses[0].zip= ad[:zip]
-          customer.addresses[0].last_name= ad[:last_name]
-          customer.addresses[0].first_name= ad[:first_name]
-          customer.addresses[0].country= ad[:country] || 'United States'
-        else
-          # CREATE CUSTOMER ADDRESS
-        end
-        customer.save        
-        flash[:notice] = 'Location was successfully created.'
-        # format.html { redirect_to @distributor, notice: 'Location was successfully created.' }
-        # format.json { render :show, status: :created, location: @distributor }
+    if @distributor.update(distributor_params)
+      customer = ShopifyAPI::Customer.find(@distributor.shopify_id)
+      customer.first_name = params[:distributor][:first_name]
+      customer.last_name = params[:distributor][:last_name]
+      customer.email =  params[:distributor][:email]
+      customer.verified_email =params[:distributor][:verified_email]
+      ad = params[:distributor][:addresses_attributes].first[1]
+      if customer.addresses.present? 
+        customer.addresses[0].address1 = ad[:address1]
+        customer.addresses[0].city = ad[:city]
+        customer.addresses[0].province = ad[:province]
+        customer.addresses[0].phone= ad[:phone]
+        customer.addresses[0].zip= ad[:zip]
+        customer.addresses[0].last_name= ad[:last_name]
+        customer.addresses[0].first_name= ad[:first_name]
+        customer.addresses[0].country= ad[:country] || 'United States'
       else
-        flash[:notice] = 'Location could not be saved'
-        # format.html { render :new }
-        # format.json { render json: @shop_customer.errors, status: :unprocessable_entity }
+        # CREATE CUSTOMER ADDRESS
       end
+      customer.save        
+      flash[:notice] = 'Location was successfully updated.'
+      @distributors = ShopifyAPI::Customer.find(:all)
+      render :template => 'distributors/get_distributors.html.haml'
+    else
+      flash[:notice] = 'Location could not be saved'
+      render :template => 'distributors/edit.html.haml'
     end
   end
 
   def create_location(params)
-    message = {}
     customer_hash= {"customer": 
                     {"first_name": params[:distributor][:first_name],
                     "last_name": params[:distributor][:last_name],
@@ -114,21 +106,17 @@ class OrdersController < ApplicationController
                   }
     
     @distributor = Distributor.new(distributor_params)
-    respond_to do |format|
-      @shop_customer = ShopifyAPI::Customer.create(customer_hash)
-      if @shop_customer.save
-        @distributor.shopify_id = @shop_customer.id
-        @distributor.save
-        flash[:notice] = 'Location was successfully created.'
-        # format.html { redirect_to @distributor, notice: 'Location was successfully created.' }
-        # format.json { render :show, status: :created, location: @distributor }
-      else
-        flash[:notice] = 'Location could not be saved'
-        # format.html { render :new }
-        # format.json { render json: @shop_customer.errors, status: :unprocessable_entity }
-      end
+    @shop_customer = ShopifyAPI::Customer.create(customer_hash)
+    if @shop_customer.save
+      @distributor.shopify_id = @shop_customer.id
+      @distributor.save
+      @distributors = ShopifyAPI::Customer.find(:all)
+      flash[:notice] = 'Location was successfully created.'
+      render :template => 'distributors/get_distributors.html.haml'
+    else
+      flash[:notice] = 'Location could not be saved'
+      render :template => 'distributors/new.html.haml'
     end
-    message
   end
 
 	def bulk_order
