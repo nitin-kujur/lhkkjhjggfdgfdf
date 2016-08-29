@@ -29,6 +29,9 @@ class OrdersController < ApplicationController
     elsif params[:action_type]=='save-location-list'
       session[:bulk_order]['products'] = params[:products]||''
       session[:bulk_order]['distributors'] = params[:distributors]||''
+      grid_info.location_ids = session[:bulk_order]['distributors'].join(',')
+      grid_info.product_ids = session[:bulk_order]['products'].join(',')
+      grid_info.save
     elsif params[:action_type]=='session_clear'
       session[:bulk_order]= nil
     elsif params[:action_type]=='new-location'
@@ -60,7 +63,7 @@ class OrdersController < ApplicationController
       respond_to do |format|
         format.json { render json: {'distributor_id' => params[:distributor_id], 'shipping_amount' =>  amount} }
       end
-    elsif params[:action_type].blank?
+    else
       session[:bulk_order]['products'] = (grid_info.product_ids||"").split(',')
       session[:bulk_order]['distributors'] = (grid_info.location_ids||"").split(',')
     end
