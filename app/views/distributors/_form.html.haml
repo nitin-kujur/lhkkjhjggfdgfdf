@@ -1,5 +1,5 @@
 - action_type = @distributor.id.nil? ? 'create-location' : 'update-location'
-= form_for @distributor , url: "/tools"+place_bulk_order_path(action_type: action_type), class: 'form', turboboost: true do |f|
+= form_for @distributor , url: "/tools"+place_bulk_order_path(action_type: action_type), class: 'form' do |f|
   - if @shop_customer && @shop_customer.errors.any?
     #error_explanation
       %h2= "#{pluralize(@shop_customer.errors.count, "error")} prohibited this Location from being saved on shop:"
@@ -65,8 +65,6 @@
         .field
           = a.label :country
           %br
-          =#a.object.country
-          =# a.select :country ,options_for_select(["India", "United States"],selected: a.object.country)  ,class: 'form-control'
           = a.text_field :country, class: 'form-control' , disabled: true, value: 'United States'
           = a.hidden_field :country, value: 'United States'
   %br
