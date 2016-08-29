@@ -9,9 +9,9 @@ class OrdersController < ApplicationController
 
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank?
-    grid_info = GridInfo.find_by_identifier(params[:signature])
+    grid_info = GridInfo.find_by_identifier(params[:fwd])
     if grid_info.blank?
-      grid_info = GridInfo.new(identifier: params[:signature])
+      grid_info = GridInfo.new(identifier: params[:fwd])
       grid_info.save
     end
     if params[:action_type]=='list-location'
