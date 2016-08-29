@@ -35,7 +35,7 @@ class OrdersController < ApplicationController
       render :template => 'distributors/edit.html.haml'
     elsif params[:action_type]=='update-location'
       @distributor = Distributor.find(params[:distributor_id])
-      update_location(params[:distributor])
+      update_location()
     elsif params[:action_type]=='save_orders'
       session[:bulk_order]['products'] = params[:products]
       session[:bulk_order]['distributors'] = params[:locations]
@@ -56,7 +56,7 @@ class OrdersController < ApplicationController
     
   end
 
-  def update_location(params)
+  def update_location()
     if @distributor.update(distributor_params)
       customer = ShopifyAPI::Customer.find(@distributor.shopify_id)
       customer.first_name = params[:distributor][:first_name]
@@ -73,8 +73,6 @@ class OrdersController < ApplicationController
         customer.addresses[0].last_name= ad[:last_name]
         customer.addresses[0].first_name= ad[:first_name]
         customer.addresses[0].country= ad[:country] || 'United States'
-      else
-        # CREATE CUSTOMER ADDRESS
       end
       customer.save        
       flash[:notice] = 'Location was successfully updated.'
