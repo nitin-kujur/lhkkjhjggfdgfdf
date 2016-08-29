@@ -47,6 +47,10 @@
                   - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
                 - else
                   - value = ''
+              %div{class: "col-xs-12 product-total-quantity-#{product.id}"}
+                0
+              %div{class: "col-xs-12 product-total-amount-#{product.id}"}
+                0
               - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
                 - session[:bulk_order]['distributors'].each do |distributor_id|
                   - customer = ShopifyAPI::Customer.find(distributor_id) rescue nil
@@ -55,10 +59,6 @@
                     - if default_address.present?
                       %div{style: 'height:75px;width:100px'}
                         =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
-              %div{class: "col-xs-12 product-total-quantity-#{product.id}"}
-                0
-              %div{class: "col-xs-12 product-total-amount-#{product.id}"}
-                0
   .col-md-6.pull-left
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
       %div{style: 'height:200px'}
@@ -74,6 +74,12 @@
           Shipping 
           Cost  
     - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
+      - if session[:bulk_order].present? && session[:bulk_order]['products'].present? && session[:bulk_order]['distributors'].present?
+        %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
+          Total Quantity
+        .total-price
+          %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
+            Total Price
       - session[:bulk_order]['distributors'].each do |distributor_id|
         - customer = ShopifyAPI::Customer.find(distributor_id) rescue nil
         - if customer.present?
@@ -98,12 +104,6 @@
                   - variant = product.variants.first
                   %div{class: "col-xs-12", style: "width: 160px;"}
               =  hidden_field_tag "order[distributors][#{distributor_id}]shipping_amount" ,0 , id: "shipping-#{distributor_id}"
-      - if session[:bulk_order].present? && session[:bulk_order]['products'].present? && session[:bulk_order]['distributors'].present?
-        %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
-          Total Quantity
-        .total-price
-          %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
-            Total Price
           
 %br
 #loader.none
