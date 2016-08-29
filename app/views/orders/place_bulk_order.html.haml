@@ -40,7 +40,8 @@
                 = image_tag product.image.src, style: 'width:100px;'
                 %br
                 %br
-                = product.title
+                .product-title.dont-break-out
+                  = product.title
                 %br
                 = variant.price
                 - if @orders.present?
