@@ -34,7 +34,9 @@ class OrdersController < ApplicationController
       grid_info.product_ids = session[:bulk_order]['products'].join(',')
       grid_info.save
     elsif params[:action_type]=='session_clear'
-      session[:bulk_order]= nil
+      session[:bulk_order]= {}
+      session[:bulk_order]['products'] = []
+      session[:bulk_order]['distributors'] = []
       grid_info.location_ids = ''
       grid_info.product_ids = ''
       grid_info.save
