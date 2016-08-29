@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get 'get_shipping_amount'
     end
   end
+  get 'place_bulk_order' => 'orders#place_bulk_order' , as: :place_bulk_order
   get 'place-bulk-order' => 'orders#place_bulk_order'
   post 'place-bulk-order' => 'orders#place_bulk_order'
   patch 'place-bulk-order' => 'orders#place_bulk_order'
