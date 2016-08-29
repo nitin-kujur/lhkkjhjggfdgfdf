@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  location_ids: MyString
+  string: MyString
+  product_ids: MyString
+  string: MyString
+  identifier: MyString
+
+two:
+  location_ids: MyString
+  string: MyString
+  product_ids: MyString
+  string: MyString
+  identifier: MyString

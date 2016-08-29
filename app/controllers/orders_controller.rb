@@ -9,24 +9,25 @@ class OrdersController < ApplicationController
 
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank?
+    grid_info = GridInfo.find_by_identifier(params[:signature])
+    if grid_info.blank?
+      grid_info = GridInfo.new(identifier: params[:signature])
+      grid_info.save
+    end
     if params[:action_type]=='list-location'
       @distributors = ShopifyAPI::Customer.find(:all)
       render :template => 'distributors/get_distributors.html.haml'
     elsif params[:action_type]=='list-product'
       @products = ShopifyAPI::Product.find(:all)
       render :template => 'home/index.html.haml'
-    elsif params[:action_type]=='get_caches_locations'
-      session[:bulk_order]['products'] = params[:product_ids].split(',')
-      session[:bulk_order]['distributors'] = params[:cache_locations].split(',')
-      respond_to do |format|
-        format.js {}
-      end
     elsif params[:action_type]=='save-product-list'
       session[:bulk_order]['products'] = params[:products]
       session[:bulk_order]['distributors'] = params[:locations]
+      grid_info.update_attributes(location_ids: session[:bulk_order]['distributors'].join(','), product_ids: session[:bulk_order]['products'].join(',') )
     elsif params[:action_type]=='save-location-list'
       session[:bulk_order]['products'] = params[:products]
       session[:bulk_order]['distributors'] = params[:distributors]
+      grid_info.update_attributes(location_ids: session[:bulk_order]['distributors'].join(','), product_ids: session[:bulk_order]['products'].join(',') )
     elsif params[:action_type]=='session_clear'
       session[:bulk_order]= nil
     elsif params[:action_type]=='new-location'
@@ -58,6 +59,9 @@ class OrdersController < ApplicationController
       respond_to do |format|
         format.json { render json: {'distributor_id' => params[:distributor_id], 'shipping_amount' =>  amount} }
       end
+    elsif params[:action_type].blank?
+      session[:bulk_order]['products'] = (grid_info.product_ids||"").split(',')
+      session[:bulk_order]['distributors'] = (grid_info.location_ids||"").split(',')
     end
     
   end
