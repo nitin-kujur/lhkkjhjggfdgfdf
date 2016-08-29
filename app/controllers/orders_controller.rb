@@ -32,6 +32,7 @@ class OrdersController < ApplicationController
     elsif params[:action_type]=='edit-location'
       @distributor = sync_location(params[:id])
       @address = @distributor.addresses.first ? @distributor.addresses.first : @distributor.addresses.build
+      render :template => 'distributors/edit.html.haml'
     elsif params[:action_type]=='update-location'
       update_location(params)
     elsif params[:action_type]=='save_orders'
