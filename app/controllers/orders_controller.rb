@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
 
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank?
-    uid = request.remote_ip.to_s+'/'+request.env['HTTP_USER_AGENT']
+    uid = request.remote_ip.to_s+'/'+request.env['HTTP_USER_AGENT']+"/"+params[:shop]
     grid_info = GridInfo.find_by_identifier(uid)
     if grid_info.blank?
       grid_info = GridInfo.new(identifier: uid)
