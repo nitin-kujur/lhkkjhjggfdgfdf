@@ -9,9 +9,10 @@ class OrdersController < ApplicationController
 
   def place_bulk_order
     session[:bulk_order] = {} if session[:bulk_order].blank?
-    grid_info = GridInfo.find_by_identifier(params[:fwd])
+    uid = request.remote_ip.to_s+'/'+request.env['HTTP_USER_AGENT']
+    grid_info = GridInfo.find_by_identifier(uid)
     if grid_info.blank?
-      grid_info = GridInfo.new(identifier: params[:fwd])
+      grid_info = GridInfo.new(identifier: uid)
       grid_info.save
     end
     if params[:action_type]=='list-location'
