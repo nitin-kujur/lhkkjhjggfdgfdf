@@ -1,5 +1,7 @@
 - action_type = @distributor.id.nil? ? 'create-location' : 'update-location'
 = form_for @distributor , url: "/tools"+place_bulk_order_path(action_type: action_type), class: 'form' do |f|
+  - if @distributor.id.present?
+    =  hidden_field_tag "distributor_id", @distributor.id
   - if @shop_customer && @shop_customer.errors.any?
     #error_explanation
       %h2= "#{pluralize(@shop_customer.errors.count, "error")} prohibited this Location from being saved on shop:"

@@ -34,8 +34,8 @@ class OrdersController < ApplicationController
       @address = @distributor.addresses.first ? @distributor.addresses.first : @distributor.addresses.build
       render :template => 'distributors/edit.html.haml'
     elsif params[:action_type]=='update-location'
-      @distributor = Distributor.find(params[:id])
-      update_location(params)
+      @distributor = Distributor.find(params[:distributor_id])
+      update_location(params[:distributor])
     elsif params[:action_type]=='save_orders'
       session[:bulk_order]['products'] = params[:products]
       session[:bulk_order]['distributors'] = params[:locations]
