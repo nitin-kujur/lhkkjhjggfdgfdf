@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     end
   end
   get 'place_bulk_order' => 'orders#place_bulk_order' , as: :place_bulk_order
+  post 'place_bulk_order' => 'orders#place_bulk_order'
   get 'place-bulk-order' => 'orders#place_bulk_order'
   post 'place-bulk-order' => 'orders#place_bulk_order'
   patch 'place-bulk-order' => 'orders#place_bulk_order'
