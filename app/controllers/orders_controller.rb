@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
     elsif params[:action_type]=='create-location'
       create_location(params)
     elsif params[:action_type]=='edit-location'
-      @distributor = Distributor.find_by_shopify_id(params[:id])
+      @distributor = sync_location(params[:id])
       @address = @distributor.addresses.first ? @distributor.addresses.first : @distributor.addresses.build
     elsif params[:action_type]=='update-location'
       update_location(params)
@@ -176,6 +176,29 @@ class OrdersController < ApplicationController
     end
   end
 
+  def sync_location(customer_id)
+    distributor = Distributor.find_by_shopify_id(customer_id)
+    if distributor.blank? 
+      customer = ShopifyAPI::Customer.find(customer_id)
+      distributor = Distributor.new(email: customer.email, first_name: customer.first_name,
+        last_name: customer.last_name, verified_email: customer.verified_email,shopify_id: customer.id)
+      if distributor.save
+        customer.addresses.each do |ad|
+          address = distributor.addresses.build
+          address.first_name = ad.first_name
+          address.last_name = ad.last_name
+          address.address1 = ad.address1
+          address.city = ad.city
+          address.province = ad.province
+          address.phone = ad.phone
+          address.zip = ad.zip
+          address.country = ad.country
+          address.save
+        end
+      end
+    end
+    distributor
+  end
   private
     def distributor_params
       params.require(:distributor).permit(:first_name, :last_name, :email, :verified_email, addresses_attributes: [:id, :address1, :first_name, :last_name, :city, :phone, :zip, :country, :province])
