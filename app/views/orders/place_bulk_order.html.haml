@@ -134,10 +134,10 @@
   }
 - if session[:bulk_order]['distributors'].present?
   :javascript
-    setCookie("#{params[:shop]}_locations", #{session[:bulk_order]['distributors'].join(',')}, 1)
+    setCookie("#{params[:shop]}_locations", "#{session[:bulk_order]['distributors'].join(',')}", 1)
 - if session[:bulk_order]['products'].present?
   :javascript
-    setCookie("#{params[:shop]}_products", #{session[:bulk_order]['products'].join(',')}, 1)
+    setCookie("#{params[:shop]}_products", "#{session[:bulk_order]['products'].join(',')}", 1)
 - if session[:bulk_order]['distributors'].blank? && session[:bulk_order]['products'].present?
   :javascript
     location_ids = getCookie("#{params[:shop]}_locations");
