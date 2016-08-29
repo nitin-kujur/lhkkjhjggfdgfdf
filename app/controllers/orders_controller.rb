@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
     elsif params[:action_type]=='create-location'
       create_location(params)
     elsif params[:action_type]=='edit-location'
-      @distributor = Distributor.find(params[:id])
+      @distributor = Distributor.find_by_shopify_id(params[:id])
       @address = @distributor.addresses.first ? @distributor.addresses.first : @distributor.addresses.build
     elsif params[:action_type]=='update-location'
       update_location(params)
