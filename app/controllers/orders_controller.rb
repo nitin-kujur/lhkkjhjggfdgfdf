@@ -35,6 +35,9 @@ class OrdersController < ApplicationController
       grid_info.save
     elsif params[:action_type]=='session_clear'
       session[:bulk_order]= nil
+      grid_info.location_ids = ''
+      grid_info.product_ids = ''
+      grid_info.save
     elsif params[:action_type]=='new-location'
       @distributor = Distributor.new
       @address = @distributor.addresses.build
