@@ -29,9 +29,6 @@ class OrdersController < ApplicationController
     elsif params[:action_type]=='save-location-list'
       session[:bulk_order]['products'] = params[:products]||''
       session[:bulk_order]['distributors'] = params[:distributors]||''
-      grid_info.location_ids = session[:bulk_order]['distributors'].join(',')
-      grid_info.product_ids = session[:bulk_order]['products'].join(',')
-      grid_info.save
     elsif params[:action_type]=='session_clear'
       session[:bulk_order]= nil
     elsif params[:action_type]=='new-location'
