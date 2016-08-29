@@ -138,6 +138,10 @@
 - if session[:bulk_order]['products'].present?
   :javascript
     setCookie("#{params[:shop]}_products", "#{session[:bulk_order]['products'].join(',')}", 1)
+- if params[:action_type]=='session_clear'
+  :javascript
+    setCookie("#{params[:shop]}_locations", "", 1)
+    setCookie("#{params[:shop]}_products", "", 1)
 - if session[:bulk_order]['distributors'].blank? && session[:bulk_order]['products'].blank?
   :javascript
     location_ids = getCookie("#{params[:shop]}_locations");
