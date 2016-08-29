@@ -57,3 +57,8 @@
   hyphens: auto;
 
 }
+.ellipses {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
