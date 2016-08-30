@@ -120,11 +120,11 @@ function update_total_value(element_id){
     }
   });
   $('.distributor-total-quantity-'+ids[1]).html(addCommas(total_distributor_quantity));
-  $('.distributor-total-amount-'+ids[1]).html("$"+addCommas(total_distributor_price));
+  $('.distributor-total-amount-'+ids[1]).html("$"+addCommas(total_distributor_price.toFixed(2)));
   $('.product-total-quantity-'+ids[2]).html(addCommas(total_product_quantity));
-  $('.product-total-amount-'+ids[2]).html("$"+addCommas(total_product_price));
+  $('.product-total-amount-'+ids[2]).html("$"+addCommas(total_product_price.toFixed(2)));
   $('.total-products').html(addCommas(total_quantity));
-  $('.total-amount').html(addCommas("$"+total_amount));
+  $('.total-amount').html(addCommas("$"+total_amount.toFixed(2)));
 }
 
 function addCommas(nStr){
