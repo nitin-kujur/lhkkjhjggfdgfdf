@@ -1,6 +1,6 @@
 %h1 Locations
 - pre_selection = params[:locations]||[]
-= form_tag("/tools/place_bulk_order", method: :post) do 
+= form_tag(ENV["pre_fix_url"]+"/place_bulk_order", method: :post) do 
   = hidden_field_tag "action_type", "save-location-list"
   - (params[:products]||[]).each do |v|
     = hidden_field_tag "products[]", v
@@ -18,9 +18,9 @@
           %td= "#{distributor.first_name} #{distributor.last_name}"
           %td= distributor.email
           %td= distributor.verified_email
-          %td= link_to 'Edit', "/tools"+place_bulk_order_path(action_type: 'edit-location', id: distributor.id, locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[])
+          %td= link_to 'Edit', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'edit-location', id: distributor.id, locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[])
   = submit_tag 'Save Locations for bulk order' ,class: 'btn btn-primary update-distributor'
 %br
 
-= link_to 'New Location', "/tools"+place_bulk_order_path(action_type: 'new-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]) , class: 'btn btn-success'
+= link_to 'New Location', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'new-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]) , class: 'btn btn-success'
 =# link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-success'

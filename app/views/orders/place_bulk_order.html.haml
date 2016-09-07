@@ -1,15 +1,15 @@
 %h1 Place Bulk Order
 - products = []
-= form_tag( "/tools"+place_bulk_order_path(action_type: 'save_orders'), method: :post, id: 'order_place') do
+= form_tag( ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'save_orders'), method: :post, id: 'order_place') do
   .row
     .col-xs-20
       .col-md-1
         = link_to 'Place Order', "#", class: 'btn btn-primary' , onclick: "$('form#order_place').submit();"
       .col-md-3.center
         %strong Locations
-        = link_to '' , "/tools"+place_bulk_order_path(action_type: 'list-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'btn glyphicon glyphicon-plus btn-primary'
+        = link_to '' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'btn glyphicon glyphicon-plus btn-primary'
         %strong Product
-        = link_to '' , "/tools"+place_bulk_order_path(action_type: 'list-product', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'btn glyphicon glyphicon-plus btn-primary'
+        = link_to '' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-product', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'btn glyphicon glyphicon-plus btn-primary'
       .col-md-7
         %strong Total Products
         .btn.glyphicon.btn-primary.total-products
@@ -20,7 +20,7 @@
         %strong Shipping
         = select_tag "shipping_type", options_for_select(get_shipping_options)
       .col-md-1
-        = link_to 'Clear Bulk Order ', "/tools"+place_bulk_order_path(action_type: 'session_clear'), class: 'btn btn-success clear-cacheing'
+        = link_to 'Clear Bulk Order ', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'session_clear'), class: 'btn btn-success clear-cacheing'
   - (session[:bulk_order]['distributors']||[]).each do |v|
     = hidden_field_tag "locations[]", v
   - (session[:bulk_order]['products']||[]).each do |v|

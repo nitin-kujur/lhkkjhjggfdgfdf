@@ -1,6 +1,6 @@
 %h1 Products
 - pre_selection = params[:products]||[]
-= form_tag("/tools/place_bulk_order", method: :post) do 
+= form_tag(ENV["pre_fix_url"]+"/place_bulk_order", method: :post) do 
   = hidden_field_tag "action_type", "save-product-list" 
   - (params[:locations]||[]).each do |v|
     = hidden_field_tag "locations[]", v
