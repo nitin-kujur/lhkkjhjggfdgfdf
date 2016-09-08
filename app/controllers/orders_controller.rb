@@ -18,6 +18,9 @@ class OrdersController < ApplicationController
     if params[:action_type]=='list-location'
       @distributors = ShopifyAPI::Customer.find(:all)
       render :template => 'distributors/get_distributors.html.haml'
+    elsif params[:action_type]=='product-detail-pop'
+      @product = ShopifyAPI::Product.find(params[:product_id])
+      render :template => 'orders/product_detail.js.erb'
     elsif params[:action_type]=='list-product'
       @products = ShopifyAPI::Product.find(:all)
       render :template => 'home/index.html.haml'

@@ -37,7 +37,7 @@
             - products << product
             %li{class: 'DocumentItem' ,style: "height: #{place_height}px"}
               %div{style: 'height:200px'}
-                = image_tag product.image.src, style: 'width:100px;'
+                = link_to image_tag(product.image.src, style: 'width:100px;') , "/tools"+place_bulk_order_path(action_type: 'product-detail-pop', product_id: product.id,locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'fancybox' , remote: true
                 %br
                 %br
                 .product-title.ellipses

@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require fancybox
 //= require 'bootstrap'
 //= require_tree .
 
@@ -140,6 +141,7 @@ function addCommas(nStr){
 }
 
 $( document ).ready(function() {
+  $("a.fancybox").fancybox();
 	$( ".order-quantity" ).keyup(function() {
     current_value = parseInt($(this).val())
 		if(current_value >= 0){
