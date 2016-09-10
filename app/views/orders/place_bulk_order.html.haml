@@ -125,9 +125,9 @@
     cacheing_value = getCookie($(this).attr('id'))
     if(typeof cacheing_value != "undefined"){
       $(this).val(cacheing_value)
-      if(parseInt($(this).val()) > 0){
-        update_product_price($(this).attr('id'), $(this).val());
-      }
+    }      
+    if(parseInt($(this).val()) > 0){
+      update_product_price($(this).attr('id'), $(this).val());
     }
   });
   var ca = document.cookie.split(';');
