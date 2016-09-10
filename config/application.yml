@@ -13,4 +13,4 @@ production:
   ups_password: 'P444word!'
   ups_key: 'ACD8A71E16D5BA35'
   app_url: 'http://shopify-bulk-order.herokuapp.com'
-  pre_fix_url: '/tools'
+  pre_fix_url: '/apps'
