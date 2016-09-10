@@ -4,7 +4,7 @@ ShopifyApp.configure do |config|
   config.scope = "write_orders, read_orders, read_products, read_customers, write_customers, write_shipping"
   config.embedded_app = true	
   config.webhooks = [
-    {topic: 'carts/create', address: 'https://shopify-bulk-order.herokuapp.com/webhooks/carts_update', format: "script"}
+    {topic: 'carts/create', address: 'https://shopify-bulk-order.herokuapp.com/webhooks/carts_update', format: "json"}
   ]
 end
 SITE_URL = 'https://shopify-bulk-order.herokuapp.com'
