@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'sync_distributors' => "distributors#sync_distributors" , as: :sync_distributors
   root :to => 'products#index'
   mount ShopifyApp::Engine, at: '/'
+  get 'webhooks/carts_update' => "custom_webhooks#carts_update"
 
   namespace :app_proxy do
     root action: 'index'
@@ -13,6 +14,7 @@ Rails.application.routes.draw do
     # GET /app_proxy/reviews will now be routed to
     # AppProxy::ReviewsController#index, for example
   end
+
   resources :orders
   resources :distributors do 
     collection do
