@@ -1,5 +1,6 @@
 %h1 Place Bulk Order
 - products = []
+- customers = []
 = form_tag( ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'save_orders'), method: :post, id: 'order_place') do
   .row
     .col-xs-20
@@ -31,10 +32,10 @@
       - place_height = session[:bulk_order]['distributors'].present? ? 75 * session[:bulk_order]['distributors'].size + 300 : 300
       .DocumentList{style: "height: #{place_height}px"}  
         %ul{class: 'list-inline',style: "height: #{place_height}px"}
-          - session[:bulk_order]['products'].each do |product_id|
-            - product = ShopifyAPI::Product.find(product_id) 
+          - products = ShopifyAPI::Product.find(:all, params: {ids: session[:bulk_order]['products'].join(',')}) 
+          - products.each do |product|
+            - product_id = product.id
             - variant = product.variants.first
-            - products << product
             %li{class: 'DocumentItem' ,style: "height: #{place_height}px"}
               %div{style: 'height:200px'}
                 = image_tag product.image.src, style: 'width:100px;'
@@ -44,23 +45,27 @@
                   = product.title
                 %br
                 = variant.price
+                - custom_product = Product.find_by_shopify_product_id(product_id)
+                - min_quantity = custom_product.blank? || custom_product.min_quantity.blank? ? 'Quantity' : "Quantity <= #{custom_product.min_quantity}"
                 - if @orders.present?
                   - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
                 - else
-                  - value = ''
+                  - value = custom_product.present? ? custom_product.min_quantity : 0
               %div{class: "col-xs-12 product-total-quantity-#{product.id}"}
                 0
               %div{class: "col-xs-12 product-total-amount-#{product.id}"}
                 0
               %br
               - if session[:bulk_order].present? && session[:bulk_order]['distributors'].present?
-                - session[:bulk_order]['distributors'].each do |distributor_id|
-                  - customer = ShopifyAPI::Customer.find(distributor_id) rescue nil
+                - customers = ShopifyAPI::Customer.find(:all, params: {ids: session[:bulk_order]['distributors'].join(',')})
+                - customers.each do |customer|
+                  - distributor_id = customer.id
+                  - default_value = custom_product.present? ? custom_product.min_quantity : 0
                   - if customer.present?
                     - default_address = customer.default_address rescue nil
                     - if default_address.present?
-                      %div{style: 'height:75px;width:100px'}
-                        =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: 'Quantity', id: "order-#{distributor_id}-#{product.id}", product_price: variant.price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
+                      %div{style: 'height:75px;width:110px'}
+                        =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: variant.price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
   .col-md-6.pull-left
     - if session[:bulk_order].present? && session[:bulk_order]['products'].present?
       %div{style: 'height:200px'}
@@ -83,8 +88,8 @@
           %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
             Total Price
       %br
-      - session[:bulk_order]['distributors'].each do |distributor_id|
-        - customer = ShopifyAPI::Customer.find(distributor_id) rescue nil
+      - customers.each do |customer|
+        - distributor_id = customer.id.to_s
         - if customer.present?
           - default_address = customer.default_address rescue nil
           - if default_address.present?
@@ -94,7 +99,7 @@
                 - if @error_message.present? 
                   - if @error_message[distributor_id].present?
                     .error-message
-                      = @error_message[distributor_id]
+                      = @error_message[distributor_id].html_safe
               - if products.present?
                 %div{class: "col-xs-12 distributor-total-quantity-#{distributor_id}", style: "width: 100px;"}
                   0
@@ -117,9 +122,11 @@
 :javascript
   $( ".order-quantity" ).each(function() {
     cacheing_value = getCookie($(this).attr('id'))
-    $(this).val(cacheing_value)
-    if(parseInt($(this).val()) > 0){
-      update_total_value($(this).attr('id'));
+    if(typeof cacheing_value != "undefined"){
+      $(this).val(cacheing_value)
+      if(parseInt($(this).val()) > 0){
+        update_product_price($(this).attr('id'), $(this).val());
+      }
     }
   });
   var ca = document.cookie.split(';');

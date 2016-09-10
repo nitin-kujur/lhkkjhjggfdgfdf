@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :products
   get 'sync_distributors' => "distributors#sync_distributors" , as: :sync_distributors
-  root :to => 'home#index'
+  root :to => 'products#index'
   mount ShopifyApp::Engine, at: '/'
 
   namespace :app_proxy do

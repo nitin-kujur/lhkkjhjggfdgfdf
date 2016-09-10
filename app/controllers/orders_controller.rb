@@ -62,6 +62,17 @@ class OrdersController < ApplicationController
     elsif params[:action_type]=='list_orders'
       @orders = ShopifyAPI::Order.find(:all)
       render :template => 'orders/index.html.haml'
+    elsif params[:action_type]=='fetch_product_price'
+      begin
+        product = Product.find_by_shopify_product_id(params[:product_id])
+        base_price = params[:price]
+        amount = product.get_price(params[:quantity], base_price)
+      rescue => ex
+        amount = ex.message
+      end
+      respond_to do |format|
+        format.json { render json: {'product_id' => params[:product_id], product_min_quantity: product.min_quantity, 'product_price' =>  amount} }
+      end
     elsif params[:action_type]=='fetch_shipping'
       begin
         amount = Shop.calculate_min_shipping_rate(params[:shipping_type],params[:country],params[:country_code], params[:province],params[:province_code], params[:city], params[:zip], params[:price], params[:weight])
@@ -174,11 +185,18 @@ class OrdersController < ApplicationController
         if p_values[:quantity].present? && p_values[:quantity].to_i > 0
           product = ShopifyAPI::Product.find(product_id)
           variant = product.variants.first
-          line_items << {variant_id: variant.id, quantity: p_values[:quantity]}
+          own_product = Product.find_by_shopify_product_id(product_id)
+          product_price = own_product.blank? ? variant.price : own_product.get_price(p_values[:quantity], variant.price)
+          if own_product.min_quantity <= p_values[:quantity].to_i
+            line_items << {variant_id: variant.id, quantity: p_values[:quantity], price: product_price}
+          else
+            @error_message[cust_id] = '' if @error_message[cust_id].blank?
+            @error_message[cust_id] = @error_message[cust_id]+"</br>Product(#{product.title}) quantity should be greater or equal to #{own_product.min_quantity}"
+          end
         end
       end
-      if line_items.present?
-        order = ShopifyAPI::Order.new(shipping_lines: [shipping_line],line_items: line_items, customer: {id: customer.id}, billing_address: billing_address, shipping_address: shipping_address, financial_status: financial_status)
+      if line_items.present? && @error_message.blank?
+        order = ShopifyAPI::Order.new(shipping_lines: [shipping_line], line_items: line_items, customer: {id: customer.id}, billing_address: billing_address, shipping_address: shipping_address, financial_status: financial_status)
         if order.save
           @orders << order
         else
@@ -193,7 +211,6 @@ class OrdersController < ApplicationController
       @orders.each do |order|
         order.destroy
       end
-      render :place_bulk_order
     end
   end
 

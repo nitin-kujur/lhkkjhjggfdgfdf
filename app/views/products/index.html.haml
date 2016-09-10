@@ -1,25 +1,19 @@
-%h1 Listing products
-
-%table
+%h1 Products
+%table.table.table-striped
   %thead
     %tr
-      %th Shopify product
-      %th Min quantity
-      %th Shop
+      %th Image
+      %th Name
+      %th Min Quantity
+      %th Created at
       %th
-      %th
-      %th
-
   %tbody
     - @products.each do |product|
-      %tr
-        %td= product.shopify_product_id
-        %td= product.min_quantity
-        %td= product.shop
-        %td= link_to 'Show', product
-        %td= link_to 'Edit', edit_product_path(product)
-        %td= link_to 'Destroy', product, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Product', new_product_path
+      - sp = @shipify_products.find{|s| s.id.to_s==product.shopify_product_id}
+      - if sp.present?
+        %tr
+          %td= image_tag sp.image.src, class: 'product-image' ,width: 50
+          %td= sp.title
+          %td= product.min_quantity
+          %td= sp.created_at
+          %td= link_to 'Edit', edit_product_path(product)

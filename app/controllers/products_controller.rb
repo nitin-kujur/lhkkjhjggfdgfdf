@@ -1,10 +1,18 @@
-class ProductsController < ApplicationController
+class ProductsController < ShopifyApp::AuthenticatedController
+  before_action :set_session
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
   # GET /products
   # GET /products.json
   def index
+    @shipify_products = ShopifyAPI::Product.find(:all)
     @products = Product.all
+    shop = Shop.find_by_shopify_domain(params[:shop])
+    @shipify_products.each do |sp|
+      unless @products.map(&:shopify_product_id).include?(sp.id.to_s)
+        @products << Product.create(shopify_product_id: sp.id, shop_id: shop.id)
+      end
+    end
   end
 
   # GET /products/1
@@ -69,6 +77,18 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:shopify_product_id, :min_quantity, :shop)
+      params.require(:product).permit(:shopify_product_id, :min_quantity, product_quantities_attributes: [:id, :first_quantity, :last_quantity, :price, :_destroy])
+    end
+    def set_session
+      params[:shop] = 'pepsi-test.myshopify.com' if params[:shop].blank? && Rails.env.development?
+      if params[:shop].present?
+        shop = Shop.find_by_shopify_domain(params[:shop])
+        if shop.present?
+          sess = ShopifyAPI::Session.new(shop.shopify_domain, shop.shopify_token)
+          session[:shopify] = ShopifyApp::SessionRepository.store(sess)
+          ShopifyAPI::Base.activate_session(sess)
+          session[:shopify_domain] = shop.shopify_domain
+        end
+      end
     end
 end
