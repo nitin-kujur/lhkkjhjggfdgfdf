@@ -82,7 +82,7 @@ class OrdersController < ApplicationController
         amount = ex.message
       end
       respond_to do |format|
-        format.json { render json: {'product_id' => params[:product_id], product_min_quantity: quantity} }
+        format.json { render json: {'product_id' => product.id, product_min_quantity: quantity} }
       end
     elsif params[:action_type]=='fetch_shipping'
       begin
