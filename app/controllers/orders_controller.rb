@@ -77,12 +77,12 @@ class OrdersController < ApplicationController
       begin
         variant = ShopifyAPI::Variant.find(params[:variant_id])
         product = Product.find_by_shopify_product_id(variant.product_id)
-        quantity = product.present? ? 0 : product.min_quantity
+        quantity = product.blank? ? 0 : product.min_quantity
       rescue => ex
         amount = ex.message
       end
       respond_to do |format|
-        format.json { render json: {'product_id' => product.id, product_min_quantity: quantity} }
+        format.json { render json: {'product_id' => variant.product_id, product_min_quantity: quantity} }
       end
     elsif params[:action_type]=='fetch_shipping'
       begin
