@@ -7,7 +7,7 @@ development:
   app_url: 'http://localhost:3000'
 production:
   shopify_api_key: "0ddf38b3172252f500bd00c21f7478ce"
-  shopify_secret: "deccec663c38f127add917ad0eb9bf05"
+  shopify_secret: "506b86ba0c000bca41e4d9fd18e79efc"
   ups_user_id: 'jnatowitz@lapineinc.com'
   ups_password: 'P444word!'
   ups_key: 'ACD8A71E16D5BA35'
