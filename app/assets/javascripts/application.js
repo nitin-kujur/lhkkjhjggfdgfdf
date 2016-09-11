@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require 'bootstrap'
+//= require jquery_nested_form
 //= require_tree .
 
 function setCookie(cname, cvalue, exdays) {
@@ -34,7 +35,7 @@ function getCookie(cname) {
             return c.substring(name.length,c.length);
         }
     }
-    return "";
+    return undefined;
 }
 
 function delete_cookie( cname ) {
@@ -51,7 +52,58 @@ function delete_cookie( cname ) {
     }
 }
 
-function update_total_value(element_id){
+function get_shipping_price(ids, total_distributor_price, total_distributor_weight){
+  $.ajax({ 
+    url: pre_fix_url+"/place_bulk_order",
+    data:{
+      action_type: 'fetch_shipping',
+      shipping_type: $('#shipping_type').val(),
+      distributor_id: ids[1],
+      country: $('.distributor-'+ids[1]).attr('country'),
+      province: $('.distributor-'+ids[1]).attr('province'),
+      country_code: $('.distributor-'+ids[1]).attr('country_code'),
+      province_code: $('.distributor-'+ids[1]).attr('province_code'),
+      city: $('.distributor-'+ids[1]).attr('city'),
+      zip: $('.distributor-'+ids[1]).attr('zip'),
+      price: total_distributor_price,
+      weight: total_distributor_weight
+    },
+    dataType: 'json'
+  }).done(function(data) {
+    price = parseFloat(data['shipping_amount'])
+    if(price >= 0){
+      $("#shipping-"+data['distributor_id']).val(data['shipping_amount'])
+      $('.distributor-total-shipping-amount-'+data['distributor_id']).html('$'+addCommas(data['shipping_amount']));
+    }else{
+      $("#shipping-"+data['distributor_id']).val(0)
+      $('.distributor-total-shipping-amount-'+data['distributor_id']).html("<div class='error-message'>"+data['shipping_amount']+"</div>");
+    }
+  });
+}
+
+function update_product_price(element_id, val){
+  ids = element_id.split('-')
+  $.ajax({ 
+    url: pre_fix_url+"/place_bulk_order",
+    data:{
+      action_type: 'fetch_product_price',
+      product_id: ids[2],
+      price: $('#'+element_id).attr('product_price'),
+      quantity: val
+    },
+    dataType: 'json'
+  }).done(function(data) {
+    price = parseFloat(data['product_price'])
+    if(price >= 0){
+      $("#"+element_id).attr("product_price", data['product_price'])
+      update_total_value(element_id, val)
+    }else{
+      alert(data['product_price']);
+    }
+  });
+}
+
+function update_total_value(element_id, val){
   ids = element_id.split('-')
   total_product_quantity = 0;
   total_product_price = 0.0;
@@ -79,32 +131,7 @@ function update_total_value(element_id){
   
   if(total_distributor_price > 0){
     $('.distributor-total-shipping-amount-'+ids[1]).html($("#loader").html());
-    $.ajax({ 
-      url: "/tools/place_bulk_order",
-      data:{
-        action_type: 'fetch_shipping',
-        shipping_type: $('#shipping_type').val(),
-        distributor_id: ids[1],
-        country: $('.distributor-'+ids[1]).attr('country'),
-        province: $('.distributor-'+ids[1]).attr('province'),
-        country_code: $('.distributor-'+ids[1]).attr('country_code'),
-        province_code: $('.distributor-'+ids[1]).attr('province_code'),
-        city: $('.distributor-'+ids[1]).attr('city'),
-        zip: $('.distributor-'+ids[1]).attr('zip'),
-        price: total_distributor_price,
-        weight: total_distributor_weight
-      },
-      dataType: 'json'
-    }).done(function(data) {
-      price = parseFloat(data['shipping_amount'])
-      if(price >= 0){
-        $("#shipping-"+data['distributor_id']).val(data['shipping_amount'])
-        $('.distributor-total-shipping-amount-'+data['distributor_id']).html('$'+addCommas(data['shipping_amount']));
-      }else{
-        $("#shipping-"+data['distributor_id']).val(0)
-        $('.distributor-total-shipping-amount-'+data['distributor_id']).html("<div class='error-message'>"+data['shipping_amount']+"</div>");
-      }
-    });
+    get_shipping_price(ids, total_distributor_price, total_distributor_weight)
   }else{
     $("#shippig-"+ids[1]).val(0)
     $('.distributor-total-shipping-amount-'+ids[1]).html('$0');
@@ -147,12 +174,12 @@ $( document ).ready(function() {
     }else{
     	setCookie($(this).attr('id'), '', 1)
     }
-    update_total_value($(this).attr('id'));
+    update_product_price($(this).attr('id'), $(this).val());
 	});
   $('#shipping_type').change(function() {
     $('.distributor-shipping-amount').html($("#loader").html());
     $( ".order-quantity" ).each(function(index, element) {
-      update_total_value($(element).attr('id'));
+      update_total_value($(element).attr('id'), $(this).val());
     });
   });
 	$( ".clear-cacheing" ).click(function() {

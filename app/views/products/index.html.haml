@@ -1,0 +1,19 @@
+%h1 Products
+%table.table.table-striped
+  %thead
+    %tr
+      %th Image
+      %th Name
+      %th Min Quantity
+      %th Created at
+      %th
+  %tbody
+    - @products.each do |product|
+      - sp = @shipify_products.find{|s| s.id.to_s==product.shopify_product_id}
+      - if sp.present?
+        %tr
+          %td= image_tag sp.image.src, class: 'product-image' ,width: 50
+          %td= sp.title
+          %td= product.min_quantity
+          %td= sp.created_at
+          %td= link_to 'Edit', edit_product_path(product)

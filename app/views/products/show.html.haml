@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Shopify product:
+  = @product.shopify_product_id
+%p
+  %b Min quantity:
+  = @product.min_quantity
+%p
+  %b Shop:
+  = @product.shop.shopify_domain
+
+= link_to 'Edit', edit_product_path(@product)
+\|
+= link_to 'Back', products_path

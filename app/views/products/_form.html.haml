@@ -1,0 +1,30 @@
+= nested_form_for @product, html: {class: 'form'} do |f|
+  - if @product.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@product.errors.count, "error")} prohibited this product from being saved:"
+      %ul
+        - @product.errors.full_messages.each do |msg|
+          %li= msg
+  %fieldset
+    %legend Product Information
+    .input-group 
+      .field
+        = f.label :min_quantity
+        = f.number_field :min_quantity
+  %fieldset
+    %legend Product Quantity
+    .input-group 
+      = f.fields_for :product_quantities do |task_form|
+        .input-group 
+          .field
+            = task_form.label :first_quantity, value: 'Min Value'
+            = task_form.text_field :first_quantity
+            = task_form.label :last_quantity, value: 'Max Value'
+            = task_form.text_field :last_quantity
+            = task_form.label :price
+            = task_form.text_field :price
+            = task_form.link_to_remove "Remove this Quantity", class: 'btn btn-success'
+        %br
+      %p= f.link_to_add "Add a Quantity", :product_quantities, class: 'btn btn-success'
+  .actions
+    = f.submit 'Save', class: 'btn btn-success'

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shopify_product_id: MyString
+  min_quantity: 1
+  shop: 
+
+two:
+  shopify_product_id: MyString
+  min_quantity: 1
+  shop: 
