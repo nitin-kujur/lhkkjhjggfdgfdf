@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'sync_distributors' => "distributors#sync_distributors" , as: :sync_distributors
   root :to => 'products#index'
   mount ShopifyApp::Engine, at: '/'
-  get 'webhooks/carts_update' => "custom_webhooks#carts_update"
+  get 'carts_update' => "custom_webhooks#carts_update"
   get 'update_quantity' => "custom_scripts#update_quantity"
 
   namespace :app_proxy do
