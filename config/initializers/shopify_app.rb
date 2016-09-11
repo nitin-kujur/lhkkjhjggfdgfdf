@@ -7,7 +7,7 @@ ShopifyApp.configure do |config|
     {topic: 'carts/create', address: 'https://shopify-bulk-order.herokuapp.com/webhooks/carts_update', format: "json"}
   ]
   config.scripttags = [
-    {event:'onload', src: 'https://shopify-bulk-order.herokuapp.com/webhooks/carts_update.js'}
+    {event:'onload', src: 'https://shopify-bulk-order.herokuapp.com/webhooks/carts_update'}
   ]
 end
 SITE_URL = 'https://shopify-bulk-order.herokuapp.com'
