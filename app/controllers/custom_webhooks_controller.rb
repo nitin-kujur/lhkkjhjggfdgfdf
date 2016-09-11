@@ -1,6 +1,6 @@
 class CustomWebhooksController < ApplicationController
   # include ShopifyApp::WebhookVerification
-
+  layout false
   def carts_update
     respond_to do |format|
       format.html { }
