@@ -1,1 +1,15 @@
-alert('jj')
+if($("#product-select").val()){
+	$.ajax({ 
+	  url: "/apps/place_bulk_order",
+	  data:{
+	    action_type: 'fetch_product_min_quantity',
+	    variant_id: $("#product-select").val()
+	  },
+	  dataType: 'json'
+	}).done(function(data) {
+	  quantity = parseInt(data['product_min_quantity'])
+	  if(price > 0){
+	    $("input[name='quantity']").val(quantity)
+	  }
+	});
+}

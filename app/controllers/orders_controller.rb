@@ -73,6 +73,17 @@ class OrdersController < ApplicationController
       respond_to do |format|
         format.json { render json: {'product_id' => params[:product_id], product_min_quantity: product.min_quantity, 'product_price' =>  amount} }
       end
+    elsif params[:action_type] == 'fetch_product_min_quantity'
+      begin
+        variant = ShopifyAPI::Variant.find(params[:variant_id])
+        product = Product.find_by_shopify_product_id(variant.product_id)
+        quantity = product.present? ? 0 : product.min_quantity
+      rescue => ex
+        amount = ex.message
+      end
+      respond_to do |format|
+        format.json { render json: {'product_id' => params[:product_id], product_min_quantity: quantity} }
+      end
     elsif params[:action_type]=='fetch_shipping'
       begin
         amount = Shop.calculate_min_shipping_rate(params[:shipping_type],params[:country],params[:country_code], params[:province],params[:province_code], params[:city], params[:zip], params[:price], params[:weight])
