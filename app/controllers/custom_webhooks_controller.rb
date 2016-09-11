@@ -1,5 +1,5 @@
 class CustomWebhooksController < ApplicationController
-  #include ShopifyApp::WebhookVerification
+  include ShopifyApp::WebhookVerification
 
   def carts_update
   	puts params.inspect
