@@ -1,9 +1,8 @@
-class CustomWebhooksController < ApplicationController
-  include ShopifyApp::WebhookVerification
+class CustomScriptsController < ApplicationController
 
-  def carts_update
+  layout false
+  def update_quantity
   	puts params.inspect
-  	head :ok
     respond_to do |format|
       format.html { }
       format.json { }
