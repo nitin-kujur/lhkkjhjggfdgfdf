@@ -10,12 +10,12 @@
         %th ID
         %th Image
         %th Name
-        %th Created At
+        %th Price
     %tbody
       - @products.each do |product|
         %tr
           %td= check_box_tag  "products[]", product.id, pre_selection.include?(product.id.to_s)
           %td= image_tag product.image.src, class: 'product-image' ,width: 50
           %td= product.title
-          %td= product.created_at
+          %td= product.price_varies ? (product.price_min.to_s +'-'+ product.price_max.to_s) : product.price
   = submit_tag 'Save Products for bulk order' ,class: 'btn btn-primary'
