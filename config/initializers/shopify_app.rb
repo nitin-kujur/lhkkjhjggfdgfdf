@@ -5,4 +5,4 @@ ShopifyApp.configure do |config|
   config.embedded_app = false
 end
 
-SITE_URL = 'https://shopify-bulk-order.herokuapp.com'
+SITE_URL = 'https://shopify-order-app.herokuapp.com'
