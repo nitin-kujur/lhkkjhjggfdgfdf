@@ -1,6 +1,6 @@
 development:
-  shopify_api_key: "0ddf38b3172252f500bd00c21f7478ce"
-  shopify_secret: "506b86ba0c000bca41e4d9fd18e79efc"
+  shopify_api_key: "c67c6718da87efdf792547a6bb83a3c7"
+  shopify_secret: "046a6fc5252d1d85602eea6d1aac558f"
   ups_user_id: 'jnatowitz@lapineinc.com'
   ups_password: 'P444word!'
   ups_key: 'ACD8A71E16D5BA35'
