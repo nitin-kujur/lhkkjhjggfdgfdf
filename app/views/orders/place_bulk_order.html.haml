@@ -53,6 +53,7 @@
           %div{class: "col-xs-12 col-md-7 total-info",style: 'width: 500px;'}
             Total Price
       %br
+      - customers = ShopifyAPI::Customer.find(:all, params: {ids: session[:bulk_order]['distributors'].join(',')}) 
       - customers.each do |customer|
         - distributor_id = customer.id.to_s
         - if customer.present?
