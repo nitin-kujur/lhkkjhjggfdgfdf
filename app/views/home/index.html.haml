@@ -9,13 +9,22 @@
       %tr
         %th ID
         %th Image
-        %th Name
-        %th Created At
+        %th Product
     %tbody
       - @products.each do |product|
         %tr
           %td= check_box_tag  "products[]", product.id, pre_selection.include?(product.id.to_s)
-          %td= image_tag product.image.src, class: 'product-image' ,width: 50
-          %td= product.title
-          %td= product.created_at
+          %td
+            = link_to image_tag(product.image.src, style: 'width:100px;') , ENV["pre_fix_url"]++place_bulk_order_path(action_type: 'product-detail-pop', product_id: product.id), class: 'fancybox' , remote: true
+            =# image_tag product.image.src, class: 'product-image' ,width: 50
+          %td
+            %strong= product.title
+            %br
+            -product.variants.each_with_index do |variant,index|
+              - variant.attributes.each.each do |key, value|
+                -if ["price","sku", "grams", "weight_unit"].include?(key.to_s)
+                  ="#{key.humanize}: #{value}, " 
+              %br
+          
+
   = submit_tag 'Save Products for bulk order' ,class: 'btn btn-primary'

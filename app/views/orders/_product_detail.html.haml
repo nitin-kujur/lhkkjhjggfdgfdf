@@ -1,0 +1,56 @@
+.quick-view-container.fancyox-view-detail
+  #sca-qv-left.sca-left{:style => "height: 308px;"}
+    #sca-qv-sale.sca-qv-sale.sca-qv-hidden.sca-qv-sale-settings Sale
+    / START ZOOM IMAGE
+    .sca-qv-zoom-container
+      .zoomWrapper
+        #sca-qv-zoomcontainer.sqa-qv-zoomcontainer
+          / %img#sca-qv-zoomImg{:alt => "", "data-zoom-image" => "//cdn.shopify.com/s/files/1/1406/7348/products/pepsi_Back_pack_1.png?v=1469622543", :src => "//cdn.shopify.com/s/files/1/1406/7348/products/pepsi_Back_pack_1_large.png", :style => "max-width:345px;max-height:345px"}/
+          = image_tag(@product.images.first.src,  :style => "max-width:345px;max-height:345px") 
+    / END ZOOM IMAGE
+    / START GALLERY
+    #sca-qv-galleryid.sca-qv-gallery
+    / END GALLERY
+  / START BUY
+  #sca-qv-right.sca-right
+    / --------------------------
+    #sca-qv-title.name-title
+      %strong= @product.title
+    / --------------------------
+    -@product.variants.each_with_index do |variant,index|
+      #sca-qv-price-container.sca-qv-price-container
+        = "#{index+ 1}) "
+        - variant.attributes.each.each do |key, value|
+          -if ["price","sku", "grams", "weight_unit"].include?(key.to_s)
+            %span.sca-qv-product-price{:style => "color:#f45b4f !important;"}
+              ="#{key}: #{value}" 
+              %br
+
+    / --------------------------
+    #sca-qv-des.sca-qv-row
+      / Pepsi Back Pack
+      .clear-both
+    / --------------------------
+    .sca-qv-row
+    //  %a#sca-qv-detail{:href => "/products/pepsi-back-pack-1"} View full product details →
+    / -----------------------------------------------------------------------
+    #sca-qv-cartform
+      %form#sca-qv-add-item-form{:method => "post"}
+        / Begin product options ! DON'T PUT CONTENT HERE!
+        .sca-qv-product-options
+          / --------------------------
+          #sca-qv-variant-options.sca-qv-optionrow
+            %div
+              / .selector-wrapper
+              /   %label Qty
+              /   %select#sca-qv-product-selected-option-0.single-option-selector{"data-option" => "option1"}
+              /     %option{:value => "0-50"} 0-50
+              /     %option{:value => "51+"} 51+
+              / %select#sca-qv-product-selected.sca-qv-hidden{:name => "id", :style => "display: none;"}
+              /   %option{:selected => "selected", :value => "25146627462"} 0-50 - $40.00
+              /   %option{:value => "27395186822"} 51+ - $30.00
+          / --------------------------
+          #sca-qv-addcart-msg.sca-qv-addcart-msg{:style => "position: absolute ! important; margin-top: 15px; display: none;"}
+        / End product options
+  / END BUY
+

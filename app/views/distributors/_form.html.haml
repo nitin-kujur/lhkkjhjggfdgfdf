@@ -37,32 +37,32 @@
     = f.fields_for :addresses, @address do |a| 
       .input-group
         .field
+          = a.label :province, "Region"
+          = a.text_field :province, class: 'form-control'
+      .input-group
+        .field
           = a.label :first_name , "Market"
           = a.text_field :first_name, class: 'form-control'
       .input-group
         .field
-          = a.label :last_name , "Location"
+          = a.label :last_name , "Location Name"
           = a.text_field :last_name, class: 'form-control'
       .input-group
         .field
-          = a.label :address1
+          = a.label :address1 , "Location Address"
           = a.text_field :address1, class: 'form-control'
       .input-group
         .field
-          = a.label :city
+          = a.label :city, "Location City"
           = a.text_field :city, class: 'form-control'
       .input-group
         .field
-          = a.label :province
-          = a.text_field :province, class: 'form-control'
-      .input-group
-        .field
-          = a.label :phone
-          = a.text_field :phone, class: 'form-control'
-      .input-group
-        .field
-          = a.label :zip
+          = a.label :zip, "Location Zip Code"
           = a.text_field :zip, class: 'form-control'
+      .input-group
+        .field
+          = a.label :phone, "Location Phone Number"
+          = a.text_field :phone, class: 'form-control'
       .input-group
         .field
           = a.label :country

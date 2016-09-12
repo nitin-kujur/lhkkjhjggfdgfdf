@@ -12,6 +12,7 @@
  *
  *= require_tree .
  *= require_self
+ *= require fancybox
  */
 .row-fluid{
     white-space: nowrap;
