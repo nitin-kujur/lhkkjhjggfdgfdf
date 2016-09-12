@@ -8,10 +8,9 @@
         = link_to 'Place Order', "#", class: 'btn btn-primary' , onclick: "$('form#order_place').submit();"
       .col-md-2.col-sm-2.col-xs-2.text-center
         .col-md-6.col-sm-12.col-xs-12
-          / %strong Product
           = link_to '+ Product' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-product', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'btn glyphicon1 glyphicon-plus1 btn-primary'
+        %br{class: 'visible-sm visible-xs'}
         .col-md-6.col-sm-12.col-xs-12
-          / %strong Locations
           = link_to '+ Locations' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'btn glyphicon1 glyphicon-plus1 btn-primary'
       .col-md-7.col-sm-7.col-xs-7.text-center
         .col-md-4.col-sm-4.col-xs-4
@@ -121,7 +120,6 @@
                     - if default_address.present?
                       %div{style: 'height:75px;width:110px'}
                         =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
-          
 %br
 #loader.none
   = image_tag 'loader.png'
