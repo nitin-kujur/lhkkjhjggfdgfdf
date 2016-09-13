@@ -17,7 +17,8 @@
       .row-height
         -if customers.present?
           .col-height.col-md-6{:style => "position:relative;"}
-            #price-list.table-responsive{:style => "position:absolute; bottom:-8px; width:100% !important;"}
+            - p_style = products.blank? ? "" : 'top:100px;'
+            #price-list.table-responsive{:style => "position:relative; #{p_style} width:100% !important;"}
               %table.table.extra-padding
                 %thead
                   %tr.fixed-td
