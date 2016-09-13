@@ -2,6 +2,8 @@ class Shop < ActiveRecord::Base
   include ShopifyApp::Shop
   include ShopifyApp::SessionStorage
 
+  has_many :products
+
 	def self.calculate_min_shipping_rate(shipping_type, country, country_code, province, province_code, city, zip_code, base_price, base_weight)
 		price = base_price.to_f
 		weight = base_weight.to_f
