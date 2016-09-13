@@ -63,7 +63,7 @@
                   %tr
                     %td
                       = link_to image_tag(product.image.src, style: 'width:100px;') , ENV["pre_fix_url"]++place_bulk_order_path(action_type: 'product-detail-pop', product_id: product.id,locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'fancybox img-responsive center-block' , remote: true
-                    %td= product.title
+                    %td.ellipses= product.title
                     %td= variant.price
                     %td
                     %td
