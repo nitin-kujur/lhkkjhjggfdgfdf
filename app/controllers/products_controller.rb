@@ -6,8 +6,8 @@ class ProductsController < ShopifyApp::AuthenticatedController
   # GET /products.json
   def index
     @shipify_products = ShopifyAPI::Product.find(:all)
-    @products = Product.all
     shop = Shop.find_by_shopify_domain(ShopifyAPI::Shop.current.domain)
+    @products = shop.products
     @shipify_products.each do |sp|
       unless @products.map(&:shopify_product_id).include?(sp.id.to_s)
         @products << Product.create(shopify_product_id: sp.id, shop_id: shop.id)
