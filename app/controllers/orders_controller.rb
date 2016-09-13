@@ -189,11 +189,11 @@ class OrdersController < ApplicationController
                         province: address.province,
                         country: address.country,
                         zip: address.zip}
-      shipping_line = {code: params[:shipping_type],
+      shipping_line = {code: params[:shipping_method],
                       price: values["shipping_amount"],
                       source: 'Bulk Order APP',
-                      title: params[:shipping_type],
-                      carrier_identifier: params[:shipping_type].split(' ').join('_')}
+                      title: params[:shipping_method],
+                      carrier_identifier: params[:shipping_method].split(' ').join('_')}
       financial_status = 'partially_paid'
       values[:product].each do |product_id, p_values|
         if p_values[:quantity].present? && p_values[:quantity].to_i > 0

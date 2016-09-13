@@ -5,19 +5,84 @@
     %title ShopifyOrderApp
     :javascript
       var pre_fix_url = "#{ENV['pre_fix_url']}";
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => false
+    :javascript
+      $(function() {
+          var t = $('#thetable tbody').eq(0);
+          var r = t.find('tr');
+          var cols= r.length;
+          var rows= r.eq(0).find('td').length;
+          var cell, next, tem, i = 0;
+          var tb= $('<tbody></tbody>');
+
+          while(i<rows){
+              cell= 0;
+              tem= $('<tr></tr>');
+              while(cell<cols){
+                  next= r.eq(cell++).find('td').eq(0);
+                  tem.append(next);
+              }
+              tb.append(tem);
+              ++i;
+          }
+          $('#thetable').append(tb);
+          $('#thetable').show();
+      }
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => false
     = javascript_include_tag 'application', 'data-turbolinks-track' => false
+    %link{:href => "http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css", :rel => "stylesheet"}
     = csrf_meta_tags
   %body
-    .container-fluid.bs-docs-container
-      .wrap.container
-        .notification
-          - if notice
-            .alert.alert-success
-              = notice
-              %button.close{"data-dismiss" => "alert"} ×
-          - if alert
-            .alert.alert-danger
-              = alert
-              %button.close{"data-dismiss" => "alert"} ×
+    %nav#navbar.navbar.navbar-default.navbar-fixed-top
+      .container-fluid
+        %h6 &nbsp;
+        .row
+          .col-md-2.col-sm-2.col-xs-2
+            %a{:style => "color:black;font-size:20px; text-decoration:none !important;"} Ship to Location
+          .col-md-1.col-sm-1.col-xs-1
+            = link_to 'Locations' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'text-green'
+          .col-md-1.col-sm-1.col-xs-1{:style => "max-width:60px;"}
+            %i.fa.fa-caret-right.text-gray
+          .col-md-1.col-sm-1.col-xs-1
+            = link_to 'Products' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-product', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'text-green'
+          .col-md-1.col-sm-1.col-xs-1{:style => "max-width:60px;"}
+            %i.fa.fa-caret-right.text-gray
+          .col-md-2.col-sm-2.col-xs-2
+            .select-wrapper
+              = select_tag "shipping_type", options_for_select(get_shipping_options), class: "form-control text-center"
+              .next-icon{:style => ""}
+                %i.fa.fa-caret-down
+          .col-md-1.col-sm-1.col-xs-1{:style => "max-width:60px;"}
+            %i.fa.fa-caret-right.text-gray
+          .col-md-2.col-sm-2.col-xs-2
+            = link_to 'Product Allocation', ENV["pre_fix_url"]+place_bulk_order_path()
+          .col-md-2.col-sm-2.col-xs-2.pull-right
+            = link_to 'Clear Bulk Order ', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'session_clear'), class: 'btn btn-success pull-right'
+        %hr.hr-full/
+    .container-fluid{style: "margin-top:100px;"}
       = yield
+:javascript
+  $(document).ready(function(){
+      $("#datatable").each(function() {
+          var $this = $(this);
+          var newrows = [];
+          $this.find("tr").each(function(){
+              var i = 0;
+              $(this).find("td").each(function(){
+                  i++;
+                  if(newrows[i] === undefined) { newrows[i] = $("<tr></tr>"); }
+                  newrows[i].append($(this));
+              });
+          });
+          $this.find("tr").remove();
+          $.each(newrows, function(){
+              $this.append(this);
+          });
+      });
+      
+      return false;
+  });
+
+  $( "#datatable-wrapper" ).scroll(function() {
+    x = $(this).scrollLeft();
+    $('#datatable-shadow').scrollLeft(x)
+  });

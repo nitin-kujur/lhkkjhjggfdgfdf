@@ -178,6 +178,7 @@ $( document ).ready(function() {
     update_product_price($(this).attr('id'), $(this).val());
 	});
   $('#shipping_type').change(function() {
+    $("#shipping_method").val($(this).val());
     $('.distributor-shipping-amount').html($("#loader").html());
     $( ".order-quantity" ).each(function(index, element) {
       update_total_value($(element).attr('id'), $(this).val());

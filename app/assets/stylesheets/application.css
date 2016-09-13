@@ -63,3 +63,136 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+select{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: transparent none repeat scroll 0 0;
+      /*border: 0 none;*/
+      box-sizing: border-box;
+      display: block;
+      font-size: 1.04286rem;
+      font-weight: 400;
+      height: auto;
+      letter-spacing: initial;
+      line-height: 1.61429rem;
+      max-width: none;
+      padding: 5px 32px 5px 10px;
+      text-transform: initial;
+      width: 100%;
+      color:#808080;
+  }
+
+  .select-wrapper {
+      background: #ffffff none repeat scroll 0 0;
+      /*border: 1px solid #d3dbe2;*/
+      /*border-radius: 3px;*/
+      box-sizing: border-box;
+      overflow: hidden;
+      position: relative;
+      vertical-align: bottom;
+  }
+
+  .next-icon {
+      cursor: pointer;
+      display: block;
+      fill: #798c9c;
+      margin-top: -12px;
+      pointer-events: none;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      height: 12px;
+      width: 12px;
+  }
+
+  a, a:active, a:focus{
+    outline: none !important;
+    text-decoration: none !important;
+  }
+
+  input[type = 'checkbox'], input[type = 'checkbox']:active, input[type = 'checkbox']:focus{
+    outline: none !important;
+    text-decoration: none !important;
+  }
+
+  .disabled, .disabled:hover{
+    color:black;
+    text-decoration: underline !important;
+    cursor: default;
+  }
+
+  .text-gray, .text-gray:hover{
+    color: gray;
+  }
+
+  .hr-full{
+    position: ;
+    left:0;
+    right:0;
+    border: 0.1em transparent solid;
+    color: black;
+    margin-bottom: 0px !important;
+  }
+
+  .gray-bg{
+    background-color: lightgray;
+    color:gray;
+  }
+
+  .text-green, .text-green:hover{
+    color: green;
+  }
+
+  .text-green::after{
+    font-family: FontAwesome;
+    /*content: " \f00c";*/
+  }
+
+  #navbar{
+    height:auto !important;
+    background-color: white !important;
+  }
+
+  .alert-success{
+    background-color: transparent !important;
+    border:2px solid green !important;
+    color: green !important;
+  }
+
+  .row-height {
+    display: table;
+    table-layout: fixed;
+    height: 100%;
+    width: 100%;
+  }
+  .col-height {
+    display: table-cell;
+    float: none;
+    height: 100%;
+  }
+
+  .no-border td{
+    border:none !important;
+  }
+
+  .extra-padding td{
+    padding-top:15px !important;
+    padding-bottom:15px !important;
+  }
+
+  .fixed-width td{
+    min-width: 150px !important;
+    max-width: 150px !important;
+  }
+
+  .fixed-td td:first-of-type{
+    min-width: 250px !important;
+    max-width: 250px !important;
+  }
+
+  .fixed-td td:not(:first-of-type){
+    min-width: 120px !important;
+    max-width: 120px !important;
+  }
+
