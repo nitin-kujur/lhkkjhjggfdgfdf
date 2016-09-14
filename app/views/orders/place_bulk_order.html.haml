@@ -73,7 +73,7 @@
                       - default_address = customer.default_address rescue nil
                       - if default_address.present?
                         %td
-                          =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , class: "form-control text-right order-quantity product-#{product.id} distributor-#{distributor_id}",type: "number" min: min_value, placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
+                          =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , class: "form-control text-right order-quantity product-#{product.id} distributor-#{distributor_id}",type: "number", onchange: 'check-val(this,#{value})' min: min_value, placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
     %hr/
     .row.no-border
       .row-height
@@ -127,4 +127,11 @@
           }
 
       }
+  }
+  function check-val(obj,min){
+    cur_val = $(obj).val;
+    if(cur_val >= val)
+      $(obj).removeClass('error');
+    else
+      $(obj).addClass('error');
   }
