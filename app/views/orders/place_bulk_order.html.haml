@@ -73,7 +73,7 @@
                       - default_address = customer.default_address rescue nil
                       - if default_address.present?
                         %td
-                          =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control text-right order-quantity product-#{product.id} distributor-#{distributor_id}",type: "number" min: min_value, placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
+                          =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , class: "form-control text-right order-quantity product-#{product.id} distributor-#{distributor_id}",type: "number" min: min_value, placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
     %hr/
     .row.no-border
       .row-height
@@ -91,10 +91,10 @@
             %table.table.text-right.fixed-width
               %tr
                 - products.each do |product|
-                  %td{class: "product-total-amount-#{product.id}"} 0
+                  %td{style: "font-weight:bold;",class: "product-total-amount-#{product.id}"} 0
               %tr
                 - products.each do |product|
-                  %td{class: "product-total-quantity-#{product.id}"} 0
+                  %td{style: "font-weight:bold;",class: "product-total-quantity-#{product.id}"} 0
     %h4 &nbsp;
     -if customers.present? && products.present?
       .row
