@@ -1,5 +1,5 @@
 class CustomWebhooksController < ApplicationController
-	before_action :set_session
+	#before_action :set_session
   include ShopifyApp::WebhookVerification
 
   def carts_update
