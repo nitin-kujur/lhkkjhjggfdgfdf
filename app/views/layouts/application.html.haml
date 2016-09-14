@@ -35,8 +35,6 @@
           .col-md-2.col-sm-2.col-xs-2{:style => "max-width:190px;"}
             .select-wrapper
               = select_tag "shipping_type", options_for_select(get_shipping_options), class: "form-control text-center", style: "font-size:13px; height:30px;"
-              .next-icon{:style => ""}
-                %i.fa.fa-caret-down
           .col-md-2.col-sm-2.col-xs-2.pull-right
             = link_to 'Clear Bulk Order ', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'session_clear'), class: 'btn btn-success pull-right'
         %hr.hr-full/

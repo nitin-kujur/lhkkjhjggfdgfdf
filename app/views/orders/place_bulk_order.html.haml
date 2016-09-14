@@ -59,7 +59,7 @@
                   - if @orders.present?
                     - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
                   - else
-                    - value = custom_product.present? ? custom_product.min_quantity : 0
+                    - value = ''
                   - default_price = custom_product.present? ? custom_product.get_price(value, variant.price) : variant.price
                   %tr
                     %td
