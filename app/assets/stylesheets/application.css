@@ -171,3 +171,10 @@ input[type="checkbox"], input[type="checkbox"]:active, input[type="checkbox"]:fo
     max-width: 120px !important;
     min-width: 120px !important;
 }
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+input[type="number"]:hover,
+input[type="number"]:focus {
+    -moz-appearance: number-input;
+}
