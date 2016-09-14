@@ -67,3 +67,11 @@
     x = $(this).scrollLeft();
     $('#datatable-shadow').scrollLeft(x)
   });
+
+  function check_val(obj,min){
+    cur_val = $(obj).val();
+    if((cur_val < min || isNaN(cur_val)) && cur_val.length != 0)
+      $(obj).addClass('error');
+    else
+      $(obj).removeClass('error');
+  }
