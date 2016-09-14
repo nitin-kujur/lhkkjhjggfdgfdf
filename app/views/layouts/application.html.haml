@@ -5,56 +5,37 @@
     %title ShopifyOrderApp
     :javascript
       var pre_fix_url = "#{ENV['pre_fix_url']}";
-    :javascript
-      $(function() {
-          var t = $('#thetable tbody').eq(0);
-          var r = t.find('tr');
-          var cols= r.length;
-          var rows= r.eq(0).find('td').length;
-          var cell, next, tem, i = 0;
-          var tb= $('<tbody></tbody>');
-
-          while(i<rows){
-              cell= 0;
-              tem= $('<tr></tr>');
-              while(cell<cols){
-                  next= r.eq(cell++).find('td').eq(0);
-                  tem.append(next);
-              }
-              tb.append(tem);
-              ++i;
-          }
-          $('#thetable').append(tb);
-          $('#thetable').show();
-      }
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => false
     = javascript_include_tag 'application', 'data-turbolinks-track' => false
-    %link{:href => "http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css", :rel => "stylesheet"}
+    %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css", :rel => "stylesheet"}
     = csrf_meta_tags
   %body
     %nav#navbar.navbar.navbar-default.navbar-fixed-top
       .container-fluid
         %h6 &nbsp;
         .row
-          .col-md-2.col-sm-2.col-xs-2
-            %a{:style => "color:black;font-size:20px; text-decoration:none !important;"} Ship to Location
-          .col-md-1.col-sm-1.col-xs-1
-            = link_to 'Locations' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'text-green'
+          / .col-md-2.col-sm-2.col-xs-2
+            / %a{:style => "color:black;font-size:20px; text-decoration:none !important;"} Ship to Location
+          .col-md-2.col-sm-2.col-xs-2{:style => "max-width:160px;"}
+            = link_to '<h5>Choose Locations</h5>' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'text-gray', id: 'nav1'
           .col-md-1.col-sm-1.col-xs-1{:style => "max-width:60px;"}
-            %i.fa.fa-caret-right.text-gray
-          .col-md-1.col-sm-1.col-xs-1
-            = link_to 'Products' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-product', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'text-green'
+            %h5
+              %i.fa.fa-caret-right.text-gray
+          .col-md-2.col-sm-2.col-xs-2{:style => "max-width:160px;"}
+            = link_to '<h5>Select Products</h5>' , ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'list-product', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'text-gray', id: 'nav2'
           .col-md-1.col-sm-1.col-xs-1{:style => "max-width:60px;"}
-            %i.fa.fa-caret-right.text-gray
-          .col-md-2.col-sm-2.col-xs-2
+            %h5
+              %i.fa.fa-caret-right.text-gray
+          .col-md-2.col-sm-2.col-xs-2{:style => "max-width:160px;"}
+            = link_to '<h5>Allocate Products</h5>', ENV["pre_fix_url"]+place_bulk_order_path(), class: 'text-gray', id: 'nav3'
+          .col-md-1.col-sm-1.col-xs-1{:style => "max-width:60px;"}
+            %h5
+              %i.fa.fa-caret-right.text-gray
+          .col-md-2.col-sm-2.col-xs-2{:style => "max-width:190px;"}
             .select-wrapper
-              = select_tag "shipping_type", options_for_select(get_shipping_options), class: "form-control text-center"
+              = select_tag "shipping_type", options_for_select(get_shipping_options), class: "form-control text-center", style: "font-size:13px; height:30px;"
               .next-icon{:style => ""}
                 %i.fa.fa-caret-down
-          .col-md-1.col-sm-1.col-xs-1{:style => "max-width:60px;"}
-            %i.fa.fa-caret-right.text-gray
-          .col-md-2.col-sm-2.col-xs-2
-            = link_to 'Product Allocation', ENV["pre_fix_url"]+place_bulk_order_path()
           .col-md-2.col-sm-2.col-xs-2.pull-right
             = link_to 'Clear Bulk Order ', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'session_clear'), class: 'btn btn-success pull-right'
         %hr.hr-full/

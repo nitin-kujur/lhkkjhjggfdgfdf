@@ -40,11 +40,11 @@
                               - if @error_message[distributor_id].present?
                                 .error-message
                                   = @error_message[distributor_id].html_safe
-                          %td{class: "distributor-total-quantity-#{distributor_id}"}
+                          %td{class: "text-right distributor-total-quantity-#{distributor_id}"}
                             0
-                          %td{class: "distributor-total-amount-#{distributor_id}"}
+                          %td{class: "text-right distributor-total-amount-#{distributor_id}"}
                             0
-                          %td{class: "distributor-shipping-amount distributor-total-shipping-amount-#{distributor_id}"}
+                          %td{class: "text-right distributor-shipping-amount distributor-total-shipping-amount-#{distributor_id}"}
                             0
         - if products.present?
           .col-height.col-md-6
@@ -54,7 +54,8 @@
                   - product_id = product.id
                   - variant = product.variants.first
                   - custom_product = Product.find_by_shopify_product_id(product_id)
-                  - min_quantity = custom_product.blank? || custom_product.min_quantity.blank? ? 'Quantity' : "Quantity <= #{custom_product.min_quantity}"
+                  - min_quantity = custom_product.blank? || custom_product.min_quantity.blank? ? 'Quantity' : "Minimum = #{custom_product.min_quantity}"
+                  - min_value = custom_product.blank? || custom_product.min_quantity.blank? ? '' : custom_product.min_quantity
                   - if @orders.present?
                     - value = params[:order][:distributors][distributor_id]['product'][product.id.to_s]['quantity']
                   - else
@@ -64,7 +65,7 @@
                     %td
                       = link_to image_tag(product.image.src, style: 'width:100px;') , ENV["pre_fix_url"]++place_bulk_order_path(action_type: 'product-detail-pop', product_id: product.id,locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'fancybox img-responsive center-block' , remote: true
                     %td.ellipses= product.title
-                    %td= variant.price
+                    %td.text-right= variant.price
                     %td
                     %td
                     - customers.each do |customer|
@@ -72,7 +73,7 @@
                       - default_address = customer.default_address rescue nil
                       - if default_address.present?
                         %td
-                          =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control order-quantity product-#{product.id} distributor-#{distributor_id}", placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
+                          =  text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity" , value , class: "form-control text-right order-quantity product-#{product.id} distributor-#{distributor_id}",type: "number" min: min_value, placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
     %hr/
     .row.no-border
       .row-height
@@ -87,7 +88,7 @@
                   %strong Total Quantity
         .col-height.col-md-6
           #datatable-shadow.table-responsive
-            %table.table.text-center.fixed-width
+            %table.table.text-right.fixed-width
               %tr
                 - products.each do |product|
                   %td{class: "product-total-amount-#{product.id}"} 0
