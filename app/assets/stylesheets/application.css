@@ -96,7 +96,7 @@ select {
     pointer-events: none;
     position: absolute;
     right: 10px;
-    top: 50%;
+    top: 30%;
     width: 12px;
 }
 a, a:active, a:focus {
