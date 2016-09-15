@@ -251,6 +251,18 @@ class OrdersController < ApplicationController
     end
     distributor
   end
+
+  def upload
+    uploaded_io = params[:csv_upload]
+    file_path = 'public/uploads'
+    # File.open(Rails.root.join('public', 'uploads', uploaded_io.original_filename), 'wb') do |file|
+    #   file.write(uploaded_io.read)
+    # end
+    # CSV.foreach(file_path, :headers => true, :col_sep => ';') do |row|
+    #   Distributor.create(:make => row['Make'], :model => row['Model'], :year => row['Year'])
+    # end
+  end
+
   private
     def distributor_params
       params.require(:distributor).permit(:first_name, :last_name, :email, :verified_email, addresses_attributes: [:id, :address1, :first_name, :last_name, :city, :phone, :zip, :country, :province])

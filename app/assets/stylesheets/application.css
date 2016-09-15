@@ -163,6 +163,11 @@ input[type="checkbox"], input[type="checkbox"]:active, input[type="checkbox"]:fo
     max-width: 150px !important;
     min-width: 150px !important;
 }
+.total-amount, .total-products {
+    min-width:150px !important;
+    max-width:150px !important;
+    font-weight: bold;
+  }
 .fixed-td td:first-of-type {
     max-width: 250px !important;
     min-width: 250px !important;
@@ -174,10 +179,14 @@ input[type="checkbox"], input[type="checkbox"]:active, input[type="checkbox"]:fo
 input[type="number"] {
     -moz-appearance: textfield;
 }
-input[type="number"]:hover,
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+/*input[type="number"]:hover,
 input[type="number"]:focus {
     -moz-appearance: number-input;
-}
+}*/
 .error{
     border:1px #ff3333 solid;
     box-shadow:0px 0px 10px rgba(255,51,51,0.7);

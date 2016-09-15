@@ -17,6 +17,8 @@
 //= require jquery_nested_form
 //= require_tree .
 
+total_shipping_amount = 0;
+
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -73,6 +75,7 @@ function get_shipping_price(ids, total_distributor_price, total_distributor_weig
   }).done(function(data) {
     price = parseFloat(data['shipping_amount'])
     if(price >= 0){
+      total_shipping_amount = total_shipping_amount + price;
       $("#shipping-"+data['distributor_id']).val(data['shipping_amount'])
       $('.distributor-total-shipping-amount-'+data['distributor_id']).html('$'+addCommas(data['shipping_amount']));
     }else{
@@ -151,8 +154,8 @@ function update_total_value(element_id, val){
   $('.distributor-total-amount-'+ids[1]).html("$"+addCommas(total_distributor_price.toFixed(2)));
   $('.product-total-quantity-'+ids[2]).html(addCommas(total_product_quantity));
   $('.product-total-amount-'+ids[2]).html("$"+addCommas(total_product_price.toFixed(2)));
-  $('.total-products').html(addCommas(total_quantity));
-  $('.total-amount').html(addCommas("$"+total_amount.toFixed(2)));
+  $('.total-products').val(addCommas(total_quantity));
+  $('.total-amount').val(addCommas("$"+(total_amount+total_shipping_amount).toFixed(2)));
 }
 
 function addCommas(nStr){

@@ -18,11 +18,11 @@
       %strong= @product.title
     / --------------------------
     -@product.variants.each_with_index do |variant,index|
-      #sca-qv-price-container.sca-qv-price-container
+      #sca-qv-price-container.sca-qv-price-container{:style => "font-size:20px !important;"}
         = "#{index+ 1}) "
         - variant.attributes.each.each do |key, value|
           -if ["price","sku", "grams", "weight_unit"].include?(key.to_s)
-            %span.sca-qv-product-price{:style => "color:#f45b4f !important;"}
+            %span.sca-qv-product-price{:style => "color:#1a1a1a !important;"}
               ="#{key}: #{value}" 
               %br
 

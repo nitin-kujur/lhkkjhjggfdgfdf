@@ -24,5 +24,48 @@
   = submit_tag 'Save Locations for bulk order' ,class: 'btn btn-primary update-distributor'
 %br
 
-= link_to 'New Location', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'new-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]) , class: 'btn btn-success'
+.row
+  .col-md-2.col-sm-2.col-xs-2
+    = link_to 'Add New Location', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'new-location', locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]) , class: 'btn btn-success'
+  .col-md-2.col-sm-2.col-xs-2
+    %button.btn.btn-success{"data-target" => "#csv-upload", "data-toggle" => "collapse"} Add Bulk Locations
+%h2  
+#csv-upload.collapse
+  %form{:action => ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'upload'), :method => "post", :role => "form"}
+    .form-group
+      .col-md-12
+        .col-md-4
+          %label{:for => "csv_upload_txt"}
+            %strong Bulk Location file Upload
+          %input#csv_upload_txt.form-control{:disabled => "disabled", :placeholder => "No file Selected...", :type => "text"}/
+          %span.w3-tiny.pull-right (Supported format: csv, xls, xlsx)
+          %h6
+        .col-md-2
+          %p{:style => "font-size:2px;"}  
+          %input#csv_upload.form-control{:accept => ".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", :name => "csv_upload", :style => "opacity:0; height:0px;", :type => "file"}/
+          %input.form-control{:onclick => "this.previousElementSibling.click();", :style => "display:inline;", :type => "button", :value => "Browse"}/
+        .col-md-2
+          %p{:style => "font-size:12px;"}  
+          %input.form-control{:id => 'btn-upload',:style => "display:none;", :type => "submit", :value => "Upload"}/
 =# link_to 'Sync from Shop', sync_distributors_path ,class: 'btn btn-success'
+
+:javascript
+  csv_upload = document.getElementById("csv_upload");
+  csv_upload_txt = document.getElementById("csv_upload_txt");
+
+  csv_upload.onchange = function(e){
+        var ext = csv_upload.value.match(/\.([^\.]+)$/)[1];
+        switch(ext)
+        {
+            case 'csv':
+            case 'xls':
+            case 'xlsx':
+                // alert('allowed');
+                $('#btn-upload').css('display','inline');
+                break;
+            default:
+                alert('invalid file type');
+                this.value='';
+        }
+        csv_upload_txt.value = csv_upload.value.replace("fakepath","..");
+  };
