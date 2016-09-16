@@ -23,9 +23,9 @@
                 %thead
                   %tr.fixed-td
                     %th Location
-                    %th Total Quantity
-                    %th Total Price
-                    %th Shipping Cost
+                    %th.text-right Quantity
+                    %th.text-right Price
+                    %th.text-right Shipping
                 - customers.each do |customer|
                   - distributor_id = customer.id.to_s
                   - if customer.present?
@@ -64,8 +64,10 @@
                   %tr
                     %td
                       = link_to image_tag(product.image.src, style: 'width:100px;') , ENV["pre_fix_url"]++place_bulk_order_path(action_type: 'product-detail-pop', product_id: product.id,locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[]), class: 'fancybox img-responsive center-block' , remote: true
-                    %td.ellipses= product.title
-                    %td.text-right= variant.price
+                    %td.ellipses
+                      %span= product.title
+                    %td
+                      %span.text-right= variant.price
                     %td
                     %td
                     - customers.each do |customer|
@@ -73,7 +75,7 @@
                       - default_address = customer.default_address rescue nil
                       - if default_address.present?
                         %td
-                          = text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity", nil, class: "form-control text-right order-quantity product-#{product.id} distributor-#{distributor_id}", type: "number", oninput: "check_val(this,#{value})", min: min_value, placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
+                          = text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity", value, class: "form-control center-block text-right order-quantity product-#{product.id} distributor-#{distributor_id}", type: "number", oninput: "check_val(this,#{value})", min: min_value, placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
     %hr/
     .row.no-border
       .row-height
@@ -86,14 +88,14 @@
                 %td
                   = text_field_tag "total_amount_plus_total_shipping_", nil, class: "form-control total-amount text-right", disabled: true
                 %td
-                  %strong.text-right <=
+                  %strong.text-right
               %tr
                 %td
                   %strong Total Quantity
                 %td
                   = text_field_tag "total_products_", nil, class: "form-control total-products text-right", disabled: true
                 %td
-                  %strong.text-right <=
+                  %strong.text-right
         .col-height.col-md-6
           #datatable-shadow.table-responsive
             %table.table.text-right.fixed-width

@@ -163,6 +163,10 @@ input[type="checkbox"], input[type="checkbox"]:active, input[type="checkbox"]:fo
     max-width: 150px !important;
     min-width: 150px !important;
 }
+.fixed-width td *{
+    max-width: 150px !important;
+    min-width: 150px !important;
+}
 .total-amount, .total-products {
     min-width:150px !important;
     max-width:150px !important;

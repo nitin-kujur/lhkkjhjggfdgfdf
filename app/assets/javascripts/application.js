@@ -150,12 +150,14 @@ function update_total_value(element_id, val){
       total_amount = total_amount + (e_value*e_price);
     }
   });
+  total_amount_and_shipping_amount = total_amount+total_shipping_amount;
   $('.distributor-total-quantity-'+ids[1]).html(addCommas(total_distributor_quantity));
   $('.distributor-total-amount-'+ids[1]).html("$"+addCommas(total_distributor_price.toFixed(2)));
   $('.product-total-quantity-'+ids[2]).html(addCommas(total_product_quantity));
   $('.product-total-amount-'+ids[2]).html("$"+addCommas(total_product_price.toFixed(2)));
   $('.total-products').val(addCommas(total_quantity));
-  $('.total-amount').val(addCommas("$"+(total_amount+total_shipping_amount).toFixed(2)));
+  $('.total-amount').val(addCommas("$"+total_amount_and_shipping_amount.toFixed(2)));
+  total_shipping_amount = 0;
 }
 
 function addCommas(nStr){
