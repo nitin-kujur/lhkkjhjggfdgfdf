@@ -8,7 +8,7 @@
     %thead
       %tr
         %th #
-        %th Location
+        %th Market
         %th Address
         %th City
         %th Actions
@@ -17,7 +17,7 @@
         - if distributor.addresses[0].present?
           %tr
             %td= check_box_tag  'distributors[]', distributor.id, pre_selection.include?(distributor.id.to_s), class: 'distributor'
-            %td= "#{distributor.addresses[0].first_name} #{distributor.addresses[0].last_name}"
+            %td= "#{distributor.addresses[0].first_name}"
             %td= distributor.addresses.present? ? "#{distributor.addresses[0].address1}" : "N/A"
             %td= distributor.addresses.present? ? distributor.addresses[0].city : "N/A" 
             %td= link_to 'Edit', ENV["pre_fix_url"]+place_bulk_order_path(action_type: 'edit-location', id: distributor.id, locations: session[:bulk_order]['distributors']||[], products: session[:bulk_order]['products']||[])

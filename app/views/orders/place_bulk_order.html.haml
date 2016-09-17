@@ -35,7 +35,7 @@
                       %tbody
                         %tr.fixed-td
                           %td.ellipses
-                            = "#{default_address.address1}, #{default_address.city}"
+                            = "#{default_address.first_name}, #{default_address.address1}, #{default_address.city}"
                             - if @error_message.present? 
                               - if @error_message[distributor_id].present?
                                 .error-message
