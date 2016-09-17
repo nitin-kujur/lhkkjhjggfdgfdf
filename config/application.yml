@@ -7,10 +7,10 @@ development:
   app_url: 'http://localhost:3000'
   pre_fix_url: ''
 production:
-  shopify_api_key: "f510bde1a4ee22623532723cf74a60f6"
-  shopify_secret: "89c26e88dba118d778c1ff8435f99069"
+  shopify_api_key: "451764caaf0b9381ce3f3ce39b641e0a"
+  shopify_secret: "d3d5d13d1309a63867c01996e629fa17"
   ups_user_id: 'jnatowitz@lapineinc.com'
   ups_password: 'P444word!'
   ups_key: 'ACD8A71E16D5BA35'
-  app_url: 'http://shopify-bulk-order.herokuapp.com'
+  app_url: 'http://ec2-52-88-152-46.us-west-2.compute.amazonaws.com'
   pre_fix_url: '/apps'
