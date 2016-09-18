@@ -19,23 +19,25 @@
           .col-height.col-md-6{:style => "position:relative;"}
             - p_style = products.blank? ? "" : 'top:100px;'
             #price-list.table-responsive{:style => "position:relative; #{p_style} width:100% !important;"}
-              %table.table.extra-padding
+              %table.table
                 %thead
                   %tr.fixed-td
                     %th Location
                     %th.text-right Quantity
                     %th.text-right Price
                     %th.text-right Shipping
-                - customers.each do |customer|
-                  - distributor_id = customer.id.to_s
-                  - if customer.present?
-                    - default_address = customer.default_address rescue nil
-                    - if default_address.present?
-                      =  hidden_field_tag "order[distributors][#{distributor_id}]shipping_amount" ,0 , id: "shipping-#{distributor_id}"
-                      %tbody
+                %tbody
+                  - customers.each do |customer|
+                    - distributor_id = customer.id.to_s
+                    - if customer.present?
+                      - default_address = customer.default_address rescue nil
+                      - if default_address.present?
+                        =  hidden_field_tag "order[distributors][#{distributor_id}]shipping_amount" ,0 , id: "shipping-#{distributor_id}"
                         %tr.fixed-td
                           %td.ellipses
-                            = "#{default_address.first_name}, #{default_address.address1}, #{default_address.city}"
+                            = "#{default_address.first_name} "
+                            %br
+                            ="#{default_address.address1}, #{default_address.city}"
                             - if @error_message.present? 
                               - if @error_message[distributor_id].present?
                                 .error-message
@@ -74,7 +76,7 @@
                       - distributor_id = customer.id.to_s
                       - default_address = customer.default_address rescue nil
                       - if default_address.present?
-                        %td
+                        %td{style: 'padding-bottom:28px;padding-top:0px'}
                           = text_field_tag "order[distributors][#{distributor_id}][product][#{product.id}]quantity", value, class: "form-control center-block text-right order-quantity product-#{product.id} distributor-#{distributor_id}", type: "number", oninput: "check_val(this,#{value})", min: min_value, placeholder: min_quantity, id: "order-#{distributor_id}-#{product.id}", product_price: default_price, product_weight: variant.weight, country: default_address.country, province: default_address.province, country_code: default_address.country_code, province_code: default_address.province_code, city: default_address.city, zip: default_address.zip
     %hr/
     .row.no-border
