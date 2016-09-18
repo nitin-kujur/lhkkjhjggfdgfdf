@@ -7,24 +7,34 @@
   %table.table.table-striped
     %thead
       %tr
-        %th ID
-        %th Image
-        %th Product
+        %th 
+        %th 
+        %th Product Name
+        %th Price 
+        %th Qty
+        %th Lead-Time
+        %th Additionals
     %tbody
       - @products.each do |product|
         %tr
           %td= check_box_tag  "products[]", product.id, pre_selection.include?(product.id.to_s)
           %td
-            = link_to image_tag(product.image.src, style: 'width:100px;') , ENV["pre_fix_url"]++place_bulk_order_path(action_type: 'product-detail-pop', product_id: product.id), class: 'fancybox' , remote: true
+            = link_to image_tag(product.image.src, style: 'height:50px;') , ENV["pre_fix_url"]++place_bulk_order_path(action_type: 'product-detail-pop', product_id: product.id), class: 'fancybox' , remote: true
             =# image_tag product.image.src, class: 'product-image' ,width: 50
+          %td= product.title
+          %td= "$#{product.variants.first.price}"
           %td
-            %strong= product.title
-            %br
+            - custom_product = Product.find_by_shopify_product_id(product.id)
+            = custom_product.min_quantity.blank? ? 'N/A' : "#{custom_product.min_quantity}"
+          %td= "Lead-Time"
+          %td
+            - additional= "No"
             -product.variants.each_with_index do |variant,index|
-              - variant.attributes.each.each do |key, value|
-                -if ["price","sku", "grams", "weight_unit"].include?(key.to_s)
-                  ="#{key.humanize}: #{value}, " 
-              %br
-          
+              - if index != 0 
+                - variant.attributes.each.each do |key, value|
+                  -if ["quantity","color", "grams", "size"].include?(key.to_s)
+                    - additional = "Yes"
+                  =#"#{key.humanize}: #{value}, " 
+            =additional  
 
   = submit_tag 'Save Products for bulk order' ,class: 'btn btn-primary'
