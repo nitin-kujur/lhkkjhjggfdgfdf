@@ -16,6 +16,7 @@
         %th Additionals
     %tbody
       - @products.each do |product|
+        - custom_product = Product.find_by_shopify_product_id(product.id)
         %tr
           %td= check_box_tag  "products[]", product.id, pre_selection.include?(product.id.to_s)
           %td
@@ -23,10 +24,8 @@
             =# image_tag product.image.src, class: 'product-image' ,width: 50
           %td= product.title
           %td= "$#{product.variants.first.price}"
-          %td
-            - custom_product = Product.find_by_shopify_product_id(product.id)
-            = custom_product.min_quantity.blank? ? 'N/A' : "#{custom_product.min_quantity}"
-          %td= "Lead-Time"
+          %td= custom_product.min_quantity.blank? ? 'N/A' : "#{custom_product.min_quantity}"
+          %td= custom_product.lead_time.blank? ? 'N/A' : "#{custom_product.lead_time}"
           %td
             - additional= "No"
             -product.variants.each_with_index do |variant,index|

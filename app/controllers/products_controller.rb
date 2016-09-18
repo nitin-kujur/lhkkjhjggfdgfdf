@@ -77,7 +77,7 @@ class ProductsController < ShopifyApp::AuthenticatedController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:shopify_product_id, :min_quantity, product_quantities_attributes: [:id, :first_quantity, :last_quantity, :price, :_destroy])
+      params.require(:product).permit(:shopify_product_id, :lead_time, :min_quantity, product_quantities_attributes: [:id, :first_quantity, :last_quantity, :price, :_destroy])
     end
     def set_session
       params[:shop] = 'pepsi-test.myshopify.com' if params[:shop].blank? && Rails.env.development?
